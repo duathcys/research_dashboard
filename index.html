@@ -68,10 +68,10 @@
 
         </div>
     </div>
-    <!-- 연관어 TOP5 탭 -->
+    <!-- 연관어 TOP10 탭 -->
     <div id="relation-tab" class="tab-item">
         <div class="card">
-            <h3>연관어 TOP5 (연도별)</h3>
+            <h3>연관어 TOP10 (연도별)</h3>
 
             <!-- 키워드 + 연도 선택 -->
             <div class="keyword-selector">
@@ -90,8 +90,41 @@
 
             <!-- 카드형 그리드 -->
             <div class="relation-grid" id="relation-cards">
-                <!-- JS로 TOP5 카드 자동 생성 -->
+                <!-- JS로 TOP10 카드 자동 생성 -->
             </div>
+
+            <!-- 히트맵 + 라인차트 -->
+            <section class="card relation-analysis">
+                <h3>🔍 주요 키워드별 연관어 변화 추이 (2022-2026)</h3>
+                <p class="guide-text">
+                    ※ 칸이 비어있는 연도는 해당 키워드가 연관 TOP 10에 포함되지 않은 시기입니다.
+                </p>
+                
+                <div class="heatmap-wrapper">
+                    <table class="heatmap-table">
+                        <thead>
+                            <tr>
+                                <th>연관 키워드</th>
+                                <th>2022</th>
+                                <th>2023</th>
+                                <th>2024</th>
+                                <th>2025</th>
+                                <th class="current-year">2026 (예측)</th>
+                                <th>유형</th>
+                            </tr>
+                        </thead>
+                        <tbody id="heatmap-body">
+                            <!-- JS로 데이터 렌더링 -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div id="linechart-container" style="margin-top:20px;">
+                    <h4>선택 키워드 연도별 변화</h4>
+                    <div id="linechart" style="height: 350px;"></div>
+                </div>
+            </section>
+
         </div>
     </div>
 </div>
@@ -106,5 +139,7 @@
 </div>
 <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
 <script src="script.js"></script>
+<script src="heatmap.js"></script>
+
 </body>
 </html>

@@ -179,3 +179,149 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 .card-body { font-size: 12px; color: #555; }
 .count-val { font-weight: bold; font-size: 14px; color: #007aff; }
 
+/* ================================ */
+/* 연관어 TOP10 히트맵 + 라인차트 */
+/* ================================ */
+.relation-analysis {
+    margin-top: 30px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.relation-analysis h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.relation-analysis .guide-text {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 15px;
+}
+
+/* 히트맵 테이블 */
+.heatmap-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.heatmap-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    font-size: 13px;
+    text-align: center;
+    table-layout: fixed;
+}
+
+.heatmap-table th,
+.heatmap-table td {
+    padding: 10px 6px;
+    border: 1px solid #eee;
+    min-width: 60px;
+    vertical-align: middle;
+    transition: all 0.2s;
+}
+
+.heatmap-table th {
+    background: #f5f6fa;
+    font-weight: 600;
+    color: #333;
+}
+
+/* 값 수준별 색상 (그라데이션 느낌) */
+.level-0 { background: #f9f9f9; color: #ccc; }
+.level-1 { background: #dbefff; color: #333; }
+.level-2 { background: #a6d4ff; color: #333; }
+.level-3 { background: #4da6ff; color: white; }
+.level-4 { background: #007aff; color: white; }
+.level-5 { background: #0056b3; color: white; }
+
+/* 배지 */
+.badge {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+    margin-left: 4px;
+}
+
+.badge.hot { background: #ff6b6b; color: white; }
+.badge.new { background: #1dd1a1; color: white; }
+
+/* 키워드 유형 */
+.type {
+    font-size: 12px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 6px;
+    text-transform: capitalize;
+}
+
+.type.comeback { background: #ffe066; color: #333; }
+.type.emerging { background: #70e000; color: white; }
+.type.core { background: #007aff; color: white; }
+
+/* 라인차트 */
+#linechart-container {
+    margin-top: 20px;
+}
+
+#linechart {
+    width: 100%;
+    height: 350px;
+}
+
+/* 행 클릭 시 포인터 효과 */
+.kw-row { cursor: pointer; transition: background 0.2s; }
+.kw-row:hover { background: rgba(0, 122, 255, 0.05); }
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .heatmap-table th,
+    .heatmap-table td {
+        padding: 6px 4px;
+        font-size: 12px;
+        min-width: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+    .heatmap-table th,
+    .heatmap-table td {
+        padding: 4px 2px;
+        font-size: 11px;
+        min-width: 40px;
+    }
+}
+
+
+/* 카드형 키워드 hover 라인차트 */
+.rel-card {
+    position: relative; /* 툴팁 위치 기준 */
+}
+
+/* 미니 라인차트 숨김 */
+.linechart-tooltip {
+    position: absolute;
+    top: -180px; /* 카드 위쪽 */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 250px;
+    height: 150px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    padding: 10px;
+    z-index: 99;
+    display: none;
+}
+
+/* 카드 hover 시 표시 */
+.rel-card:hover .linechart-tooltip {
+    display: block;
+}
