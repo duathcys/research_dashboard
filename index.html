@@ -15,7 +15,8 @@
     <nav class="tab-menu">
         <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
         <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
-        <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP5</button>
+        <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP10</button>
+        <button class="tab-btn" data-tab="sankey-tab">🌊 TOP5 키워드 흐름</button>
     </nav>
 
     <!-- 매트릭스 탭 -->
@@ -93,9 +94,6 @@
             </div>
         </div>
     </div>
-
-
-
 </div>
 
 <!-- 키워드 상세 팝업 -->
@@ -106,7 +104,7 @@
         <p id="popup-details"></p>
     </div>
 </div>
-
+<script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

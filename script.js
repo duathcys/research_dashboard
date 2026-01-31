@@ -176,7 +176,7 @@ function renderRelationCards(selectedKeyword, year) {
     const top5 = Object.entries(coMap)
         .map(([coKeyword, count]) => ({ coKeyword, count }))
         .sort((a,b) => b.count - a.count)
-        .slice(0,5);
+        .slice(0,10);
 
     // 카드 생성
     cardsContainer.innerHTML = '';
