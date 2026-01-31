@@ -11,11 +11,13 @@
 <div class="dashboard">
     <header><h1>🚀 Research Intelligence 2026</h1></header>
 
+    <!-- 탭 메뉴 -->
     <nav class="tab-menu">
         <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
         <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
     </nav>
 
+    <!-- 매트릭스 탭 -->
     <div id="matrix-tab" class="tab-item active">
         <div class="card">
             <h3>2026 키워드 포지셔닝</h3>
@@ -34,18 +36,33 @@
         </div>
     </div>
 
+    <!-- 리스트 탭 -->
     <div id="list-tab" class="tab-item">
         <div class="card list-container">
+
+            <!-- 성장 리스트 -->
             <div class="list-group">
                 <h3>📈 성장 (Growth > 0)</h3>
+                <div class="sort-controls">
+                    <button class="sort-btn" data-list="growth" data-type="value">성장률 ↓</button>
+                    <button class="sort-btn" data-list="growth" data-type="name">이름 ↑</button>
+                </div>
                 <ul id="growth-list"></ul>
             </div>
+
+            <!-- 쇠퇴 리스트 -->
             <div class="list-group">
                 <h3>📉 쇠퇴 (Growth < 0)</h3>
+                <div class="sort-controls">
+                    <button class="sort-btn" data-list="decline" data-type="abs">쇠퇴율 ↓</button>
+                    <button class="sort-btn" data-list="decline" data-type="name">이름 ↑</button>
+                </div>
                 <ul id="decline-list"></ul>
             </div>
+
         </div>
     </div>
+
 </div>
 
 <script src="script.js"></script>
