@@ -1,30 +1,53 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>연구 트렌드 대시보드</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>2026 연구 전략 내비게이터</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
-  <header>
-    <h1>연구 트렌드 대시보드</h1>
-  </header>
 
-  <main>
-    <section class="chart-section">
-      <h2>최근 연구 분야별 논문 수</h2>
-      <canvas id="trendChart"></canvas>
-    </section>
+<div class="dashboard">
+    <header><h1>🚀 Research Intelligence 2026</h1></header>
 
-    <section class="qr-section">
-      <h2>QR 코드로 접속</h2>
-      <div id="qrcode"></div>
-    </section>
-  </main>
+    <nav class="tab-menu">
+        <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
+        <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
+    </nav>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-  <script src="script.js"></script>
+    <div id="matrix-tab" class="tab-item active">
+        <div class="card">
+            <h3>2026 키워드 포지셔닝</h3>
+            <div class="matrix-wrapper">
+                <div class="axis-label y-label">↑ 성장률 (Growth Rate)</div>
+                <div class="axis-label x-label">예측 빈도 (Frequency) →</div>
+
+                <div class="matrix-grid">
+                    <div class="quad q2">신규 유망 (Low Freq / High Growth)</div>
+                    <div class="quad q1">핵심 전략 (High Freq / High Growth)</div>
+                    <div class="quad q4">특화/정체 (Low Freq / Low Growth)</div>
+                    <div class="quad q3">성숙/유지 (High Freq / Low Growth)</div>
+                </div>
+                <div id="matrix-points"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="list-tab" class="tab-item">
+        <div class="card list-container">
+            <div class="list-group">
+                <h3>📈 성장 (Growth > 0)</h3>
+                <ul id="growth-list"></ul>
+            </div>
+            <div class="list-group">
+                <h3>📉 쇠퇴 (Growth < 0)</h3>
+                <ul id="decline-list"></ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>

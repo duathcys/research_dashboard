@@ -1,0 +1,865 @@
+﻿KYWD,pred_freq_2026,2025_freq,Growth_rate
+tax,147,101,45.5
+legal,129,90,43.29
+project,24,17,40.94
+proof,14,10,39.6
+r&amp;d,14,10,39.6
+assessment,29,21,37.91
+third,11,8,37.04
+retirement,11,8,37.04
+officer,11,8,37.04
+making,15,11,36.04
+care,42,31,35.37
+control,69,51,35.23
+gender,58,43,34.8
+rights,270,201,34.31
+test,20,15,33.11
+peace,12,9,32.97
+self-efficacy,64,49,30.55
+climate change,39,30,29.9
+ship,13,10,29.7
+innovative behavior,27,21,28.44
+2022 revised curriculum,18,14,28.37
+eu,41,32,28.04
+capital,28,22,27.15
+esg,117,92,27.14
+fundamental,14,11,27.03
+indonesia,14,11,27.03
+aging,14,11,27.03
+transformational leadership,19,15,26.49
+election,19,15,26.49
+inequality,19,15,26.49
+prohibition,19,15,26.49
+benefit,24,19,26.18
+anti,24,19,26.18
+social capital,29,23,25.97
+medical,29,23,25.97
+shareholder,29,23,25.97
+education,49,39,25.58
+information,69,55,25.41
+public,110,88,24.97
+security,60,48,24.95
+theory,50,40,24.94
+collective,25,20,24.88
+blockchain,20,16,24.84
+academic achievement,15,12,24.79
+ethics,15,12,24.79
+maintenance,10,8,24.69
+damage,10,8,24.69
+norms,10,8,24.69
+school adjustment,10,8,24.69
+scope,10,8,24.69
+agreement,51,41,24.33
+machine learning,36,29,24.05
+tourism,36,29,24.05
+property,48,39,23.02
+investigation,27,22,22.62
+age,27,22,22.62
+party,27,22,22.62
+depression,65,53,22.6
+social support,44,36,22.16
+body,11,9,21.98
+natural,11,9,21.98
+oecd,11,9,21.98
+fraud,11,9,21.98
+developmental disabilities,11,9,21.98
+firm value,11,9,21.98
+population,11,9,21.98
+export,11,9,21.98
+empathy,11,9,21.98
+housing,50,41,21.9
+business,56,46,21.69
+land,28,23,21.65
+flow,17,14,21.28
+recognition,17,14,21.28
+article,58,48,20.79
+organization,29,24,20.75
+algorithm,18,15,19.87
+e-commerce,12,10,19.8
+limitation,12,10,19.8
+treatment,12,10,19.8
+north korea,43,36,19.39
+wage,25,21,18.96
+consumer,25,21,18.96
+personal,38,32,18.69
+authority,19,16,18.63
+return,19,16,18.63
+training,19,16,18.63
+treaty,19,16,18.63
+national,64,54,18.48
+technology,52,44,18.14
+turnover intention,39,33,18.13
+chatgpt,26,22,18.1
+korea,222,188,18.08
+code,33,28,17.79
+environment,53,45,17.74
+work,40,34,17.6
+dispute,20,17,17.54
+organizational culture,20,17,17.54
+equity,20,17,17.54
+u,20,17,17.54
+civil,55,47,16.99
+development,42,36,16.62
+social media,21,18,16.57
+termination,14,12,16.53
+technology acceptance model,14,12,16.53
+governance,58,50,15.97
+local government,29,25,15.94
+transparency,22,19,15.71
+foreign,30,26,15.33
+subjective well-being,15,13,15.27
+logistic regression,15,13,15.27
+global,15,13,15.27
+purchase intention,53,46,15.18
+interpretation,23,20,14.93
+platform,47,41,14.6
+trust,55,48,14.55
+employment,32,28,14.23
+innovation,24,21,14.22
+assembly,16,14,14.18
+criminal,57,50,13.97
+court,57,50,13.97
+urban,25,22,13.57
+local,42,37,13.48
+trade,51,45,13.3
+corporate,51,45,13.3
+equality,17,15,13.25
+disposition,17,15,13.25
+worker,17,15,13.25
+committee,17,15,13.25
+climate,43,38,13.12
+contract,69,61,13.09
+domestic,26,23,12.99
+workers,26,23,12.99
+protection,123,109,12.83
+rate,27,24,12.45
+electronic,18,16,12.42
+discrimination,18,16,12.42
+gas,9,8,12.35
+advertising,9,8,12.35
+minimum,9,8,12.35
+aggression,9,8,12.35
+online review,9,8,12.35
+city,9,8,12.35
+science,9,8,12.35
+council,9,8,12.35
+legitimate,9,8,12.35
+term,9,8,12.35
+automated,9,8,12.35
+constitutional,46,41,12.17
+compensation,37,33,12.08
+family,28,25,11.95
+media,28,25,11.95
+general,28,25,11.95
+loneliness,19,17,11.7
+regression,19,17,11.7
+judgment,19,17,11.7
+resources,19,17,11.7
+sustainable development,19,17,11.7
+duty,48,43,11.6
+regulation,68,61,11.46
+democracy,49,44,11.34
+ott,20,18,11.05
+women,20,18,11.05
+over,10,9,10.99
+corporate governance,10,9,10.99
+future,10,9,10.99
+lda,10,9,10.99
+incentive,10,9,10.99
+financial performance,10,9,10.99
+history,10,9,10.99
+debt,10,9,10.99
+access,10,9,10.99
+recht,10,9,10.99
+claims,10,9,10.99
+narrative,10,9,10.99
+continued use intention,10,9,10.99
+positive psychological capital,10,9,10.99
+emotion,10,9,10.99
+justice,41,37,10.78
+qualitative research,42,38,10.5
+network analysis,21,19,10.47
+management,77,70,9.99
+violence,33,30,9.97
+with,22,20,9.95
+subject,11,10,9.9
+investor,11,10,9.9
+firm performance,11,10,9.9
+sales,11,10,9.9
+integrated,11,10,9.9
+reconstruction,11,10,9.9
+related,11,10,9.9
+dea,11,10,9.9
+environmental education,11,10,9.9
+perceived usefulness,11,10,9.9
+integration,11,10,9.9
+office,11,10,9.9
+safety,34,31,9.65
+convention,34,31,9.65
+improvement,23,21,9.48
+policy,71,65,9.22
+doctrine,24,22,9.05
+obligation,24,22,9.05
+action,24,22,9.05
+determinants,12,11,9.01
+burden,12,11,9.01
+concept,12,11,9.01
+small,12,11,9.01
+from,12,11,9.01
+survey,12,11,9.01
+digital competence,12,11,9.01
+higher education,12,11,9.01
+impact,12,11,9.01
+ai literacy,12,11,9.01
+bargaining,12,11,9.01
+service,62,57,8.76
+estate,25,23,8.66
+happiness,25,23,8.66
+identity,25,23,8.66
+market,39,36,8.31
+lifelong education,13,12,8.26
+nature,13,12,8.26
+scale development,13,12,8.26
+e,13,12,8.26
+random forest,13,12,8.26
+generative ai,67,62,8.05
+effect,27,25,7.97
+commercial,27,25,7.97
+determination,27,25,7.97
+research trends,42,39,7.67
+conflict,28,26,7.66
+space,14,13,7.63
+plan,14,13,7.63
+teacher,14,13,7.63
+large language model,14,13,7.63
+settlement,14,13,7.63
+license,14,13,7.63
+disabilities,14,13,7.63
+employer,14,13,7.63
+taiwan,14,13,7.63
+direct,14,13,7.63
+feminism,14,13,7.63
+job satisfaction,58,54,7.39
+police,29,27,7.38
+college students,15,14,7.09
+planning,15,14,7.09
+or,15,14,7.09
+evidence,15,14,7.09
+carbon neutrality,15,14,7.09
+phenomenological study,32,30,6.64
+attorney,16,15,6.62
+due,16,15,6.62
+multi,16,15,6.62
+economic security,16,15,6.62
+reduction,16,15,6.62
+privacy,16,15,6.62
+review,33,31,6.43
+brand image,17,16,6.21
+examination,17,16,6.21
+school,17,16,6.21
+young children,17,16,6.21
+population decline,17,16,6.21
+children,17,16,6.21
+validity,17,16,6.21
+use,35,33,6.04
+income,35,33,6.04
+legislation,18,17,5.85
+grit,18,17,5.85
+youth,38,36,5.54
+digital literacy,38,36,5.54
+punishment,19,18,5.52
+administration,19,18,5.52
+legitimacy,20,19,5.24
+financial,43,41,4.87
+asset,44,42,4.75
+r,22,21,4.74
+based,46,44,4.54
+crime,69,66,4.54
+mediation,23,22,4.52
+data,71,68,4.41
+life satisfaction,71,68,4.41
+der,24,23,4.33
+ownership,24,23,4.33
+mediation effect,26,25,3.98
+perceived value,26,25,3.98
+administrative,53,51,3.91
+grounded theory,28,27,3.69
+network,28,27,3.69
+economic,29,28,3.56
+legislative,33,32,3.12
+digital,67,65,3.07
+freedom,37,36,2.77
+change,39,38,2.62
+international,63,62,1.61
+facts,8,8,0.0
+forecasting,8,8,0.0
+sustainability,59,59,0.0
+residential,12,12,0.0
+intellectual,10,10,0.0
+area,10,10,0.0
+deep learning,17,17,0.0
+cluster analysis,16,16,0.0
+seoul,16,16,0.0
+narrative inquiry,16,16,0.0
+csr,10,10,0.0
+des,17,17,0.0
+society,17,17,0.0
+procedures,17,17,0.0
+disability acceptance,10,10,0.0
+source,10,10,0.0
+constitution,19,19,0.0
+industrial,19,19,0.0
+online,19,19,0.0
+carbon,17,17,0.0
+ukraine war,18,18,0.0
+welfare,18,18,0.0
+person,10,10,0.0
+regime,10,10,0.0
+duties,11,11,0.0
+effectiveness,11,11,0.0
+comprehensive,10,10,0.0
+learning,10,10,0.0
+collaborative governance,10,10,0.0
+4th industrial revolution,10,10,0.0
+united states,10,10,0.0
+metropolitan area,10,10,0.0
+claim,19,19,0.0
+job performance,19,19,0.0
+trademark,9,9,0.0
+lda topic modeling,9,9,0.0
+fairness,19,19,0.0
+prevention,19,19,0.0
+university,19,19,0.0
+organizational justice,10,10,0.0
+combat,11,11,0.0
+suicide,11,11,0.0
+awareness,15,15,0.0
+quality of life,15,15,0.0
+us,9,9,0.0
+work-life balance,9,9,0.0
+operator,9,9,0.0
+neoliberalism,9,9,0.0
+revisit intention,14,14,0.0
+laws,14,14,0.0
+climate crisis,14,14,0.0
+abuse,14,14,0.0
+repurchase intention,14,14,0.0
+sexual,11,11,0.0
+nationalism,11,11,0.0
+obligations,9,9,0.0
+equal,9,9,0.0
+cybersecurity,9,9,0.0
+brand loyalty,15,15,0.0
+proportionality,15,15,0.0
+company,15,15,0.0
+factors,10,10,0.0
+mining,9,9,0.0
+communication,23,23,0.0
+relationship,23,23,0.0
+social worker,22,22,0.0
+price,24,24,0.0
+avoidance,9,9,0.0
+payment,23,23,0.0
+transfer,26,26,0.0
+measures,26,26,0.0
+disclosure,26,26,0.0
+self-determination,11,11,0.0
+ratio,11,11,0.0
+seizure,11,11,0.0
+commerce,9,9,0.0
+self-esteem,25,25,0.0
+energy,24,24,0.0
+region,8,8,0.0
+good,8,8,0.0
+class,9,9,0.0
+definition,8,8,0.0
+government,28,28,0.0
+digital assets,11,11,0.0
+unfair,11,11,0.0
+resilience,28,28,0.0
+trial,13,13,0.0
+unit,13,13,0.0
+literature review,8,8,0.0
+supreme,11,11,0.0
+anxiety,8,8,0.0
+principles,11,11,0.0
+patent,27,27,0.0
+efficiency,26,26,0.0
+multiple,8,8,0.0
+latent profile analysis,30,30,0.0
+presidential,8,8,0.0
+response,8,8,0.0
+motivation,12,12,0.0
+covid-19 pandemic,12,12,0.0
+warrant,8,8,0.0
+marine,8,8,0.0
+entrepreneurship,13,13,0.0
+creativity,13,13,0.0
+force,12,12,0.0
+accident,13,13,0.0
+an,12,12,0.0
+health,33,33,0.0
+activities,13,13,0.0
+board,8,8,0.0
+marriage migrant women,8,8,0.0
+just,8,8,0.0
+injunction,8,8,0.0
+division,8,8,0.0
+speech,8,8,0.0
+validation,8,8,0.0
+rise,8,8,0.0
+agreements,8,8,0.0
+liability,44,44,0.0
+polarization,8,8,0.0
+young adults,12,12,0.0
+weapon,13,13,0.0
+public service motivation,13,13,0.0
+focus group interview,13,13,0.0
+marriage,12,12,0.0
+renewable energy,8,8,0.0
+organizational commitment,35,36,-2.77
+private,32,33,-3.02
+human,31,32,-3.12
+moderating effect,29,30,-3.32
+decision,27,28,-3.56
+order,27,28,-3.56
+political,27,28,-3.56
+adolescents,27,28,-3.56
+early childhood teacher,27,28,-3.56
+supply chain,22,23,-4.33
+artificial intelligence,276,289,-4.5
+elderly,61,64,-4.68
+digital transformation,37,39,-5.12
+ordinance,18,19,-5.24
+status,17,18,-5.52
+cost,17,18,-5.52
+multiculturalism,17,18,-5.52
+evaluation,17,18,-5.52
+judicial,33,35,-5.7
+comparative,16,17,-5.85
+promotion,16,17,-5.85
+construction,16,17,-5.85
+joint,16,17,-5.85
+life,16,17,-5.85
+special,32,34,-5.87
+china,61,65,-6.14
+tariff,15,16,-6.21
+regional development,15,16,-6.21
+profit,15,16,-6.21
+report,15,16,-6.21
+research,15,16,-6.21
+brand attitude,15,16,-6.21
+damages,15,16,-6.21
+relations,15,16,-6.21
+japan,30,32,-6.23
+real,29,31,-6.43
+systems,14,15,-6.62
+stock,14,15,-6.62
+generation,14,15,-6.62
+establishment,14,15,-6.62
+agency,27,29,-6.87
+case,13,14,-7.09
+child,13,14,-7.09
+share,13,14,-7.09
+international students,13,14,-7.09
+systematic literature review,13,14,-7.09
+history education,13,14,-7.09
+indirect,12,13,-7.63
+collection,12,13,-7.63
+pension,12,13,-7.63
+elementary school teacher,12,13,-7.63
+stress,12,13,-7.63
+mobility,12,13,-7.63
+sentiment analysis,12,13,-7.63
+naval,12,13,-7.63
+crisis,12,13,-7.63
+job stress,23,25,-7.97
+litigation,34,37,-8.09
+local extinction,11,12,-8.26
+education policy,11,12,-8.26
+burnout,11,12,-8.26
+adjustment,11,12,-8.26
+partnership,11,12,-8.26
+job burnout,11,12,-8.26
+k-pop,11,12,-8.26
+economic growth,11,12,-8.26
+military,32,35,-8.55
+fair,21,23,-8.66
+personality,10,11,-9.01
+request,10,11,-9.01
+stablecoin,10,11,-9.01
+q,10,11,-9.01
+common,10,11,-9.01
+news,10,11,-9.01
+form,10,11,-9.01
+directive,10,11,-9.01
+und,10,11,-9.01
+jurisdiction,10,11,-9.01
+classification,10,11,-9.01
+transportation,10,11,-9.01
+internal,10,11,-9.01
+regulations,20,22,-9.05
+interest,30,33,-9.06
+war,19,21,-9.48
+product,9,10,-9.9
+purchase,9,10,-9.9
+facilities,9,10,-9.9
+hours,9,10,-9.9
+threat,9,10,-9.9
+demand,9,10,-9.9
+q methodology,9,10,-9.9
+terms,9,10,-9.9
+kim,9,10,-9.9
+korean wave,9,10,-9.9
+instructional design,9,10,-9.9
+operational,9,10,-9.9
+offense,9,10,-9.9
+guarantee,9,10,-9.9
+defect,9,10,-9.9
+competitiveness,9,10,-9.9
+urban regeneration,18,20,-9.95
+high,18,20,-9.95
+學習投入,18,20,-9.95
+employee,17,19,-10.47
+involvement,8,9,-10.99
+career maturity,8,9,-10.99
+generational differences,8,9,-10.99
+discourse analysis,8,9,-10.99
+reporting,8,9,-10.99
+systematic review,8,9,-10.99
+sovereignty,8,9,-10.99
+self-regulation,8,9,-10.99
+unconstitutionality,8,9,-10.99
+exemption,8,9,-10.99
+lease,8,9,-10.99
+populism,8,9,-10.99
+image,8,9,-10.99
+digital education,8,9,-10.99
+k,8,9,-10.99
+sdgs,8,9,-10.99
+logistics,8,9,-10.99
+program,8,9,-10.99
+amendment,16,18,-11.05
+enforcement,16,18,-11.05
+smes,16,18,-11.05
+social integration,16,18,-11.05
+participation,16,18,-11.05
+basic,24,27,-11.07
+rule,22,25,-11.95
+support,29,33,-12.08
+basic psychological needs,7,8,-12.35
+growth,7,8,-12.35
+pattern,7,8,-12.35
+intention,7,8,-12.35
+recommendation,7,8,-12.35
+mindfulness,7,8,-12.35
+behavior,7,8,-12.35
+point,7,8,-12.35
+social studies education,7,8,-12.35
+north korean defectors,7,8,-12.35
+productivity,7,8,-12.35
+social trust,7,8,-12.35
+korea-japan relations,7,8,-12.35
+directors,7,8,-12.35
+sharing,7,8,-12.35
+execution,7,8,-12.35
+one,7,8,-12.35
+human rights,7,8,-12.35
+loyalty,14,16,-12.42
+impeachment,14,16,-12.42
+emotional labor,14,16,-12.42
+digital trade,14,16,-12.42
+rules,14,16,-12.42
+simulation,21,24,-12.45
+insurance,20,23,-12.99
+resolution,13,15,-13.25
+psychological well-being,13,15,-13.25
+organizational citizenship behavior,13,15,-13.25
+risk,38,44,-13.61
+autonomy,25,29,-13.75
+behavioral intention,31,36,-13.85
+inheritance,12,14,-14.18
+neutrality,12,14,-14.18
+panel,12,14,-14.18
+practice,12,14,-14.18
+border,12,14,-14.18
+sea,12,14,-14.18
+qualitative case study,12,14,-14.18
+time,18,21,-14.22
+regulatory,18,21,-14.22
+defense,23,27,-14.76
+union,17,20,-14.93
+period,11,13,-15.27
+supply,11,13,-15.27
+procedural,11,13,-15.27
+approach,11,13,-15.27
+ideology,11,13,-15.27
+deepfake,11,13,-15.27
+function,11,13,-15.27
+suicidal ideation,11,13,-15.27
+responsibility,22,26,-15.33
+separation,16,19,-15.71
+maritime,16,19,-15.71
+labor,53,63,-15.85
+emotional response,10,12,-16.53
+career preparation behavior,10,12,-16.53
+central asia,10,12,-16.53
+voting,10,12,-16.53
+content,10,12,-16.53
+ipa,10,12,-16.53
+money,10,12,-16.53
+disaster,10,12,-16.53
+sns,15,18,-16.57
+entrepreneurial intention,15,18,-16.57
+esg management,15,18,-16.57
+amp,24,29,-17.18
+russia,19,23,-17.32
+mental health,19,23,-17.32
+unmanned,14,17,-17.54
+vehicle,14,17,-17.54
+regional,14,17,-17.54
+curriculum,14,17,-17.54
+attitude,14,17,-17.54
+theory of planned behavior,14,17,-17.54
+immigration,14,17,-17.54
+audit,9,11,-18.02
+companies,9,11,-18.02
+transaction,9,11,-18.02
+venture,9,11,-18.02
+contractor,9,11,-18.02
+dynamic capabilities,9,11,-18.02
+entrepreneurial orientation,9,11,-18.02
+death,9,11,-18.02
+capability,9,11,-18.02
+mz,22,27,-18.45
+commission,13,16,-18.63
+compliance,13,16,-18.63
+semantic network analysis,13,16,-18.63
+search,13,16,-18.63
+victim,13,16,-18.63
+new,13,16,-18.63
+conditions,17,21,-18.96
+by,17,21,-18.96
+cross,17,21,-18.96
+firm,8,10,-19.8
+traffic,8,10,-19.8
+korean history,8,10,-19.8
+career adaptability,8,10,-19.8
+un,8,10,-19.8
+difference,8,10,-19.8
+pay,8,10,-19.8
+optimization,8,10,-19.8
+text analysis,8,10,-19.8
+culture,8,10,-19.8
+quality characteristics,8,10,-19.8
+continuous use intention,8,10,-19.8
+utilization,8,10,-19.8
+redevelopment,8,10,-19.8
+contribution,8,10,-19.8
+infringement,12,15,-19.87
+trading,12,15,-19.87
+d,12,15,-19.87
+leadership,12,15,-19.87
+information asymmetry,12,15,-19.87
+migrant,12,15,-19.87
+competition,12,15,-19.87
+virtual,12,15,-19.87
+building,16,20,-19.9
+cooperation,16,20,-19.9
+copyright,15,19,-20.94
+north chungcheong,11,14,-21.28
+social network,11,14,-21.28
+modeling,11,14,-21.28
+meta-analysis,11,14,-21.28
+operation,11,14,-21.28
+single-person household,11,14,-21.28
+generative,11,14,-21.28
+reform,18,23,-21.65
+power,39,50,-21.96
+us-china relations,7,9,-21.98
+negligence,7,9,-21.98
+director,7,9,-21.98
+quasi,7,9,-21.98
+interests,7,9,-21.98
+festival,7,9,-21.98
+role,7,9,-21.98
+tort,7,9,-21.98
+areas,7,9,-21.98
+north korea-china relations,7,9,-21.98
+transactions,7,9,-21.98
+democratic,7,9,-21.98
+buildings,7,9,-21.98
+criteria,7,9,-21.98
+geography education,7,9,-21.98
+transition,7,9,-21.98
+tourism industry,7,9,-21.98
+work engagement,7,9,-21.98
+specific,7,9,-21.98
+united,7,9,-21.98
+confirmatory factor analysis,7,9,-21.98
+domain,7,9,-21.98
+structural equation modeling,7,9,-21.98
+reservation,7,9,-21.98
+bank,7,9,-21.98
+vietnam,7,9,-21.98
+community,14,18,-22.1
+youtube,21,27,-22.14
+customer satisfaction,17,22,-22.62
+structure,17,22,-22.62
+fiduciary,10,13,-22.9
+university students,10,13,-22.9
+economy,10,13,-22.9
+registration,10,13,-22.9
+job,10,13,-22.9
+content analysis,10,13,-22.9
+acquisition,10,13,-22.9
+perceived risk,10,13,-22.9
+expression,10,13,-22.9
+forensic,10,13,-22.9
+case study,20,26,-22.99
+framework,20,26,-22.99
+industry,19,25,-23.9
+under,19,25,-23.9
+service quality,19,25,-23.9
+translation,6,8,-24.69
+open,6,8,-24.69
+drug,6,8,-24.69
+shares,6,8,-24.69
+statement,6,8,-24.69
+center,6,8,-24.69
+cluster,6,8,-24.69
+pre-service teacher,6,8,-24.69
+german,6,8,-24.69
+east asia,6,8,-24.69
+unjust,6,8,-24.69
+operations,6,8,-24.69
+chungcheong,6,8,-24.69
+restricted,6,8,-24.69
+drone,6,8,-24.69
+trade policy,6,8,-24.69
+immunity,6,8,-24.69
+emergency,6,8,-24.69
+political participation,6,8,-24.69
+guidelines,6,8,-24.69
+elements,6,8,-24.69
+policy implementation,6,8,-24.69
+bibliometric analysis,6,8,-24.69
+credit,6,8,-24.69
+subsidy,9,12,-24.79
+trump,9,12,-24.79
+text,9,12,-24.79
+art,9,12,-24.79
+literacy,9,12,-24.79
+place attachment,9,12,-24.79
+martial,9,12,-24.79
+corporation,9,12,-24.79
+wto,12,16,-24.84
+keyword network analysis,12,16,-24.84
+clause,12,16,-24.84
+mz generation,17,23,-25.97
+social participation,14,19,-26.18
+no,11,15,-26.49
+mediating effect,19,26,-26.82
+smart,8,11,-27.03
+experience,8,11,-27.03
+art education,8,11,-27.03
+against,8,11,-27.03
+statutory,8,11,-27.03
+breach,8,11,-27.03
+smart construction,8,11,-27.03
+autonomous,16,22,-27.15
+ahp,10,14,-28.37
+social isolation,10,14,-28.37
+startup,10,14,-28.37
+stability,12,17,-29.24
+solidarity,7,10,-29.7
+institutional,7,10,-29.7
+index,7,10,-29.7
+multi-group analysis,7,10,-29.7
+social economy,7,10,-29.7
+co,7,10,-29.7
+acceptance,9,13,-30.53
+reliability,9,13,-30.53
+japanese,9,13,-30.53
+india,9,13,-30.53
+coping strategies,6,9,-32.97
+law revision,6,9,-32.97
+immigrants,6,9,-32.97
+mass,6,9,-32.97
+korean war,6,9,-32.97
+migrant workers,6,9,-32.97
+securities,6,9,-32.97
+warfare,6,9,-32.97
+compulsory,6,9,-32.97
+martial law,6,9,-32.97
+place,6,9,-32.97
+technology acceptance,6,9,-32.97
+sustainable management,6,9,-32.97
+pandemic,6,9,-32.97
+history curriculum,6,9,-32.97
+donation,8,12,-33.06
+religion,8,12,-33.06
+accountability,8,12,-33.06
+consent,8,12,-33.06
+fund,8,12,-33.06
+valuation,8,12,-33.06
+gift,8,12,-33.06
+arbitration,10,15,-33.11
+association,10,15,-33.11
+big data,12,18,-33.15
+european,7,11,-36.04
+construction technology,7,11,-36.04
+adjudication,7,11,-36.04
+investment,21,33,-36.25
+selection attributes,5,8,-37.04
+physical education,5,8,-37.04
+penalty,5,8,-37.04
+unclos,5,8,-37.04
+de,5,8,-37.04
+alternative,5,8,-37.04
+at,5,8,-37.04
+budget,5,8,-37.04
+private law,5,8,-37.04
+asean,5,8,-37.04
+immigration policy,5,8,-37.04
+unstructured data,5,8,-37.04
+seok heon,5,8,-37.04
+korean traditional music education,5,8,-37.04
+assets private,5,8,-37.04
+cases,5,8,-37.04
+self-leadership,5,8,-37.04
+interaction,5,8,-37.04
+transformation,5,8,-37.04
+public opinion,5,8,-37.04
+revitalization,5,8,-37.04
+general education,5,8,-37.04
+driver,5,8,-37.04
+korean society,5,8,-37.04
+discussion paper,18,29,-37.8
+collaboration,8,13,-38.17
+corporate social responsibility,6,10,-39.6
+double,6,10,-39.6
+independence,6,10,-39.6
+negative emotions,6,10,-39.6
+independent,6,10,-39.6
+representation,7,12,-41.32
+net,5,9,-43.96
+empowerment,5,9,-43.96
+engineering,5,9,-43.96
+covid-19,27,49,-44.81
+animal,7,13,-45.8
+decentralization,7,13,-45.8
+designated discussion,13,25,-47.81
+continuance intention,4,8,-49.38
+customer loyalty,4,8,-49.38
+european union,4,8,-49.38
+free,4,8,-49.38
+journalism,4,8,-49.38
+apec,4,8,-49.38
+message,5,10,-49.5
+international trade,6,12,-49.59
+ukraine,5,11,-54.05
+metaverse,8,19,-57.59
+congratulatory,3,8,-61.73
+congratulatory message,3,8,-61.73
+principles digital,1,8,-86.42
