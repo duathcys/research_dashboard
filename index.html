@@ -15,14 +15,17 @@
     <nav class="tab-menu">
         <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
         <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
+        <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP5</button>
     </nav>
 
     <!-- 매트릭스 탭 -->
     <div id="matrix-tab" class="tab-item active">
         <div class="card">
             <h3>2026 키워드 포지셔닝</h3>
-            <!-- 필터 토글 버튼 -->
+
+            <!-- 키워드 필터 토글 -->
             <button id="keyword-filter-btn" class="filter-toggle">✅ 키워드 필터 ON</button>
+
             <div class="matrix-wrapper">
                 <div class="axis-label y-label">↑ 성장률 (Growth Rate)</div>
                 <div class="axis-label x-label">예측 빈도 (Frequency) →</div>
@@ -64,11 +67,37 @@
 
         </div>
     </div>
+    <!-- 연관어 TOP5 탭 -->
+    <div id="relation-tab" class="tab-item">
+        <div class="card">
+            <h3>연관어 TOP5 (연도별)</h3>
+
+            <!-- 키워드 + 연도 선택 -->
+            <div class="keyword-selector">
+                <label for="key-select">키워드 선택: </label>
+                <select id="key-select"></select>
+
+                <label for="relation-year-select">연도 선택: </label>
+                <select id="relation-year-select">
+                    <option value="2021">2021</option>
+                    <option value="2022">2022</option>
+                    <option value="2023">2023</option>
+                    <option value="2024">2024</option>
+                    <option value="2025">2025</option>
+                </select>
+            </div>
+
+            <!-- 카드형 그리드 -->
+            <div class="relation-grid" id="relation-cards">
+                <!-- JS로 TOP5 카드 자동 생성 -->
+            </div>
+        </div>
+    </div>
+
+
 
 </div>
 
-<script src="script.js"></script>
-</body>
 <!-- 키워드 상세 팝업 -->
 <div id="keyword-popup" class="popup">
     <div class="popup-content">
@@ -77,4 +106,7 @@
         <p id="popup-details"></p>
     </div>
 </div>
+
+<script src="script.js"></script>
+</body>
 </html>

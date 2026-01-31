@@ -4,8 +4,7 @@
     --q2-bg: #f0f7ff;
     --q3-bg: #f9f9f9;
     --q4-bg: #ffffff;
-
-    --point-filtered: #ff8c00; /* 필터 적용된 포인트 색상 */
+    --point-filtered: #ff8c00;
 }
 
 body { 
@@ -15,167 +14,56 @@ body {
     padding: 20px; 
 }
 
-.dashboard { 
-    max-width: 1100px; 
-    margin: 0 auto; 
-}
+.dashboard { max-width: 1100px; margin: 0 auto; }
 
 /* 탭 메뉴 */
-.tab-menu { 
-    display: flex; 
-    gap: 5px; 
-    margin-bottom: 20px; 
-    background: #ddd; 
-    padding: 5px; 
-    border-radius: 10px; 
-}
-.tab-btn { 
-    flex: 1; 
-    padding: 12px; 
-    border: none; 
-    border-radius: 8px; 
-    cursor: pointer; 
-    font-weight: bold; 
-    background: none; 
-    transition: 0.3s; 
-}
-.tab-btn.active { 
-    background: white; 
-    color: var(--primary); 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-}
+.tab-menu { display: flex; gap: 5px; margin-bottom: 20px; background: #ddd; padding: 5px; border-radius: 10px; }
+.tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: none; transition: 0.3s; }
+.tab-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .tab-item { display: none; }
 .tab-item.active { display: block; }
 
 /* 카드 */
-.card { 
-    background: white; 
-    padding: 30px; 
-    border-radius: 20px; 
-    box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
-}
+.card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
 /* 매트릭스 */
-.matrix-wrapper { 
-    position: relative; 
-    width: 100%; 
-    height: 500px; 
-    margin-top: 30px; 
-    border: 2px solid #333; 
-    border-radius: 12px;
-    overflow: hidden;
-}
-.matrix-grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    grid-template-rows: 1fr 1fr; 
-    width: 100%; 
-    height: 100%; 
-    position: absolute; 
-}
-.quad { 
-    display: flex; 
-    align-items: flex-start; 
-    justify-content: center; 
-    padding: 10px; 
-    font-weight: bold; 
-    font-size: 14px; 
-    color: #666; 
-    opacity: 0.6; 
-}
+.matrix-wrapper { position: relative; width: 100%; height: 500px; margin-top: 30px; border: 2px solid #333; border-radius: 12px; overflow: hidden; }
+.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; position: absolute; }
+.quad { display: flex; align-items: flex-start; justify-content: center; padding: 10px; font-weight: bold; font-size: 14px; color: #666; opacity: 0.6; }
 .q2 { background: var(--q2-bg); border-right: 1px dashed #ccc; border-bottom: 1px dashed #ccc; }
 .q1 { background: var(--q1-bg); border-bottom: 1px dashed #ccc; color: #d63031; }
 .q4 { background: var(--q4-bg); border-right: 1px dashed #ccc; }
 .q3 { background: var(--q3-bg); }
 
 /* 포인트 */
-.point { 
-    position: absolute; 
-    background: var(--primary); 
-    color: white; 
-    padding: 5px 12px; 
-    border-radius: 20px; 
-    font-size: 12px; 
-    font-weight: bold; 
-    transform: translate(-50%, 50%); 
-    box-shadow: 0 2px 8px rgba(0,122,255,0.4); 
-    z-index: 10; 
-    white-space: nowrap; 
-    transition: 0.3s;
-}
-.point.filtered { 
-    background: var(--point-filtered); 
-    box-shadow: 0 2px 10px rgba(255,140,0,0.5); 
-}
+.point { position: absolute; background: var(--primary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; transform: translate(-50%, 50%); box-shadow: 0 2px 8px rgba(0,122,255,0.4); z-index: 10; white-space: nowrap; transition: 0.3s; cursor: pointer; }
+.point.filtered { background: var(--point-filtered); box-shadow: 0 2px 10px rgba(255,140,0,0.5); }
 
 /* 축 */
-.axis-label { 
-    position: absolute; 
-    font-weight: bold; 
-    font-size: 13px; 
-    color: #333; 
-}
+.axis-label { position: absolute; font-weight: bold; font-size: 13px; color: #333; }
 .y-label { top: -25px; left: -10px; }
 .x-label { bottom: -30px; right: 0; }
 
 /* 리스트 */
-.list-container { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 20px; 
-    margin-top: 20px;
-}
-.list-group { 
-    padding: 15px; 
-    border-radius: 12px; 
-    background: #f8f9fa; 
-}
-.list-group h3 { 
-    border-bottom: 2px solid #eee; 
-    padding-bottom: 10px; 
-}
+.list-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+.list-group { padding: 15px; border-radius: 12px; background: #f8f9fa; }
+.list-group h3 { border-bottom: 2px solid #eee; padding-bottom: 10px; }
 ul { list-style: none; padding: 0; margin: 0; }
-li { 
-    padding: 8px 0; 
-    border-bottom: 1px solid #eee; 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center;
-}
+li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
 
 /* 정렬 버튼 */
 .sort-controls { margin-bottom: 8px; }
-.sort-btn { 
-    padding: 4px 10px; 
-    margin-right: 5px; 
-    border: none; 
-    border-radius: 6px; 
-    background: #eee; 
-    cursor: pointer; 
-    font-size: 12px; 
-    transition: 0.2s; 
-}
-.sort-btn:hover { 
-    background: var(--primary); 
-    color: white; 
-}
+.sort-btn { padding: 4px 10px; margin-right: 5px; border: none; border-radius: 6px; background: #eee; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.sort-btn:hover { background: var(--primary); color: white; }
 
 /* 필터 토글 버튼 */
-.filter-toggle { 
-    margin-bottom: 15px; 
-    padding: 6px 12px; 
-    background: var(--primary); 
-    color: white; 
-    border: none; 
-    border-radius: 10px; 
-    cursor: pointer; 
-    font-size: 13px; 
-    font-weight: bold; 
-    transition: 0.3s; 
-}
-.filter-toggle.active { 
-    background: #ff8c00; 
-}
+.filter-toggle { margin-bottom: 15px; padding: 6px 12px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
+.filter-toggle.active { background: #ff8c00; }
+
+/* 팝업 */
+.popup { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 9999; }
+.popup-content { background: white; padding: 30px; border-radius: 20px; width: 400px; max-width: 90%; box-shadow: 0 8px 25px rgba(0,0,0,0.3); position: relative; }
+.popup-close { position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 18px; cursor: pointer; font-weight: bold; color: #555; }
 
 /* 반응형 */
 @media (max-width: 768px) {
@@ -184,37 +72,82 @@ li {
     .point { font-size: 11px; padding: 4px 10px; }
 }
 
-/* 팝업 전체 배경 */
-.popup {
-    position: fixed;
-    top: 0; left: 0; right: 0; bottom: 0;
-    background: rgba(0,0,0,0.5);
-    display: none; /* 기본 숨김 */
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+/* ================================ */
+/* 연관어 TOP5 카드형 그리드 */
+/* ================================ */
+.relation-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
 }
 
-/* 팝업 카드 */
-.popup-content {
+.rel-card {
     background: white;
-    padding: 30px;
-    border-radius: 20px;
-    width: 400px;
-    max-width: 90%;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    position: relative;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: 0.3s;
+    cursor: pointer;
 }
 
-/* 닫기 버튼 */
-.popup-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    border: none;
-    background: none;
-    font-size: 18px;
-    cursor: pointer;
+.rel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.rel-card .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.rel-card .rank {
     font-weight: bold;
-    color: #555;
+    color: var(--primary);
+    font-size: 16px;
+}
+
+.rel-card .word {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.rel-card .badge {
+    font-size: 11px;
+    font-weight: bold;
+    padding: 2px 6px;
+    border-radius: 8px;
+    text-transform: uppercase;
+}
+
+.rel-card .badge.hot { background: #ff6b6b; color: white; }
+.rel-card .badge.new { background: #1dd1a1; color: white; }
+
+.rel-card .card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.rel-card .count-val {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 4px;
+}
+
+.rel-card .growth-label {
+    font-size: 12px;
+    color: #666;
+}
+
+/* 반응형 카드 */
+@media (max-width: 600px) {
+    .relation-grid {
+        grid-template-columns: 1fr;
+    }
 }
