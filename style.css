@@ -1,0 +1,25 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+header {
+  background-color: #4CAF50;
+  color: white;
+  padding: 1rem;
+}
+
+main {
+  padding: 2rem;
+}
+
+.chart-section, .qr-section {
+  margin: 2rem 0;
+}
+
+canvas {
+  max-width: 90%;
+  height: auto;
+}
