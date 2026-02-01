@@ -32,10 +32,10 @@
                 <!-- 키워드 개수 슬라이더 (필터 OFF 시만 표시) -->
                 <div id="keyword-limit-control" style="display: none; flex: 1; min-width: 300px;">
                     <label for="keyword-limit-slider" style="font-size: 13px; color: #666; margin-right: 10px;">
-                        표시 개수: <strong id="keyword-limit-value">50</strong>개
+                        표시 개수: <strong id="keyword-limit-value">50</strong>개 / <span id="total-keywords">전체</span>
                     </label>
-                    <input type="range" id="keyword-limit-slider" min="20" max="200" value="50" step="10" 
-                           style="width: 200px; vertical-align: middle;">
+                    <input type="range" id="keyword-limit-slider" min="20" max="1000" value="50" step="10" 
+                           style="width: 250px; vertical-align: middle;">
                 </div>
             </div>
 
@@ -46,6 +46,16 @@
 
     <!-- 리스트 탭 -->
     <div id="list-tab" class="tab-item">
+        <div class="card">
+            <h3>📈 흐름 잇다: 연구 키워드 성장·쇠퇴 추이</h3>
+            <p class="guide-text" style="margin-bottom: 20px;">
+                <strong>💡 사용 가이드:</strong><br>
+                • <strong>성장 리스트</strong>: 성장률이 양수(+)인 키워드들 - 연구가 증가하는 분야<br>
+                • <strong>쇠퇴 리스트</strong>: 성장률이 음수(-)인 키워드들 - 연구가 감소하는 분야<br>
+                • <strong>키워드 클릭</strong>: "위치 잇다" 탭으로 이동하여 해당 키워드의 위치를 확인할 수 있습니다
+            </p>
+        </div>
+        
         <div class="card list-container">
 
             <!-- 성장 리스트 -->
@@ -106,6 +116,37 @@
                     ※ 칸이 비어있는 연도는 해당 키워드가 연관 TOP 10에 포함되지 않은 시기입니다.<br>
                     💡 <strong>키워드 행에 마우스를 올리면</strong> 연도별 변화 추이 그래프를 볼 수 있습니다.
                 </p>
+                
+                <!-- 키워드 유형 설명 -->
+                <div class="keyword-type-legend">
+                    <h4>📌 키워드 유형 분류 기준</h4>
+                    <div class="legend-grid">
+                        <div class="legend-item">
+                            <span class="type hot">HOT</span>
+                            <span class="legend-desc">2023~2025 <strong>3년 연속</strong> 등장한 트렌드</span>
+                            <span class="badge hot">HOT</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="type core">CORE</span>
+                            <span class="legend-desc"><strong>3~4년 이상</strong> 지속적으로 등장한 핵심 주제</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="type comeback">COMEBACK</span>
+                            <span class="legend-desc">과거 등장 → 2023년 공백 → <strong>최근 재부상</strong></span>
+                            <span class="badge hot">HOT</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="type emerging">EMERGING</span>
+                            <span class="legend-desc">과거 없다가 <strong>최근(2024~2025)만</strong> 등장</span>
+                            <span class="badge new">NEW</span>
+                        </div>
+                        <div class="legend-item">
+                            <span class="type fading">FADING</span>
+                            <span class="legend-desc">예전 등장 → <strong>최근 2년 없음</strong> (관심 감소)</span>
+                            <span class="badge old">OLD</span>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="heatmap-wrapper">
                     <table class="heatmap-table">

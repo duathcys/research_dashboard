@@ -65,9 +65,25 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
         let filterOn = true;
         let keywordLimit = 50;
 
+        // 전체 키워드 개수 표시
+        const totalKeywordsSpan = document.getElementById('total-keywords');
+        if (totalKeywordsSpan) {
+            totalKeywordsSpan.textContent = `전체 ${fullData.length}개`;
+        }
+        
+        // 슬라이더 최대값을 전체 개수로 설정
+        if (limitSlider) {
+            limitSlider.max = fullData.length;
+        }
+
         // ================================
         // Plotly 산점도 렌더링 함수
         function renderScatterPlot(dataToRender){
+            renderScatterPlotWithHighlight(dataToRender, null);
+        }
+        
+        // 키워드 강조 기능이 있는 산점도 렌더링
+        function renderScatterPlotWithHighlight(dataToRender, highlightKeyword){
             // 데이터 분류
             const filteredData = filterOn 
                 ? dataToRender.filter(item => allowedKeywords.includes(item.KYWD))
@@ -78,47 +94,95 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             
             const traces = [];
             
-            // 일반 키워드 (회색)
-            if (normalData.length > 0) {
-                traces.push({
-                    x: normalData.map(item => item.pred_freq_2026),
-                    y: normalData.map(item => item.Growth_rate),
-                    text: normalData.map(item => item.KYWD),
-                    mode: 'markers+text',
-                    type: 'scatter',
-                    name: '일반 키워드',
-                    marker: {
-                        size: 10,
-                        color: '#999',
-                        opacity: 0.6,
-                        line: { width: 1, color: 'white' }
-                    },
-                    textposition: 'top center',
-                    textfont: { size: 9, color: '#666' },
-                    hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
-                });
-            }
-            
-            // 강조 키워드 (주황색)
-            if (highlightData.length > 0) {
-                traces.push({
-                    x: highlightData.map(item => item.pred_freq_2026),
-                    y: highlightData.map(item => item.Growth_rate),
-                    text: highlightData.map(item => item.KYWD),
-                    mode: 'markers+text',
-                    type: 'scatter',
-                    name: '주요 키워드',
-                    marker: {
-                        size: 12,
-                        color: '#ff8c00',
-                        opacity: 0.8,
-                        line: { width: 2, color: 'white' }
-                    },
-                    textposition: 'top center',
-                    textfont: { size: 10, color: '#ff8c00', family: 'Pretendard' },
-                    hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>',
-                    customdata: highlightData.map(item => item.KYWD)
-                });
+            // 강조할 키워드가 있는 경우
+            if (highlightKeyword) {
+                const targetData = dataToRender.filter(item => item.KYWD === highlightKeyword);
+                const otherData = filteredData.filter(item => item.KYWD !== highlightKeyword);
+                
+                // 다른 키워드들 (회색, 반투명)
+                if (otherData.length > 0) {
+                    traces.push({
+                        x: otherData.map(item => item.pred_freq_2026),
+                        y: otherData.map(item => item.Growth_rate),
+                        text: otherData.map(item => item.KYWD),
+                        mode: 'markers',
+                        type: 'scatter',
+                        name: '기타 키워드',
+                        marker: {
+                            size: 8,
+                            color: '#ccc',
+                            opacity: 0.3,
+                            line: { width: 1, color: 'white' }
+                        },
+                        hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
+                    });
+                }
+                
+                // 강조 키워드 (빨간색, 크게)
+                if (targetData.length > 0) {
+                    traces.push({
+                        x: targetData.map(item => item.pred_freq_2026),
+                        y: targetData.map(item => item.Growth_rate),
+                        text: targetData.map(item => item.KYWD),
+                        mode: 'markers+text',
+                        type: 'scatter',
+                        name: '선택된 키워드',
+                        marker: {
+                            size: 20,
+                            color: '#ff0000',
+                            opacity: 1,
+                            line: { width: 3, color: 'white' },
+                            symbol: 'star'
+                        },
+                        textposition: 'top center',
+                        textfont: { size: 14, color: '#ff0000', family: 'Pretendard', weight: 'bold' },
+                        hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
+                    });
+                }
+            } else {
+                // 일반 모드 (원래대로)
+                // 일반 키워드 (회색)
+                if (normalData.length > 0) {
+                    traces.push({
+                        x: normalData.map(item => item.pred_freq_2026),
+                        y: normalData.map(item => item.Growth_rate),
+                        text: normalData.map(item => item.KYWD),
+                        mode: 'markers+text',
+                        type: 'scatter',
+                        name: '일반 키워드',
+                        marker: {
+                            size: 10,
+                            color: '#999',
+                            opacity: 0.6,
+                            line: { width: 1, color: 'white' }
+                        },
+                        textposition: 'top center',
+                        textfont: { size: 9, color: '#666' },
+                        hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
+                    });
+                }
+                
+                // 강조 키워드 (주황색)
+                if (highlightData.length > 0) {
+                    traces.push({
+                        x: highlightData.map(item => item.pred_freq_2026),
+                        y: highlightData.map(item => item.Growth_rate),
+                        text: highlightData.map(item => item.KYWD),
+                        mode: 'markers+text',
+                        type: 'scatter',
+                        name: '주요 키워드',
+                        marker: {
+                            size: 12,
+                            color: '#ff8c00',
+                            opacity: 0.8,
+                            line: { width: 2, color: 'white' }
+                        },
+                        textposition: 'top center',
+                        textfont: { size: 10, color: '#ff8c00', family: 'Pretendard' },
+                        hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>',
+                        customdata: highlightData.map(item => item.KYWD)
+                    });
+                }
             }
             
             const layout = {
@@ -255,14 +319,40 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
 
             growthData.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${item.KYWD}</span> <b>${item.Growth_rate}%</b>`;
+                li.innerHTML = `<span class="keyword-link">${item.KYWD}</span> <b>${item.Growth_rate}%</b>`;
+                li.style.cursor = 'pointer';
+                li.addEventListener('click', () => highlightKeywordInMatrix(item.KYWD));
                 gList.appendChild(li);
             });
             declineData.forEach(item => {
                 const li = document.createElement('li');
-                li.innerHTML = `<span>${item.KYWD}</span> <b>${item.Growth_rate}%</b>`;
+                li.innerHTML = `<span class="keyword-link">${item.KYWD}</span> <b>${item.Growth_rate}%</b>`;
+                li.style.cursor = 'pointer';
+                li.addEventListener('click', () => highlightKeywordInMatrix(item.KYWD));
                 dList.appendChild(li);
             });
+        }
+        
+        // ================================
+        // 매트릭스에서 키워드 강조 함수
+        function highlightKeywordInMatrix(keyword) {
+            // 위치 잇다 탭으로 이동
+            document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById('matrix-tab').classList.add('active');
+            document.querySelector('button[data-tab="matrix-tab"]').classList.add('active');
+            
+            // 필터 OFF 상태로 전환
+            filterOn = false;
+            filterBtn.classList.remove('active');
+            filterBtn.innerText = '⚪ 키워드 필터 OFF';
+            limitControl.style.display = 'flex';
+            
+            // 해당 키워드만 강조하여 차트 다시 그리기
+            renderScatterPlotWithHighlight(fullData, keyword);
+            
+            // 페이지 최상단으로 스크롤
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         // ================================
@@ -479,25 +569,55 @@ function renderCoKeywordHeatmap(targetKeyword) {
     coKeywordList.forEach(cok => {
         const data = keywordDataForHeatmap[cok];
         const hasEarly = data["2021"] > 0 || data["2022"] > 0;
-        const hasMid = data["2023"] > 0;
-        const hasLate = data["2024"] > 0 || data["2025"] > 0;
-        const only2025 = data["2025"] > 0 && data["2021"] === 0 && data["2022"] === 0 && data["2023"] === 0 && data["2024"] === 0;
+        const hasMid   = data["2023"] > 0;
+        const has2024  = data["2024"] > 0;
+        const has2025  = data["2025"] > 0;
+        const hasLate  = has2024 || has2025;
+        const noLate   = !has2024 && !has2025;
+        const only2025 =
+            has2025 &&
+            !has2024 &&
+            data["2021"] === 0 &&
+            data["2022"] === 0 &&
+            data["2023"] === 0;
+        const activeYears = ["2021","2022","2023","2024","2025"]
+            .filter(y => data[y] > 0).length;
+        const hotStreak = data["2023"] > 0 && has2024 && has2025;
         
-        // 유형 판별
-        if (only2025) {
-            keywordTypeMap[cok] = "emerging";
-            keywordBadgeMap[cok] = "new";
-        } else if (!hasEarly && !hasMid && hasLate) {
-            keywordTypeMap[cok] = "emerging";
-            keywordBadgeMap[cok] = "new";
-        } else if (hasEarly && !hasMid && hasLate) {
-            keywordTypeMap[cok] = "comeback";
+        // ---------------- 분류 시작 ----------------
+        // 최근 3년 연속 등장 → HOT
+        if (hotStreak) {
+            keywordTypeMap[cok] = "hot";
             keywordBadgeMap[cok] = "hot";
-        } else if (hasEarly && hasMid && hasLate) {
+        }
+        // 4년 이상 등장 → CORE
+        else if (activeYears >= 4) {
             keywordTypeMap[cok] = "core";
             keywordBadgeMap[cok] = "";
-        } else {
+        }
+        // 예전에 있었는데 최근 2년 없음 → FADING
+        else if (hasEarly && noLate) {
+            keywordTypeMap[cok] = "fading";
+            keywordBadgeMap[cok] = "old";
+        }
+        // 과거(21~23) 없고 최근 등장 → EMERGING
+        else if (!hasEarly && !hasMid && hasLate) {
+            keywordTypeMap[cok] = "emerging";
+            keywordBadgeMap[cok] = only2025 ? "new" : "";
+        }
+        // 과거 있다가 2023 공백 후 최근 등장 → COMEBACK
+        else if (hasEarly && !hasMid && hasLate) {
+            keywordTypeMap[cok] = "comeback";
+            keywordBadgeMap[cok] = "hot";
+        }
+        // 위 조건은 아니지만 3년 이상 등장 → CORE
+        else if (activeYears >= 3) {
             keywordTypeMap[cok] = "core";
+            keywordBadgeMap[cok] = "";
+        }
+        // 나머지는 유형 표시 안 함
+        else {
+            keywordTypeMap[cok] = "";
             keywordBadgeMap[cok] = "";
         }
     });
