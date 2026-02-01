@@ -48,7 +48,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 
 // ================================
 // 1️⃣ 메인 키워드 데이터 로드
-Papa.parse("all_keywords_co_keywords_by_year_long_top10.csv", {
+Papa.parse("data/all_keywords_co_keywords_by_year_long_top10.csv", {
     download: true,
     header: true,
     dynamicTyping: true,
@@ -65,7 +65,7 @@ Papa.parse("all_keywords_co_keywords_by_year_long_top10.csv", {
 
 // ================================
 // 2️⃣ 메인 키워드 CSV 로드 (매트릭스 & 리스트 & 전광판)
-Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
+Papa.parse("data/2026년_키워드_성장률2(임계값0).csv", {
     download: true,
     header: true,
     dynamicTyping: true,
