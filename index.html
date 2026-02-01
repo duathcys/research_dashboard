@@ -16,6 +16,7 @@
         <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
         <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
         <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP10</button>
+        <button class="tab-btn" data-tab="cluster-tab">🧩 클러스터 맵</button>
         <button class="tab-btn" data-tab="sankey-tab">🌊 TOP5 키워드 흐름</button>
     </nav>
 
@@ -129,6 +130,62 @@
                 </div>
             </section>
 
+        </div>
+    </div>
+    
+    <!-- 클러스터 맵 탭 -->
+    <div id="cluster-tab" class="tab-item">
+        <div class="card">
+            <h3>🧩 연구 클러스터 맵</h3>
+            <p class="guide-text">
+                버블 크기 = 2025년 연구 빈도 | 색상 = 분야 | 위치 = 성장률 vs 평균 빈도
+            </p>
+            
+            <!-- 카테고리 필터 -->
+            <div class="cluster-filters">
+                <button class="filter-chip active" data-category="all">전체</button>
+                <button class="filter-chip" data-category="tech">🔵 Tech</button>
+                <button class="filter-chip" data-category="policy">🟢 Policy</button>
+                <button class="filter-chip" data-category="society">🟣 Society</button>
+                <button class="filter-chip" data-category="environment">🟠 Environment</button>
+                <button class="filter-chip" data-category="economy">🟡 Economy</button>
+            </div>
+            
+            <!-- 클러스터 버블 차트 -->
+            <div id="cluster-bubble-chart"></div>
+            
+            <!-- 메인 키워드별 클러스터 연결 -->
+            <div class="card cluster-network-section">
+                <h3>🔗 메인 키워드 × 클러스터 연결도</h3>
+                
+                <div class="select-group">
+                    <label for="main-keyword-select">메인 키워드 선택</label>
+                    <select id="main-keyword-select">
+                        <option value="artificial intelligence">artificial intelligence</option>
+                        <option value="covid-19">covid-19</option>
+                        <option value="esg">esg</option>
+                        <option value="digital">digital</option>
+                        <option value="policy">policy</option>
+                        <option value="rights">rights</option>
+                        <option value="protection">protection</option>
+                        <option value="korea">korea</option>
+                        <option value="china">china</option>
+                        <option value="international">international</option>
+                        <option value="information">information</option>
+                        <option value="labor">labor</option>
+                        <option value="management">management</option>
+                        <option value="trust">trust</option>
+                    </select>
+                </div>
+                
+                <!-- 연결된 클러스터 카드 -->
+                <div id="linked-clusters-grid" class="linked-clusters-grid">
+                    <!-- JS로 동적 생성 -->
+                </div>
+                
+                <!-- 클러스터별 성장 추이 차트 -->
+                <div id="cluster-trend-chart"></div>
+            </div>
         </div>
     </div>
 </div>

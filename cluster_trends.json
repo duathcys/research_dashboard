@@ -1,0 +1,681 @@
+{
+  "meta": {
+    "description": "Cluster trends with yearly frequency and growth rates",
+    "generated": "2026-02-01",
+    "totalClusters": 21
+  },
+  "clusters": [
+    {
+      "clusterId": 0,
+      "label": "COVID-19 Pandemic",
+      "category": "society",
+      "linkedMainKeywords": [
+        "covid-19"
+      ],
+      "keywords": [
+        "covid-19 pandemic",
+        "pandemic",
+        "covid-19"
+      ],
+      "matchedKeywords": [
+        "covid-19",
+        "covid-19 pandemic",
+        "pandemic"
+      ],
+      "yearlyFreq": {
+        "2021": 469,
+        "2022": 339,
+        "2023": 235,
+        "2024": 108,
+        "2025": 74,
+        "2026": 45
+      },
+      "growthRate": -68.51,
+      "avgFreq": 139.0,
+      "total2025": 74
+    },
+    {
+      "clusterId": 52,
+      "label": "Information & Data",
+      "category": "tech",
+      "linkedMainKeywords": [
+        "information"
+      ],
+      "keywords": [
+        "information",
+        "data",
+        "big data",
+        "information quality",
+        "big data analysis"
+      ],
+      "matchedKeywords": [
+        "big data",
+        "big data analysis",
+        "data",
+        "information",
+        "information quality"
+      ],
+      "yearlyFreq": {
+        "2021": 217,
+        "2022": 191,
+        "2023": 199,
+        "2024": 158,
+        "2025": 171,
+        "2026": 158
+      },
+      "growthRate": -14.07,
+      "avgFreq": 176.0,
+      "total2025": 171
+    },
+    {
+      "clusterId": 65,
+      "label": "Human Rights",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "rights"
+      ],
+      "keywords": [
+        "rights",
+        "freedom",
+        "human rights",
+        "freedom of expression",
+        "children's rights"
+      ],
+      "matchedKeywords": [
+        "freedom",
+        "freedom of expression",
+        "human rights",
+        "rights"
+      ],
+      "yearlyFreq": {
+        "2021": 349,
+        "2022": 312,
+        "2023": 346,
+        "2024": 309,
+        "2025": 296,
+        "2026": 320
+      },
+      "growthRate": -14.45,
+      "avgFreq": 317.0,
+      "total2025": 296
+    },
+    {
+      "clusterId": 67,
+      "label": "Tax, Aging & Population",
+      "category": "economy",
+      "linkedMainKeywords": [
+        "tax"
+      ],
+      "keywords": [
+        "tax",
+        "aging",
+        "age",
+        "population",
+        "population decline"
+      ],
+      "matchedKeywords": [
+        "age",
+        "aging",
+        "population",
+        "population decline",
+        "tax"
+      ],
+      "yearlyFreq": {
+        "2021": 161,
+        "2022": 138,
+        "2023": 175,
+        "2024": 166,
+        "2025": 213,
+        "2026": 216
+      },
+      "growthRate": 21.71,
+      "avgFreq": 184.67,
+      "total2025": 213
+    },
+    {
+      "clusterId": 70,
+      "label": "Climate Change & Crisis",
+      "category": "environment",
+      "linkedMainKeywords": [
+        "esg"
+      ],
+      "keywords": [
+        "climate change",
+        "climate justice",
+        "climate",
+        "climate crisis",
+        "crisis"
+      ],
+      "matchedKeywords": [
+        "climate",
+        "climate change",
+        "climate crisis",
+        "climate justice",
+        "crisis"
+      ],
+      "yearlyFreq": {
+        "2021": 61,
+        "2022": 98,
+        "2023": 93,
+        "2024": 139,
+        "2025": 116,
+        "2026": 116
+      },
+      "growthRate": 24.73,
+      "avgFreq": 116.0,
+      "total2025": 116
+    },
+    {
+      "clusterId": 78,
+      "label": "Sustainability & Sustainable Management",
+      "category": "environment",
+      "linkedMainKeywords": [
+        "esg",
+        "management"
+      ],
+      "keywords": [
+        "sustainable development",
+        "sustainability",
+        "sustainability report",
+        "sustainable management"
+      ],
+      "matchedKeywords": [
+        "sustainability",
+        "sustainable development",
+        "sustainable management"
+      ],
+      "yearlyFreq": {
+        "2021": 58,
+        "2022": 57,
+        "2023": 84,
+        "2024": 77,
+        "2025": 98,
+        "2026": 84
+      },
+      "growthRate": 16.67,
+      "avgFreq": 86.33,
+      "total2025": 98
+    },
+    {
+      "clusterId": 85,
+      "label": "Contract & Agreement",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "contract"
+      ],
+      "keywords": [
+        "agreement",
+        "treaty",
+        "contract",
+        "bargaining",
+        "agreements"
+      ],
+      "matchedKeywords": [
+        "agreement",
+        "agreements",
+        "bargaining",
+        "contract",
+        "treaty"
+      ],
+      "yearlyFreq": {
+        "2021": 168,
+        "2022": 138,
+        "2023": 162,
+        "2024": 168,
+        "2025": 161,
+        "2026": 159
+      },
+      "growthRate": -0.62,
+      "avgFreq": 163.67,
+      "total2025": 161
+    },
+    {
+      "clusterId": 88,
+      "label": "Corporate Social Responsibility (CSR)",
+      "category": "environment",
+      "linkedMainKeywords": [
+        "esg"
+      ],
+      "keywords": [
+        "corporate social responsibility (csr)",
+        "csr",
+        "corporate social responsibility"
+      ],
+      "matchedKeywords": [
+        "corporate social responsibility",
+        "csr"
+      ],
+      "yearlyFreq": {
+        "2021": 43,
+        "2022": 27,
+        "2023": 30,
+        "2024": 25,
+        "2025": 20,
+        "2026": 16
+      },
+      "growthRate": -33.33,
+      "avgFreq": 25.0,
+      "total2025": 20
+    },
+    {
+      "clusterId": 98,
+      "label": "AI Ethics & Education",
+      "category": "tech",
+      "linkedMainKeywords": [
+        "artificial intelligence",
+        "digital"
+      ],
+      "keywords": [
+        "ai convergence education",
+        "ai education",
+        "ai ethics",
+        "ethics",
+        "ai literacy"
+      ],
+      "matchedKeywords": [
+        "ai convergence education",
+        "ai education",
+        "ai ethics",
+        "ai literacy",
+        "ethics"
+      ],
+      "yearlyFreq": {
+        "2021": 26,
+        "2022": 22,
+        "2023": 46,
+        "2024": 72,
+        "2025": 47,
+        "2026": 54
+      },
+      "growthRate": 2.17,
+      "avgFreq": 55.0,
+      "total2025": 47
+    },
+    {
+      "clusterId": 99,
+      "label": "Artificial Intelligence & Machine Learning",
+      "category": "tech",
+      "linkedMainKeywords": [
+        "artificial intelligence"
+      ],
+      "keywords": [
+        "machine learning",
+        "recognition",
+        "detection",
+        "deep learning",
+        "artificial intelligence"
+      ],
+      "matchedKeywords": [
+        "artificial intelligence",
+        "deep learning",
+        "detection",
+        "machine learning",
+        "recognition"
+      ],
+      "yearlyFreq": {
+        "2021": 159,
+        "2022": 160,
+        "2023": 259,
+        "2024": 370,
+        "2025": 427,
+        "2026": 354
+      },
+      "growthRate": 64.86,
+      "avgFreq": 352.0,
+      "total2025": 427
+    },
+    {
+      "clusterId": 101,
+      "label": "Security & Protection",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "protection"
+      ],
+      "keywords": [
+        "security",
+        "protective",
+        "protection",
+        "safety",
+        "economic security"
+      ],
+      "matchedKeywords": [
+        "economic security",
+        "protection",
+        "protective",
+        "safety",
+        "security"
+      ],
+      "yearlyFreq": {
+        "2021": 225,
+        "2022": 224,
+        "2023": 244,
+        "2024": 264,
+        "2025": 243,
+        "2026": 239
+      },
+      "growthRate": -0.41,
+      "avgFreq": 250.33,
+      "total2025": 243
+    },
+    {
+      "clusterId": 117,
+      "label": "International & Globalization",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "international"
+      ],
+      "keywords": [
+        "foreign",
+        "global",
+        "international",
+        "globalization",
+        "internationalization"
+      ],
+      "matchedKeywords": [
+        "foreign",
+        "global",
+        "globalization",
+        "international",
+        "internationalization"
+      ],
+      "yearlyFreq": {
+        "2021": 134,
+        "2022": 111,
+        "2023": 139,
+        "2024": 127,
+        "2025": 125,
+        "2026": 118
+      },
+      "growthRate": -10.07,
+      "avgFreq": 130.33,
+      "total2025": 125
+    },
+    {
+      "clusterId": 118,
+      "label": "Public Sphere",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "public"
+      ],
+      "keywords": [
+        "public",
+        "publicness",
+        "public sphere"
+      ],
+      "matchedKeywords": [
+        "public",
+        "public sphere",
+        "publicness"
+      ],
+      "yearlyFreq": {
+        "2021": 121,
+        "2022": 124,
+        "2023": 121,
+        "2024": 131,
+        "2025": 119,
+        "2026": 123
+      },
+      "growthRate": -1.65,
+      "avgFreq": 123.67,
+      "total2025": 119
+    },
+    {
+      "clusterId": 121,
+      "label": "Regulation",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "regulation",
+        "policy"
+      ],
+      "keywords": [
+        "regulation",
+        "regulations",
+        "regulatory"
+      ],
+      "matchedKeywords": [
+        "regulation",
+        "regulations",
+        "regulatory"
+      ],
+      "yearlyFreq": {
+        "2021": 98,
+        "2022": 99,
+        "2023": 103,
+        "2024": 117,
+        "2025": 118,
+        "2026": 106
+      },
+      "growthRate": 14.56,
+      "avgFreq": 112.67,
+      "total2025": 118
+    },
+    {
+      "clusterId": 125,
+      "label": "Legal & Privacy",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "legal"
+      ],
+      "keywords": [
+        "legal",
+        "illegal",
+        "criminal",
+        "privacy",
+        "legislation"
+      ],
+      "matchedKeywords": [
+        "criminal",
+        "illegal",
+        "legal",
+        "legislation",
+        "privacy"
+      ],
+      "yearlyFreq": {
+        "2021": 210,
+        "2022": 188,
+        "2023": 213,
+        "2024": 220,
+        "2025": 220,
+        "2026": 229
+      },
+      "growthRate": 3.29,
+      "avgFreq": 217.67,
+      "total2025": 220
+    },
+    {
+      "clusterId": 126,
+      "label": "Digital Media",
+      "category": "tech",
+      "linkedMainKeywords": [
+        "digital"
+      ],
+      "keywords": [
+        "media",
+        "digital",
+        "digital media",
+        "principles digital"
+      ],
+      "matchedKeywords": [
+        "digital",
+        "digital media",
+        "media"
+      ],
+      "yearlyFreq": {
+        "2021": 97,
+        "2022": 74,
+        "2023": 107,
+        "2024": 103,
+        "2025": 114,
+        "2026": 100
+      },
+      "growthRate": 6.54,
+      "avgFreq": 108.0,
+      "total2025": 114
+    },
+    {
+      "clusterId": 131,
+      "label": "Korea & Korean Peninsula",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "korea"
+      ],
+      "keywords": [
+        "north korea",
+        "korea",
+        "seoul metropolitan area",
+        "seoul",
+        "korean peninsula"
+      ],
+      "matchedKeywords": [
+        "korea",
+        "korean peninsula",
+        "north korea",
+        "seoul",
+        "seoul metropolitan area"
+      ],
+      "yearlyFreq": {
+        "2021": 309,
+        "2022": 258,
+        "2023": 245,
+        "2024": 277,
+        "2025": 302,
+        "2026": 292
+      },
+      "growthRate": 23.27,
+      "avgFreq": 274.67,
+      "total2025": 302
+    },
+    {
+      "clusterId": 133,
+      "label": "Asia & China",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "china",
+        "international"
+      ],
+      "keywords": [
+        "southeast asia",
+        "thailand",
+        "china",
+        "japan",
+        "asia"
+      ],
+      "matchedKeywords": [
+        "asia",
+        "china",
+        "japan",
+        "southeast asia",
+        "thailand"
+      ],
+      "yearlyFreq": {
+        "2021": 158,
+        "2022": 145,
+        "2023": 136,
+        "2024": 139,
+        "2025": 126,
+        "2026": 107
+      },
+      "growthRate": -7.35,
+      "avgFreq": 133.67,
+      "total2025": 126
+    },
+    {
+      "clusterId": 147,
+      "label": "Labor & Union",
+      "category": "society",
+      "linkedMainKeywords": [
+        "labor",
+        "job satisfaction"
+      ],
+      "keywords": [
+        "emotional labor",
+        "labour",
+        "union",
+        "labor",
+        "labor union"
+      ],
+      "matchedKeywords": [
+        "emotional labor",
+        "labor",
+        "labor union",
+        "labour",
+        "union"
+      ],
+      "yearlyFreq": {
+        "2021": 124,
+        "2022": 118,
+        "2023": 158,
+        "2024": 101,
+        "2025": 117,
+        "2026": 94
+      },
+      "growthRate": -25.95,
+      "avgFreq": 125.33,
+      "total2025": 117
+    },
+    {
+      "clusterId": 164,
+      "label": "Management & Performance",
+      "category": "economy",
+      "linkedMainKeywords": [
+        "management",
+        "trust"
+      ],
+      "keywords": [
+        "social capital",
+        "economic performance",
+        "business performance",
+        "financial performance",
+        "management"
+      ],
+      "matchedKeywords": [
+        "business performance",
+        "economic performance",
+        "financial performance",
+        "management",
+        "social capital"
+      ],
+      "yearlyFreq": {
+        "2021": 141,
+        "2022": 134,
+        "2023": 124,
+        "2024": 124,
+        "2025": 130,
+        "2026": 129
+      },
+      "growthRate": 4.84,
+      "avgFreq": 126.0,
+      "total2025": 130
+    },
+    {
+      "clusterId": 167,
+      "label": "Policy & Implementation",
+      "category": "policy",
+      "linkedMainKeywords": [
+        "policy"
+      ],
+      "keywords": [
+        "policy",
+        "policy acceptance",
+        "policy implementation",
+        "social policy"
+      ],
+      "matchedKeywords": [
+        "policy",
+        "policy implementation",
+        "social policy"
+      ],
+      "yearlyFreq": {
+        "2021": 71,
+        "2022": 75,
+        "2023": 79,
+        "2024": 97,
+        "2025": 84,
+        "2026": 82
+      },
+      "growthRate": 6.33,
+      "avgFreq": 86.67,
+      "total2025": 84
+    }
+  ]
+}

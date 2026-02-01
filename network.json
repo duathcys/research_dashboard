@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "description": "Filtered clusters linked to strategic main keywords (Research Intelligence 2026)",
+    "mainKeywords": [
+      "rights",
+      "covid-19",
+      "artificial intelligence",
+      "korea",
+      "protection",
+      "tax",
+      "public",
+      "esg",
+      "legal",
+      "china",
+      "information",
+      "international",
+      "job satisfaction",
+      "trust",
+      "labor",
+      "policy",
+      "regulation",
+      "management",
+      "contract",
+      "digital"
+    ]
+  },
+  "clusters": [
+    {
+      "clusterId": 0,
+      "label": "COVID-19 Pandemic",
+      "keywords": ["covid-19 pandemic", "pandemic", "covid-19"],
+      "linkedMainKeywords": ["covid-19"],
+      "category": "society"
+    },
+    {
+      "clusterId": 52,
+      "label": "Information & Data",
+      "keywords": ["information", "data", "big data", "information quality", "big data analysis"],
+      "linkedMainKeywords": ["information"],
+      "category": "tech"
+    },
+    {
+      "clusterId": 65,
+      "label": "Human Rights",
+      "keywords": ["rights", "freedom", "human rights", "freedom of expression", "children’s rights"],
+      "linkedMainKeywords": ["rights"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 67,
+      "label": "Tax, Aging & Population",
+      "keywords": ["tax", "aging", "age", "population", "population decline"],
+      "linkedMainKeywords": ["tax"],
+      "category": "economy"
+    },
+    {
+      "clusterId": 70,
+      "label": "Climate Change & Crisis",
+      "keywords": ["climate change", "climate justice", "climate", "climate crisis", "crisis"],
+      "linkedMainKeywords": ["esg"],
+      "category": "environment"
+    },
+    {
+      "clusterId": 78,
+      "label": "Sustainability & Sustainable Management",
+      "keywords": ["sustainable development", "sustainability", "sustainability report", "sustainable management"],
+      "linkedMainKeywords": ["esg", "management"],
+      "category": "environment"
+    },
+    {
+      "clusterId": 85,
+      "label": "Contract & Agreement",
+      "keywords": ["agreement", "treaty", "contract", "bargaining", "agreements"],
+      "linkedMainKeywords": ["contract"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 88,
+      "label": "Corporate Social Responsibility (CSR)",
+      "keywords": ["corporate social responsibility (csr)", "csr", "corporate social responsibility"],
+      "linkedMainKeywords": ["esg"],
+      "category": "environment"
+    },
+    {
+      "clusterId": 98,
+      "label": "AI Ethics & Education",
+      "keywords": ["ai convergence education", "ai education", "ai ethics", "ethics", "ai literacy"],
+      "linkedMainKeywords": ["artificial intelligence", "digital"],
+      "category": "tech"
+    },
+    {
+      "clusterId": 99,
+      "label": "Artificial Intelligence & Machine Learning",
+      "keywords": ["machine learning", "recognition", "detection", "deep learning", "artificial intelligence"],
+      "linkedMainKeywords": ["artificial intelligence"],
+      "category": "tech"
+    },
+    {
+      "clusterId": 101,
+      "label": "Security & Protection",
+      "keywords": ["security", "protective", "protection", "safety", "economic security"],
+      "linkedMainKeywords": ["protection"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 117,
+      "label": "International & Globalization",
+      "keywords": ["foreign", "global", "international", "globalization", "internationalization"],
+      "linkedMainKeywords": ["international"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 118,
+      "label": "Public Sphere",
+      "keywords": ["public", "publicness", "public sphere"],
+      "linkedMainKeywords": ["public"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 121,
+      "label": "Regulation",
+      "keywords": ["regulation", "regulations", "regulatory"],
+      "linkedMainKeywords": ["regulation", "policy"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 125,
+      "label": "Legal & Privacy",
+      "keywords": ["legal", "illegal", "criminal", "privacy", "legislation"],
+      "linkedMainKeywords": ["legal"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 126,
+      "label": "Digital Media",
+      "keywords": ["media", "digital", "digital media", "principles digital"],
+      "linkedMainKeywords": ["digital"],
+      "category": "tech"
+    },
+    {
+      "clusterId": 131,
+      "label": "Korea & Korean Peninsula",
+      "keywords": ["north korea", "korea", "seoul metropolitan area", "seoul", "korean peninsula"],
+      "linkedMainKeywords": ["korea"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 133,
+      "label": "Asia & China",
+      "keywords": ["southeast asia", "thailand", "china", "japan", "asia"],
+      "linkedMainKeywords": ["china", "international"],
+      "category": "policy"
+    },
+    {
+      "clusterId": 147,
+      "label": "Labor & Union",
+      "keywords": ["emotional labor", "labour", "union", "labor", "labor union"],
+      "linkedMainKeywords": ["labor", "job satisfaction"],
+      "category": "society"
+    },
+    {
+      "clusterId": 164,
+      "label": "Management & Performance",
+      "keywords": ["social capital", "economic performance", "business performance", "financial performance", "management"],
+      "linkedMainKeywords": ["management", "trust"],
+      "category": "economy"
+    },
+    {
+      "clusterId": 167,
+      "label": "Policy & Implementation",
+      "keywords": ["policy", "policy acceptance", "policy implementation", "social policy"],
+      "linkedMainKeywords": ["policy"],
+      "category": "policy"
+    }
+  ]
+}
