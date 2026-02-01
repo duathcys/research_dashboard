@@ -1,5 +1,5 @@
 // ================================
-// 2026 연구 전략 내비게이터 JS (개선 버전)
+// 2026 연구 전략 내비게이터 JS (최종 개선 버전)
 // ================================
 
 // 전역 변수
@@ -7,6 +7,15 @@ let coKeywordData = []; // 연관어 데이터
 let clusterData = []; // 클러스터 트렌드 데이터
 let fieldDiffusionData = []; // 분야 확산 데이터
 let currentKeywordData = {}; // 현재 선택된 키워드의 데이터 (히트맵용)
+let mainKeywordsData = []; // 메인 키워드 성장률 데이터 (전광판용)
+
+// 🎯 20개 주요 키워드 (고정)
+const MAIN_KEYWORDS = [
+    "rights", "covid-19", "artificial intelligence", "korea", "protection",
+    "tax", "public", "esg", "legal", "china", "information", "international",
+    "job satisfaction", "trust", "labor", "policy", "regulation",
+    "management", "contract", "digital"
+];
 
 // 탭 전환
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -27,26 +36,28 @@ Papa.parse("all_keywords_co_keywords_by_year_long_top10.csv", {
     dynamicTyping: true,
     complete: function(results) {
         coKeywordData = results.data;
-        // 키워드 선택 SelectBox 생성
         populateKeywordSelect();
-        // 초기 렌더링 (첫 키워드, 첫 연도)
+        
         const firstKeyword = document.getElementById('key-select').value;
         const firstYear = document.getElementById('relation-year-select').value;
         renderRelationCards(firstKeyword, firstYear);
-        
-        // 🔥 히트맵 초기화 (coKeywordData 로드 후)
         renderCoKeywordHeatmap(firstKeyword);
     }
 });
 
 // ================================
-// 2️⃣ 메인 키워드 CSV 로드 (매트릭스 & 리스트)
+// 2️⃣ 메인 키워드 CSV 로드 (매트릭스 & 리스트 & 전광판)
 Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
     download: true,
     header: true,
     dynamicTyping: true,
     complete: function(results) {
         const data = results.data;
+        mainKeywordsData = data.filter(item => 
+            item.KYWD && 
+            MAIN_KEYWORDS.includes(item.KYWD)
+        );
+        
         const gList = document.getElementById('growth-list');
         const dList = document.getElementById('decline-list');
         const filterBtn = document.getElementById('keyword-filter-btn');
@@ -54,52 +65,42 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
         const limitValue = document.getElementById('keyword-limit-value');
         const limitControl = document.getElementById('keyword-limit-control');
 
-        const allowedKeywords = [
-            "rights","covid-19","artificial intelligence","korea","protection",
-            "tax","public","esg","legal","china","information","international",
-            "job satisfaction","trust","labor","policy","regulation",
-            "management","contract","digital"
-        ];
-
         const fullData = data.filter(item => item.KYWD && item.Growth_rate !== 0);
         let filterOn = true;
         let keywordLimit = 50;
 
-        // 전체 키워드 개수 표시
         const totalKeywordsSpan = document.getElementById('total-keywords');
         if (totalKeywordsSpan) {
             totalKeywordsSpan.textContent = `전체 ${fullData.length}개`;
         }
         
-        // 슬라이더 최대값을 전체 개수로 설정
         if (limitSlider) {
             limitSlider.max = fullData.length;
         }
 
+        // 🎬 전광판 초기화
+        initKeywordTicker();
+
         // ================================
-        // Plotly 산점도 렌더링 함수
+        // Plotly 산점도 렌더링 함수 (개선된 디자인)
         function renderScatterPlot(dataToRender){
             renderScatterPlotWithHighlight(dataToRender, null);
         }
         
-        // 키워드 강조 기능이 있는 산점도 렌더링
         function renderScatterPlotWithHighlight(dataToRender, highlightKeyword){
-            // 데이터 분류
             const filteredData = filterOn 
-                ? dataToRender.filter(item => allowedKeywords.includes(item.KYWD))
+                ? dataToRender.filter(item => MAIN_KEYWORDS.includes(item.KYWD))
                 : dataToRender.slice(0, keywordLimit);
             
-            const highlightData = filteredData.filter(item => allowedKeywords.includes(item.KYWD));
-            const normalData = filteredData.filter(item => !allowedKeywords.includes(item.KYWD));
+            const highlightData = filteredData.filter(item => MAIN_KEYWORDS.includes(item.KYWD));
+            const normalData = filteredData.filter(item => !MAIN_KEYWORDS.includes(item.KYWD));
             
             const traces = [];
             
-            // 강조할 키워드가 있는 경우
             if (highlightKeyword) {
                 const targetData = dataToRender.filter(item => item.KYWD === highlightKeyword);
                 const otherData = filteredData.filter(item => item.KYWD !== highlightKeyword);
                 
-                // 다른 키워드들 (회색, 반투명)
                 if (otherData.length > 0) {
                     traces.push({
                         x: otherData.map(item => item.pred_freq_2026),
@@ -110,15 +111,14 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         name: '기타 키워드',
                         marker: {
                             size: 8,
-                            color: '#ccc',
-                            opacity: 0.3,
+                            color: '#d1d5db',
+                            opacity: 0.4,
                             line: { width: 1, color: 'white' }
                         },
                         hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
                     });
                 }
                 
-                // 강조 키워드 (빨간색, 크게)
                 if (targetData.length > 0) {
                     traces.push({
                         x: targetData.map(item => item.pred_freq_2026),
@@ -128,20 +128,23 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         type: 'scatter',
                         name: '선택된 키워드',
                         marker: {
-                            size: 20,
-                            color: '#ff0000',
+                            size: 22,
+                            color: '#ef4444',
                             opacity: 1,
                             line: { width: 3, color: 'white' },
                             symbol: 'star'
                         },
                         textposition: 'top center',
-                        textfont: { size: 14, color: '#ff0000', family: 'Pretendard', weight: 'bold' },
+                        textfont: { 
+                            size: 15, 
+                            color: '#ef4444', 
+                            family: 'Pretendard, sans-serif', 
+                            weight: 'bold' 
+                        },
                         hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
                     });
                 }
             } else {
-                // 일반 모드 (원래대로)
-                // 일반 키워드 (회색)
                 if (normalData.length > 0) {
                     traces.push({
                         x: normalData.map(item => item.pred_freq_2026),
@@ -152,17 +155,16 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         name: '일반 키워드',
                         marker: {
                             size: 10,
-                            color: '#999',
-                            opacity: 0.6,
+                            color: '#9ca3af',
+                            opacity: 0.5,
                             line: { width: 1, color: 'white' }
                         },
                         textposition: 'top center',
-                        textfont: { size: 9, color: '#666' },
+                        textfont: { size: 9, color: '#6b7280', family: 'Pretendard, sans-serif' },
                         hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
                     });
                 }
                 
-                // 강조 키워드 (주황색)
                 if (highlightData.length > 0) {
                     traces.push({
                         x: highlightData.map(item => item.pred_freq_2026),
@@ -172,13 +174,18 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         type: 'scatter',
                         name: '주요 키워드',
                         marker: {
-                            size: 12,
-                            color: '#ff8c00',
-                            opacity: 0.8,
+                            size: 14,
+                            color: '#3b82f6',
+                            opacity: 0.85,
                             line: { width: 2, color: 'white' }
                         },
                         textposition: 'top center',
-                        textfont: { size: 10, color: '#ff8c00', family: 'Pretendard' },
+                        textfont: { 
+                            size: 11, 
+                            color: '#1e40af', 
+                            family: 'Pretendard, sans-serif',
+                            weight: '600'
+                        },
                         hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>',
                         customdata: highlightData.map(item => item.KYWD)
                     });
@@ -188,39 +195,49 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             const layout = {
                 title: {
                     text: '2026 키워드 포지셔닝 맵',
-                    font: { size: 18, family: 'Pretendard' }
+                    font: { size: 20, family: 'Pretendard, sans-serif', weight: 700, color: '#1f2937' }
                 },
                 xaxis: {
-                    title: '예측 빈도 (Frequency) →',
-                    gridcolor: '#e0e0e0',
-                    zeroline: true
+                    title: {
+                        text: '예측 빈도 (Frequency) →',
+                        font: { size: 14, family: 'Pretendard, sans-serif' }
+                    },
+                    gridcolor: '#e5e7eb',
+                    zeroline: true,
+                    tickfont: { family: 'Pretendard, sans-serif' }
                 },
                 yaxis: {
-                    title: '↑ 성장률 (Growth Rate %)',
-                    gridcolor: '#e0e0e0',
+                    title: {
+                        text: '↑ 성장률 (Growth Rate %)',
+                        font: { size: 14, family: 'Pretendard, sans-serif' }
+                    },
+                    gridcolor: '#e5e7eb',
                     zeroline: true,
-                    zerolinecolor: '#999',
-                    zerolinewidth: 2
+                    zerolinecolor: '#9ca3af',
+                    zerolinewidth: 2,
+                    tickfont: { family: 'Pretendard, sans-serif' }
                 },
                 hovermode: 'closest',
                 showlegend: true,
                 legend: {
-                    x: 1,
+                    x: 1.02,
                     y: 1,
-                    xanchor: 'right',
-                    yanchor: 'top'
+                    xanchor: 'left',
+                    yanchor: 'top',
+                    font: { family: 'Pretendard, sans-serif', size: 12 }
                 },
-                margin: { t: 60, l: 60, r: 100, b: 60 },
+                margin: { t: 70, l: 70, r: 120, b: 70 },
                 height: 600,
                 plot_bgcolor: '#fafafa',
+                paper_bgcolor: 'white',
+                font: { family: 'Pretendard, sans-serif' },
                 shapes: [
-                    // 4분면 배경 (반투명)
                     {
                         type: 'rect',
                         xref: 'paper', yref: 'y',
                         x0: 0, y0: 0, x1: 0.5, y1: 100,
-                        fillcolor: '#f0f7ff',
-                        opacity: 0.3,
+                        fillcolor: '#dbeafe',
+                        opacity: 0.2,
                         layer: 'below',
                         line: { width: 0 }
                     },
@@ -228,8 +245,8 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         type: 'rect',
                         xref: 'paper', yref: 'y',
                         x0: 0.5, y0: 0, x1: 1, y1: 100,
-                        fillcolor: '#fff5f5',
-                        opacity: 0.3,
+                        fillcolor: '#fee2e2',
+                        opacity: 0.2,
                         layer: 'below',
                         line: { width: 0 }
                     }
@@ -241,8 +258,8 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         x: 0.25, y: 0.95,
                         xanchor: 'center',
                         showarrow: false,
-                        font: { size: 11, color: '#666' },
-                        opacity: 0.6
+                        font: { size: 11, color: '#6b7280', family: 'Pretendard, sans-serif' },
+                        opacity: 0.7
                     },
                     {
                         text: '핵심 전략<br>(High Freq / High Growth)',
@@ -250,8 +267,8 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         x: 0.75, y: 0.95,
                         xanchor: 'center',
                         showarrow: false,
-                        font: { size: 11, color: '#d63031' },
-                        opacity: 0.6
+                        font: { size: 11, color: '#dc2626', family: 'Pretendard, sans-serif', weight: 600 },
+                        opacity: 0.7
                     },
                     {
                         text: '특화/정체<br>(Low Freq / Low Growth)',
@@ -259,8 +276,8 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         x: 0.25, y: 0.05,
                         xanchor: 'center',
                         showarrow: false,
-                        font: { size: 11, color: '#666' },
-                        opacity: 0.6
+                        font: { size: 11, color: '#6b7280', family: 'Pretendard, sans-serif' },
+                        opacity: 0.7
                     },
                     {
                         text: '성숙/유지<br>(High Freq / Low Growth)',
@@ -268,8 +285,8 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                         x: 0.75, y: 0.05,
                         xanchor: 'center',
                         showarrow: false,
-                        font: { size: 11, color: '#666' },
-                        opacity: 0.6
+                        font: { size: 11, color: '#6b7280', family: 'Pretendard, sans-serif' },
+                        opacity: 0.7
                     }
                 ]
             };
@@ -283,18 +300,14 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             
             Plotly.newPlot('matrix-scatter', traces, layout, config);
             
-            // 클릭 이벤트
             document.getElementById('matrix-scatter').on('plotly_click', function(data) {
                 const keyword = data.points[0].text;
-                console.log("클릭한 키워드:", keyword);
                 
-                // 연관어 탭으로 이동
                 document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.getElementById('relation-tab').classList.add('active');
                 document.querySelector('button[data-tab="relation-tab"]').classList.add('active');
 
-                // SelectBox 선택
                 const keySelect = document.getElementById('key-select');
                 keySelect.value = keyword;
                 const yearSelect = document.getElementById('relation-year-select');
@@ -306,8 +319,6 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             renderLists(filteredData);
         }
 
-        // ================================
-        // 리스트 렌더링 함수
         function renderLists(dataToRender){
             gList.innerHTML = '';
             dList.innerHTML = '';
@@ -333,33 +344,23 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             });
         }
         
-        // ================================
-        // 매트릭스에서 키워드 강조 함수
         function highlightKeywordInMatrix(keyword) {
-            // 위치 잇다 탭으로 이동
             document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             document.getElementById('matrix-tab').classList.add('active');
             document.querySelector('button[data-tab="matrix-tab"]').classList.add('active');
             
-            // 필터 OFF 상태로 전환
             filterOn = false;
             filterBtn.classList.remove('active');
             filterBtn.innerText = '⚪ 키워드 필터 OFF';
             limitControl.style.display = 'flex';
             
-            // 해당 키워드만 강조하여 차트 다시 그리기
             renderScatterPlotWithHighlight(fullData, keyword);
-            
-            // 페이지 최상단으로 스크롤
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        // ================================
-        // 초기 렌더링
         renderScatterPlot(fullData);
 
-        // 필터 토글
         filterBtn.addEventListener('click', () => {
             filterOn = !filterOn;
             if(filterOn){
@@ -374,7 +375,6 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             renderScatterPlot(fullData);
         });
 
-        // 슬라이더 이벤트
         limitSlider.addEventListener('input', (e) => {
             keywordLimit = parseInt(e.target.value);
             limitValue.textContent = keywordLimit;
@@ -383,7 +383,6 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             }
         });
 
-        // 리스트 정렬 (토글 기능 추가)
         const sortStates = {
             'growth-value': 'desc',
             'growth-name': 'asc',
@@ -399,7 +398,6 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                 const ul = document.getElementById(listId + '-list');
                 const items = Array.from(ul.children);
 
-                // 토글
                 sortStates[stateKey] = sortStates[stateKey] === 'desc' ? 'asc' : 'desc';
                 const isDesc = sortStates[stateKey] === 'desc';
 
@@ -420,7 +418,6 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
                 ul.innerHTML = '';
                 items.forEach(li => ul.appendChild(li));
 
-                // 버튼 텍스트 업데이트
                 const arrow = isDesc ? '↓' : '↑';
                 if (type === 'value') btn.textContent = `성장률 ${arrow}`;
                 else if (type === 'abs') btn.textContent = `쇠퇴율 ${arrow}`;
@@ -428,8 +425,124 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
             });
         });
 
-    } // 메인 CSV complete
+    }
 });
+
+// ================================
+// 🎬 전광판 초기화 (HOT & NEW 키워드)
+// ================================
+function initKeywordTicker() {
+    // 성장률 > 0인 주요 키워드 필터링
+    const growingKeywords = mainKeywordsData.filter(k => k.Growth_rate > 0);
+    
+    console.log('📊 성장하는 주요 키워드:', growingKeywords.length, '개');
+    
+    if (growingKeywords.length === 0) {
+        console.log('⚠️ 성장하는 키워드가 없습니다.');
+        return;
+    }
+
+    // 각 키워드의 연관어 데이터 분석
+    const tickerData = growingKeywords.map(keyword => {
+        const keywordCoData = coKeywordData.filter(d => 
+            d.Target_Keyword === keyword.KYWD
+        );
+        
+        // 연도별 빈도 계산
+        const yearlyFreq = {};
+        keywordCoData.forEach(d => {
+            if (!yearlyFreq[d.YEAR]) yearlyFreq[d.YEAR] = 0;
+            yearlyFreq[d.YEAR] += d.Count;
+        });
+        
+        const freq2021 = yearlyFreq[2021] || 0;
+        const freq2022 = yearlyFreq[2022] || 0;
+        const freq2023 = yearlyFreq[2023] || 0;
+        const freq2024 = yearlyFreq[2024] || 0;
+        const freq2025 = yearlyFreq[2025] || 0;
+        
+        const has2025 = freq2025 > 0;
+        const has2024 = freq2024 > 0;
+        const has2023 = freq2023 > 0;
+        const hasPast = freq2021 + freq2022 + freq2023 > 0;
+        
+        let badge = '';
+        let badgeReason = '';
+        
+        // NEW: 2025년에만 등장 (과거 없음)
+        if (has2025 && !hasPast && !has2024) {
+            badge = 'new';
+            badgeReason = '2025년 신규 등장';
+        } 
+        // HOT: 최근 2년 연속 (2024+2025)
+        else if (has2025 && has2024) {
+            badge = 'hot';
+            badgeReason = '2024-2025 연속 등장';
+        }
+        // RISING: 고성장 (50% 이상)
+        else if (keyword.Growth_rate > 50) {
+            badge = 'rising';
+            badgeReason = `성장률 ${keyword.Growth_rate.toFixed(1)}%`;
+        }
+        // 그 외 조건: 2025년에 등장하거나 성장률이 높으면 rising
+        else if (has2025 || keyword.Growth_rate > 30) {
+            badge = 'rising';
+            badgeReason = `성장률 ${keyword.Growth_rate.toFixed(1)}%`;
+        }
+        
+        console.log(`🔍 ${keyword.KYWD}: ${badge || '배지 없음'} (${badgeReason})`);
+        console.log(`   📅 연도별: 2021=${freq2021}, 2022=${freq2022}, 2023=${freq2023}, 2024=${freq2024}, 2025=${freq2025}`);
+        
+        return {
+            keyword: keyword.KYWD,
+            growthRate: keyword.Growth_rate,
+            badge: badge,
+            freq2025: freq2025,
+            yearlyFreq: yearlyFreq
+        };
+    }).filter(k => k.badge); // 배지가 있는 것만
+
+    console.log('🎬 전광판에 표시될 키워드:', tickerData.length, '개');
+    tickerData.forEach((item, idx) => {
+        console.log(`${idx + 1}. [${item.badge.toUpperCase()}] ${item.keyword} (+${item.growthRate.toFixed(1)}%)`);
+    });
+
+    // 배지 우선순위 정렬 (new > hot > rising)
+    const badgePriority = { 'new': 1, 'hot': 2, 'rising': 3 };
+    tickerData.sort((a, b) => {
+        const priorityDiff = badgePriority[a.badge] - badgePriority[b.badge];
+        if (priorityDiff !== 0) return priorityDiff;
+        return b.growthRate - a.growthRate;
+    });
+
+    // 전광판 HTML 생성
+    const tickerWrapper = document.querySelector('.ticker-wrapper');
+    if (!tickerWrapper) {
+        console.log('⚠️ 전광판 요소를 찾을 수 없습니다.');
+        return;
+    }
+
+    const tickerHTML = tickerData.map(item => {
+        const badgeText = {
+            'hot': '🔥 HOT',
+            'new': '✨ NEW',
+            'rising': '📈 RISING'
+        }[item.badge];
+        
+        return `
+            <div class="ticker-item">
+                <span class="ticker-badge ${item.badge}">${badgeText}</span>
+                <strong>${item.keyword}</strong>
+                <span style="opacity: 0.8;">+${item.growthRate.toFixed(1)}%</span>
+            </div>
+        `;
+    }).join('');
+
+    // 2번 반복하여 무한 스크롤 효과
+    tickerWrapper.innerHTML = tickerHTML + tickerHTML;
+    
+    console.log('✅ 전광판 초기화 완료!');
+}
 
 // ================================
 // 3️⃣ 연관어 TOP10 카드 렌더링
@@ -440,20 +553,17 @@ function renderRelationCards(selectedKeyword, year) {
 
     const filtered = coKeywordData.filter(d => d.Target_Keyword && d.Target_Keyword === selectedKeyword && d.YEAR === selectedYear);
 
-    // Count 합계 계산
     const coMap = {};
     filtered.forEach(d => {
         if (!coMap[d.CoKeyword]) coMap[d.CoKeyword] = 0;
         coMap[d.CoKeyword] += d.Count;
     });
 
-    // Top10
     const top10 = Object.entries(coMap)
         .map(([coKeyword, count]) => ({ coKeyword, count }))
         .sort((a,b) => b.count - a.count)
         .slice(0,10);
 
-    // 카드 생성
     cardsContainer.innerHTML = '';
     top10.forEach((item, idx) => {
         const div = document.createElement('div');
@@ -485,13 +595,10 @@ function populateKeywordSelect() {
         keySelect.appendChild(option);
     });
 
-    // SelectBox 이벤트
     keySelect.addEventListener('change', () => {
         const selectedKeyword = keySelect.value;
         const year = document.getElementById('relation-year-select').value;
         renderRelationCards(selectedKeyword, year);
-        
-        // 🔥 히트맵도 업데이트
         renderCoKeywordHeatmap(selectedKeyword);
     });
 
@@ -504,12 +611,9 @@ function populateKeywordSelect() {
 }
 
 // ================================
-// 5️⃣ 히트맵 관련 함수들 (🔥 호버 라인차트 추가!)
+// 5️⃣ 히트맵 관련 함수들
 // ================================
-
-// 연관어 히트맵 렌더링 함수
 function renderCoKeywordHeatmap(targetKeyword) {
-    // coKeywordData에서 해당 Target_Keyword 필터링
     const filtered = coKeywordData.filter(d => 
         d.Target_Keyword === targetKeyword
     );
@@ -522,7 +626,6 @@ function renderCoKeywordHeatmap(targetKeyword) {
         return;
     }
     
-    // 연도별 CoKeyword 데이터 구조화 (2021-2025)
     const yearData = {};
     filtered.forEach(row => {
         const year = row.YEAR;
@@ -534,20 +637,17 @@ function renderCoKeywordHeatmap(targetKeyword) {
         yearData[year][coKeyword] += count;
     });
     
-    // 전체 CoKeyword 수집 (모든 연도 통합)
     const allCoKeywords = new Set();
     Object.values(yearData).forEach(yearObj => {
         Object.keys(yearObj).forEach(cok => allCoKeywords.add(cok));
     });
     
-    // CoKeyword를 2025년 기준 빈도순으로 정렬
     const coKeywordList = Array.from(allCoKeywords).sort((a, b) => {
         const countA = yearData[2025]?.[a] || 0;
         const countB = yearData[2025]?.[b] || 0;
         return countB - countA;
-    }).slice(0, 15); // 상위 15개만
+    }).slice(0, 15);
     
-    // 키워드별 데이터 객체 생성
     const keywordDataForHeatmap = {};
     coKeywordList.forEach(cok => {
         keywordDataForHeatmap[cok] = {
@@ -559,10 +659,8 @@ function renderCoKeywordHeatmap(targetKeyword) {
         };
     });
     
-    // 전역 변수에 저장 (호버 차트용)
     currentKeywordData = keywordDataForHeatmap;
     
-    // 키워드 유형 판별
     const keywordTypeMap = {};
     const keywordBadgeMap = {};
     
@@ -584,49 +682,39 @@ function renderCoKeywordHeatmap(targetKeyword) {
             .filter(y => data[y] > 0).length;
         const hotStreak = data["2023"] > 0 && has2024 && has2025;
         
-        // ---------------- 분류 시작 ----------------
-        // 최근 3년 연속 등장 → HOT
         if (hotStreak) {
             keywordTypeMap[cok] = "hot";
             keywordBadgeMap[cok] = "hot";
         }
-        // 4년 이상 등장 → CORE
         else if (activeYears >= 4) {
             keywordTypeMap[cok] = "core";
             keywordBadgeMap[cok] = "";
         }
-        // 예전에 있었는데 최근 2년 없음 → FADING
         else if (hasEarly && noLate) {
             keywordTypeMap[cok] = "fading";
             keywordBadgeMap[cok] = "old";
         }
-        // 과거(21~23) 없고 최근 등장 → EMERGING
         else if (!hasEarly && !hasMid && hasLate) {
             keywordTypeMap[cok] = "emerging";
             keywordBadgeMap[cok] = only2025 ? "new" : "";
         }
-        // 과거 있다가 2023 공백 후 최근 등장 → COMEBACK
         else if (hasEarly && !hasMid && hasLate) {
             keywordTypeMap[cok] = "comeback";
             keywordBadgeMap[cok] = "hot";
         }
-        // 위 조건은 아니지만 3년 이상 등장 → CORE
         else if (activeYears >= 3) {
             keywordTypeMap[cok] = "core";
             keywordBadgeMap[cok] = "";
         }
-        // 나머지는 유형 표시 안 함
         else {
             keywordTypeMap[cok] = "";
             keywordBadgeMap[cok] = "";
         }
     });
     
-    // 히트맵 테이블 렌더링
     renderHeatmapTable(keywordDataForHeatmap, keywordTypeMap, keywordBadgeMap);
 }
 
-// 히트맵 테이블 렌더링
 function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
     const tbody = document.getElementById("heatmap-body");
     if (!tbody) return;
@@ -638,13 +726,11 @@ function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
         tr.classList.add("kw-row");
         tr.dataset.keyword = keyword;
 
-        // 키워드 이름
         const tdName = document.createElement("td");
         tdName.className = "kw-name";
         tdName.textContent = keyword;
         tr.appendChild(tdName);
 
-        // 연도별 셀 (2021-2025)
         ["2021","2022","2023","2024","2025"].forEach(year => {
             const td = document.createElement("td");
             const val = keywordData[keyword][year];
@@ -653,7 +739,6 @@ function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
                 td.textContent = val;
                 td.className = getLevel(val);
                 
-                // 2025년에 배지 추가
                 if (keywordBadge[keyword] && year === "2025") {
                     const span = document.createElement("span");
                     span.className = `badge ${keywordBadge[keyword]}`;
@@ -662,12 +747,11 @@ function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
                     td.appendChild(span);
                 }
             } else {
-                td.className = "level-0"; // 빈 셀
+                td.className = "level-0";
             }
             tr.appendChild(td);
         });
 
-        // 유형 셀
         const tdType = document.createElement("td");
         tdType.innerHTML = `<span class="type ${keywordType[keyword]}">${keywordType[keyword]}</span>`;
         tr.appendChild(tdType);
@@ -675,11 +759,9 @@ function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
         tbody.appendChild(tr);
     });
     
-    // 🔥 호버 이벤트 바인딩 (라인차트)
     bindHeatmapHoverEvents();
 }
 
-// 색상 레벨 계산
 function getLevel(value) {
     if (value === 0) return "level-0";
     if (value < 10) return "level-1";
@@ -689,7 +771,6 @@ function getLevel(value) {
     return "level-5";
 }
 
-// 🔥 히트맵 호버 이벤트 (플로팅 팝업 라인차트)
 function bindHeatmapHoverEvents() {
     const hoverChart = document.getElementById('hover-linechart');
     const chartTitle = document.getElementById('hover-chart-title');
@@ -709,10 +790,8 @@ function bindHeatmapHoverEvents() {
                 return v > 0 ? `${y}: ${v}건` : `${y}: TOP10 없음`;
             });
 
-            // 차트 제목 업데이트
             chartTitle.textContent = `"${key}" 연도별 변화`;
             
-            // 차트 렌더링
             Plotly.newPlot(chartContent, [{
                 x: years,
                 y: values,
@@ -725,11 +804,11 @@ function bindHeatmapHoverEvents() {
                 fillcolor: 'rgba(0, 122, 255, 0.1)'
             }], {
                 yaxis: {
-                    title: { text: "빈도 (건)", font: { size: 12 } },
+                    title: { text: "빈도 (건)", font: { size: 12, family: 'Pretendard, sans-serif' } },
                     gridcolor: '#e0e0e0'
                 },
                 xaxis: {
-                    title: { text: "연도", font: { size: 12 } },
+                    title: { text: "연도", font: { size: 12, family: 'Pretendard, sans-serif' } },
                     gridcolor: '#e0e0e0'
                 },
                 margin: { t:20, l:50, r:20, b:40 },
@@ -742,23 +821,19 @@ function bindHeatmapHoverEvents() {
                 displayModeBar: false
             });
             
-            // 차트 표시
             hoverChart.classList.add('active');
         });
         
-        // 마우스가 벗어나면 차트 숨김
         row.addEventListener("mouseleave", () => {
             hoverChart.classList.remove('active');
         });
     });
     
-    // 차트 자체에서 마우스 떼면 숨김
     if (hoverChart) {
         hoverChart.addEventListener("mouseleave", () => {
             hoverChart.classList.remove('active');
         });
         
-        // 차트 위에서는 계속 표시
         hoverChart.addEventListener("mouseenter", () => {
             hoverChart.classList.add('active');
         });
@@ -768,8 +843,20 @@ function bindHeatmapHoverEvents() {
 // ================================
 // 6️⃣ 클러스터 맵 기능
 // ================================
+const categoryColors = {
+    'tech': '#4285F4',
+    'policy': '#34A853',
+    'society': '#9C27B0',
+    'environment': '#FF9800',
+    'economy': '#FBC02D'
+};
 
-// 클러스터 데이터 로드
+// 색상 팔레트 (연도별 추이 차트용)
+const trendColors = [
+    '#3b82f6', '#ef4444', '#10b981', '#f59e0b', '#8b5cf6',
+    '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#84cc16'
+];
+
 fetch('cluster_trends.json')
     .then(response => {
         if (!response.ok) {
@@ -781,15 +868,11 @@ fetch('cluster_trends.json')
         clusterData = data.clusters;
         console.log('✅ 클러스터 데이터 로드:', clusterData.length, '개');
         
-        // 초기 버블 차트 렌더링
         renderClusterBubbleChart();
-        
-        // 메인 키워드 연결도 초기화
         renderLinkedClusters('artificial intelligence');
     })
     .catch(error => {
         console.error('❌ cluster_trends.json 로드 실패:', error);
-        // 에러 메시지를 화면에 표시
         const chartDiv = document.getElementById('cluster-bubble-chart');
         if (chartDiv) {
             chartDiv.innerHTML = `
@@ -802,16 +885,6 @@ fetch('cluster_trends.json')
         }
     });
 
-// 카테고리별 색상 매핑
-const categoryColors = {
-    'tech': '#4285F4',       // 파란색
-    'policy': '#34A853',     // 초록색
-    'society': '#9C27B0',    // 보라색
-    'environment': '#FF9800', // 주황색
-    'economy': '#FBC02D'     // 노란색
-};
-
-// 버블 차트 렌더링 (수정 버전)
 function renderClusterBubbleChart(filterCategory = 'all') {
     if (!clusterData || clusterData.length === 0) {
         console.error('❌ 클러스터 데이터가 없습니다');
@@ -821,8 +894,6 @@ function renderClusterBubbleChart(filterCategory = 'all') {
     const filteredData = filterCategory === 'all' 
         ? clusterData 
         : clusterData.filter(c => c.category === filterCategory);
-    
-    console.log('📊 필터링된 데이터 개수:', filteredData.length);
     
     const traces = Object.keys(categoryColors).map(cat => {
         const catData = filteredData.filter(c => c.category === cat);
@@ -836,17 +907,16 @@ function renderClusterBubbleChart(filterCategory = 'all') {
             name: cat.charAt(0).toUpperCase() + cat.slice(1),
             marker: {
                 size: catData.map(c => {
-                    // 버블 크기 계산: 2025년 빈도에 비례, 최소 10 ~ 최대 80
                     const baseSize = Math.sqrt(c.total2025 || 1);
                     return Math.min(Math.max(baseSize * 2, 10), 80);
                 }),
                 color: categoryColors[cat],
-                opacity: 0.6,
+                opacity: 0.7,
                 line: {
                     color: categoryColors[cat],
-                    width: 3
+                    width: 2
                 },
-                sizemode: 'diameter' // 지름 기준으로 크기 설정
+                sizemode: 'diameter'
             },
             text: catData.map(c => 
                 `<b>${c.label}</b><br>` +
@@ -868,26 +938,28 @@ function renderClusterBubbleChart(filterCategory = 'all') {
     const layout = {
         title: {
             text: '🧩 클러스터 포지셔닝 맵 (버블 크기 = 2025년 연구 빈도)',
-            font: { size: 18, family: 'Pretendard', color: '#333' }
+            font: { size: 18, family: 'Pretendard, sans-serif', color: '#333' }
         },
         xaxis: {
             title: {
                 text: '평균 연구 빈도 (2023-2025) →',
-                font: { size: 14 }
+                font: { size: 14, family: 'Pretendard, sans-serif' }
             },
-            gridcolor: '#e0e0e0',
+            gridcolor: '#e5e7eb',
             zeroline: true,
-            zerolinecolor: '#ccc'
+            zerolinecolor: '#d1d5db',
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         yaxis: {
             title: {
                 text: '↑ 성장률 (%)',
-                font: { size: 14 }
+                font: { size: 14, family: 'Pretendard, sans-serif' }
             },
-            gridcolor: '#e0e0e0',
+            gridcolor: '#e5e7eb',
             zeroline: true,
-            zerolinecolor: '#999',
-            zerolinewidth: 2
+            zerolinecolor: '#9ca3af',
+            zerolinewidth: 2,
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         hovermode: 'closest',
         showlegend: true,
@@ -896,36 +968,17 @@ function renderClusterBubbleChart(filterCategory = 'all') {
             y: -0.15,
             x: 0.5,
             xanchor: 'center',
-            font: { size: 13 }
+            font: { size: 13, family: 'Pretendard, sans-serif' }
         },
-        margin: { t: 100, l: 80, r: 50, b: 100 },
-        height: 650,
+        margin: { t: 80, l: 70, r: 50, b: 100 },
+        height: 700,
         plot_bgcolor: '#fafafa',
         paper_bgcolor: 'white',
-        annotations: [
-            {
-                text: '',
-                xref: 'paper',
-                yref: 'paper',
-                x: 0.5,
-                y: 1.08,
-                xanchor: 'center',
-                yanchor: 'bottom',
-                showarrow: false,
-                font: { size: 12, color: '#666' }
-            }
-        ]
+        font: { family: 'Pretendard, sans-serif' }
     };
     
-    Plotly.newPlot('cluster-bubble-chart', traces, layout, { responsive: true })
-        .then(() => {
-            console.log('✅ 클러스터 버블 차트 렌더링 완료');
-        })
-        .catch(err => {
-            console.error('❌ Plotly 렌더링 에러:', err);
-        });
+    Plotly.newPlot('cluster-bubble-chart', traces, layout, { responsive: true });
     
-    // 클릭 이벤트
     const chartDiv = document.getElementById('cluster-bubble-chart');
     if (chartDiv) {
         chartDiv.on('plotly_click', function(data) {
@@ -938,7 +991,6 @@ function renderClusterBubbleChart(filterCategory = 'all') {
     }
 }
 
-// 클러스터 팝업 표시
 function showClusterPopup(cluster) {
     const popup = document.getElementById('keyword-popup');
     const title = document.getElementById('popup-title');
@@ -965,12 +1017,10 @@ function showClusterPopup(cluster) {
     popup.style.display = 'flex';
 }
 
-// 팝업 닫기
 document.getElementById('popup-close').addEventListener('click', () => {
     document.getElementById('keyword-popup').style.display = 'none';
 });
 
-// 카테고리 필터 이벤트
 document.querySelectorAll('.filter-chip').forEach(btn => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.filter-chip').forEach(b => b.classList.remove('active'));
@@ -984,8 +1034,6 @@ document.querySelectorAll('.filter-chip').forEach(btn => {
 // ================================
 // 7️⃣ 메인 키워드 × 클러스터 연결도
 // ================================
-
-// 메인 키워드별 연결된 클러스터 렌더링
 function renderLinkedClusters(mainKeyword) {
     const linkedClusters = clusterData.filter(c => 
         c.linkedMainKeywords && c.linkedMainKeywords.includes(mainKeyword)
@@ -1035,54 +1083,71 @@ function renderLinkedClusters(mainKeyword) {
         grid.appendChild(card);
     });
     
-    // 자동으로 추이 차트 렌더링
     renderClusterTrendChart(linkedClusters);
 }
 
-// 클러스터별 성장 추이 차트
+// ✨ 개선된 클러스터 추이 차트 (색상 구분 + 연도 정수 표시)
 function renderClusterTrendChart(clusters) {
-    const years = ['2021', '2022', '2023', '2024', '2025'];
+    const years = [2021, 2022, 2023, 2024, 2025]; // 정수로 변경
     
-    const traces = clusters.map(cluster => ({
+    const traces = clusters.map((cluster, index) => ({
         x: years,
-        y: years.map(y => cluster.yearlyFreq ? (cluster.yearlyFreq[y] || 0) : 0),
+        y: years.map(y => cluster.yearlyFreq ? (cluster.yearlyFreq[y.toString()] || 0) : 0),
         name: cluster.label,
         mode: 'lines+markers',
         line: {
             width: 3,
-            color: categoryColors[cluster.category] || '#999'
+            color: trendColors[index % trendColors.length] // 색상 순환
         },
-        marker: { size: 8 }
+        marker: { 
+            size: 8,
+            color: trendColors[index % trendColors.length]
+        }
     }));
     
     const layout = {
         title: {
             text: '연결된 클러스터 연도별 추이',
-            font: { size: 16, family: 'Pretendard' }
+            font: { size: 18, family: 'Pretendard, sans-serif', weight: 600, color: '#333' }
         },
         xaxis: {
-            title: '연도',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: '연도',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickmode: 'linear',
+            tick0: 2021,
+            dtick: 1,
+            tickformat: 'd', // 정수로 표시
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         yaxis: {
-            title: '연구 빈도',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: '연구 빈도',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         hovermode: 'x unified',
-        margin: { t: 60, l: 60, r: 30, b: 60 },
-        height: 400,
+        margin: { t: 70, l: 70, r: 30, b: 80 },
+        height: 500,
         plot_bgcolor: '#fafafa',
         paper_bgcolor: 'white',
+        font: { family: 'Pretendard, sans-serif' },
         legend: {
             orientation: 'h',
-            y: -0.3
+            y: -0.25,
+            x: 0.5,
+            xanchor: 'center',
+            font: { size: 12, family: 'Pretendard, sans-serif' }
         }
     };
     
     Plotly.newPlot('cluster-trend-chart', traces, layout, { responsive: true });
 }
 
-// 메인 키워드 선택 이벤트
 document.getElementById('main-keyword-select')?.addEventListener('change', (e) => {
     renderLinkedClusters(e.target.value);
 });
@@ -1090,8 +1155,6 @@ document.getElementById('main-keyword-select')?.addEventListener('change', (e) =
 // ================================
 // 8️⃣ 분야 확산 기능
 // ================================
-
-// 분야 확산 데이터 로드
 fetch('field_diffusion.json')
     .then(response => {
         if (!response.ok) {
@@ -1103,10 +1166,8 @@ fetch('field_diffusion.json')
         fieldDiffusionData = data.clusters;
         console.log('✅ 분야 확산 데이터 로드:', fieldDiffusionData.length, '개 클러스터');
         
-        // 클러스터 선택 드롭다운 초기화
         populateDiffusionClusterSelect();
         
-        // 초기 렌더링
         if (fieldDiffusionData.length > 0) {
             const firstClusterId = fieldDiffusionData[0].clusterId;
             renderDiffusionVisualizations(firstClusterId);
@@ -1125,14 +1186,12 @@ fetch('field_diffusion.json')
         }
     });
 
-// 클러스터 선택 드롭다운 채우기
 function populateDiffusionClusterSelect() {
     const select = document.getElementById('diffusion-cluster-select');
     if (!select) return;
     
     select.innerHTML = '';
     
-    // cluster_trends.json과 매칭해서 라벨 표시
     fieldDiffusionData.forEach(cluster => {
         const clusterInfo = clusterData.find(c => c.clusterId === cluster.clusterId);
         const label = clusterInfo ? clusterInfo.label : `Cluster ${cluster.clusterId}`;
@@ -1143,13 +1202,11 @@ function populateDiffusionClusterSelect() {
         select.appendChild(option);
     });
     
-    // 선택 이벤트
     select.addEventListener('change', (e) => {
         renderDiffusionVisualizations(parseInt(e.target.value));
     });
 }
 
-// 분야 확산 시각화 렌더링
 function renderDiffusionVisualizations(clusterId) {
     const cluster = fieldDiffusionData.find(c => c.clusterId === clusterId);
     if (!cluster) {
@@ -1157,28 +1214,20 @@ function renderDiffusionVisualizations(clusterId) {
         return;
     }
     
-    console.log('📊 분야 확산 렌더링:', clusterId, cluster);
-    
-    // 1. Sankey Diagram 렌더링
     renderFieldSankeyDiagram(cluster);
-    
-    // 2. 분야 분포 차트 렌더링
     renderFieldDistributionChart(cluster);
-    
-    // 3. 다양성 지수 차트 렌더링
     renderDiversityChart(cluster);
 }
 
-// Sankey Diagram 렌더링 (연도별 분야 이동)
+// ✨ 개선된 Sankey Diagram
 function renderFieldSankeyDiagram(cluster) {
-    const years = ['2021', '2022', '2023', '2024', '2025'];
+    const years = [2021, 2022, 2023, 2024, 2025]; // 정수로 변경
     
-    // 노드 생성 (연도별 분야)
     const nodes = [];
-    const nodeMap = new Map(); // "연도-분야" → 노드 인덱스
+    const nodeMap = new Map();
     
     years.forEach(year => {
-        const yearData = cluster.years[year];
+        const yearData = cluster.years[year.toString()];
         if (!yearData) return;
         
         Object.keys(yearData.fields).forEach(field => {
@@ -1194,19 +1243,17 @@ function renderFieldSankeyDiagram(cluster) {
         });
     });
     
-    // 링크 생성 (연도 간 분야 이동)
     const links = [];
     
     for (let i = 0; i < years.length - 1; i++) {
-        const currentYear = years[i];
-        const nextYear = years[i + 1];
+        const currentYear = years[i].toString();
+        const nextYear = years[i + 1].toString();
         
         const currentData = cluster.years[currentYear];
         const nextData = cluster.years[nextYear];
         
         if (!currentData || !nextData) continue;
         
-        // transitions 데이터 사용
         currentData.transitions.forEach(trans => {
             const sourceKey = `${currentYear}-${trans.from}`;
             const targetKey = `${nextYear}-${trans.to}`;
@@ -1222,7 +1269,6 @@ function renderFieldSankeyDiagram(cluster) {
         });
     }
     
-    // Plotly Sankey
     const data = [{
         type: 'sankey',
         orientation: 'h',
@@ -1247,38 +1293,37 @@ function renderFieldSankeyDiagram(cluster) {
     const layout = {
         title: {
             text: `분야 확산 흐름 (2021→2025)`,
-            font: { size: 16, family: 'Pretendard' }
+            font: { size: 18, family: 'Pretendard, sans-serif', weight: 600, color: '#333' }
         },
         font: {
-            family: 'Pretendard',
+            family: 'Pretendard, sans-serif',
             size: 12
         },
-        margin: { t: 60, l: 20, r: 20, b: 20 },
-        height: 600
+        margin: { t: 70, l: 20, r: 20, b: 20 },
+        height: 650,
+        paper_bgcolor: '#fafafa'
     };
     
     Plotly.newPlot('diffusion-sankey', data, layout, { responsive: true });
 }
 
-// 분야 분포 차트 (연도별 stacked bar)
+// ✨ 개선된 분야 분포 차트
 function renderFieldDistributionChart(cluster) {
-    const years = ['2021', '2022', '2023', '2024', '2025'];
+    const years = [2021, 2022, 2023, 2024, 2025]; // 정수로 변경
     
-    // 모든 분야 수집
     const allFields = new Set();
     years.forEach(year => {
-        const yearData = cluster.years[year];
+        const yearData = cluster.years[year.toString()];
         if (yearData) {
             Object.keys(yearData.fields).forEach(field => allFields.add(field));
         }
     });
     
-    // 트레이스 생성 (각 분야별)
     const traces = Array.from(allFields).map(field => {
         return {
             x: years,
             y: years.map(year => {
-                const yearData = cluster.years[year];
+                const yearData = cluster.years[year.toString()];
                 return yearData ? (yearData.fields[field] || 0) : 0;
             }),
             name: field,
@@ -1293,35 +1338,52 @@ function renderFieldDistributionChart(cluster) {
         barmode: 'stack',
         title: {
             text: '연도별 분야 분포',
-            font: { size: 16, family: 'Pretendard' }
+            font: { size: 18, family: 'Pretendard, sans-serif', weight: 600, color: '#333' }
         },
         xaxis: {
-            title: '연도',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: '연도',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickmode: 'linear',
+            tick0: 2021,
+            dtick: 1,
+            tickformat: 'd', // 정수로 표시
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         yaxis: {
-            title: '연구 빈도',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: '연구 빈도',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
-        font: { family: 'Pretendard' },
-        margin: { t: 60, l: 60, r: 30, b: 60 },
-        height: 400,
+        font: { family: 'Pretendard, sans-serif' },
+        margin: { t: 70, l: 70, r: 30, b: 80 },
+        height: 450,
+        plot_bgcolor: '#fafafa',
+        paper_bgcolor: 'white',
         showlegend: true,
         legend: {
             orientation: 'h',
-            y: -0.2
+            y: -0.25,
+            x: 0.5,
+            xanchor: 'center',
+            font: { size: 12, family: 'Pretendard, sans-serif' }
         }
     };
     
     Plotly.newPlot('field-distribution-chart', traces, layout, { responsive: true });
 }
 
-// 다양성 지수 차트
+// ✨ 개선된 다양성 차트
 function renderDiversityChart(cluster) {
-    const years = ['2021', '2022', '2023', '2024', '2025'];
+    const years = [2021, 2022, 2023, 2024, 2025]; // 정수로 변경
     
     const diversityData = years.map(year => {
-        const yearData = cluster.years[year];
+        const yearData = cluster.years[year.toString()];
         return yearData ? yearData.diversity : 0;
     });
     
@@ -1330,39 +1392,52 @@ function renderDiversityChart(cluster) {
         y: diversityData,
         mode: 'lines+markers',
         line: {
-            color: '#007aff',
+            color: '#3b82f6',
             width: 3
         },
         marker: {
-            size: 10,
-            color: '#007aff'
+            size: 12,
+            color: '#3b82f6'
         },
         fill: 'tozeroy',
-        fillcolor: 'rgba(0, 122, 255, 0.1)'
+        fillcolor: 'rgba(59, 130, 246, 0.15)'
     };
     
     const layout = {
         title: {
             text: '분야 다양성 지수 (Entropy)',
-            font: { size: 16, family: 'Pretendard' }
+            font: { size: 18, family: 'Pretendard, sans-serif', weight: 600, color: '#333' }
         },
         xaxis: {
-            title: '연도',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: '연도',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickmode: 'linear',
+            tick0: 2021,
+            dtick: 1,
+            tickformat: 'd', // 정수로 표시
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
         yaxis: {
-            title: 'Diversity (Entropy)',
-            gridcolor: '#e0e0e0'
+            title: {
+                text: 'Diversity (Entropy)',
+                font: { size: 14, family: 'Pretendard, sans-serif' }
+            },
+            gridcolor: '#e5e7eb',
+            tickfont: { family: 'Pretendard, sans-serif' }
         },
-        font: { family: 'Pretendard' },
-        margin: { t: 60, l: 60, r: 30, b: 60 },
-        height: 300
+        font: { family: 'Pretendard, sans-serif' },
+        margin: { t: 70, l: 70, r: 30, b: 70 },
+        height: 350,
+        plot_bgcolor: '#fafafa',
+        paper_bgcolor: 'white'
     };
     
     Plotly.newPlot('diversity-chart', [trace], layout, { responsive: true });
 }
 
-// 분야별 색상 매핑
 function getFieldColor(field) {
     const colors = {
         '교육학': '#4285F4',

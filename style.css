@@ -1,14 +1,17 @@
 :root {
     --primary: #007aff;
+    --primary-dark: #0051d5;
     --q1-bg: #fff5f5;
     --q2-bg: #f0f7ff;
     --q3-bg: #f9f9f9;
     --q4-bg: #ffffff;
-    --point-filtered: #ff8c00;
+    --point-filtered: #ff6b35;
+    --chart-bg: #fafafa;
+    --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
 }
 
 body { 
-    font-family: 'Pretendard', sans-serif; 
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; 
     background: #f0f2f5; 
     margin: 0; 
     padding: 20px; 
@@ -16,20 +19,153 @@ body {
 
 .dashboard { max-width: 1100px; margin: 0 auto; }
 
+/* ================================ */
+/* 헤더 + 전광판 */
+/* ================================ */
+header {
+    position: relative;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 30px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+header h1 {
+    color: white;
+    margin: 0 0 10px 0;
+    font-size: 28px;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+/* 전광판 스타일 */
+.keyword-ticker {
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 12px 0;
+    overflow: hidden;
+    position: relative;
+    margin-top: 15px;
+}
+
+.ticker-wrapper {
+    display: flex;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+}
+
+@keyframes ticker {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+}
+
+.ticker-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    margin: 0 15px;
+    background: rgba(255,255,255,0.25);
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    font-size: 14px;
+    border: 2px solid rgba(255,255,255,0.3);
+    flex-shrink: 0;
+}
+
+.ticker-badge {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 10px;
+    font-weight: bold;
+}
+
+.ticker-badge.hot {
+    background: #ff4757;
+    color: white;
+}
+
+.ticker-badge.new {
+    background: #1dd1a1;
+    color: white;
+}
+
+.ticker-badge.rising {
+    background: #ffa502;
+    color: white;
+}
+
 /* 탭 메뉴 */
 .tab-menu { display: flex; gap: 5px; margin-bottom: 20px; background: #ddd; padding: 5px; border-radius: 10px; }
-.tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: none; transition: 0.3s; }
+.tab-btn { flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; background: none; transition: 0.3s; font-family: inherit; }
 .tab-btn.active { background: white; color: var(--primary); box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
 .tab-item { display: none; }
 .tab-item.active { display: block; }
 
 /* 카드 */
-.card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+.card { background: white; padding: 30px; border-radius: 20px; box-shadow: var(--card-shadow); }
+.card h3 { 
+    font-family: 'Pretendard', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+.card h4 { 
+    font-family: 'Pretendard', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
 
-/* Plotly 산점도 */
-#matrix-scatter {
-    background: white;
+/* ================================ */
+/* Plotly 차트 공통 스타일 */
+/* ================================ */
+#matrix-scatter,
+#cluster-bubble-chart,
+#diffusion-sankey,
+#field-distribution-chart,
+#diversity-chart,
+#cluster-trend-chart {
+    background: var(--chart-bg);
     border-radius: 12px;
+    padding: 10px;
+    width: 100% !important;
+    font-family: 'Pretendard', sans-serif !important;
+}
+
+#matrix-scatter {
+    height: 600px !important;
+    border: 2px solid #e0e0e0;
+}
+
+#cluster-bubble-chart {
+    height: 700px !important;
+    max-height: 700px !important;
+}
+
+#diffusion-sankey {
+    min-height: 650px !important;
+    height: 650px !important;
+}
+
+#field-distribution-chart {
+    min-height: 450px !important;
+    height: 450px !important;
+}
+
+#diversity-chart {
+    min-height: 350px !important;
+    height: 350px !important;
+}
+
+#cluster-trend-chart {
+    height: 500px !important;
+    margin-top: 30px;
 }
 
 /* 키워드 개수 슬라이더 */
@@ -101,27 +237,19 @@ li .keyword-link:hover {
 
 /* 정렬 버튼 */
 .sort-controls { margin-bottom: 8px; }
-.sort-btn { padding: 4px 10px; margin-right: 5px; border: none; border-radius: 6px; background: #eee; cursor: pointer; font-size: 12px; transition: 0.2s; }
+.sort-btn { padding: 4px 10px; margin-right: 5px; border: none; border-radius: 6px; background: #eee; cursor: pointer; font-size: 12px; transition: 0.2s; font-family: inherit; }
 .sort-btn:hover { background: var(--primary); color: white; }
 
 /* 필터 토글 버튼 */
-.filter-toggle { margin-bottom: 15px; padding: 6px 12px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; }
-.filter-toggle.active { background: #ff8c00; }
+.filter-toggle { margin-bottom: 15px; padding: 6px 12px; background: var(--primary); color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: bold; transition: 0.3s; font-family: inherit; }
+.filter-toggle.active { background: var(--point-filtered); }
 
 /* 팝업 */
 .popup { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; justify-content: center; align-items: center; z-index: 9999; }
 .popup-content { background: white; padding: 30px; border-radius: 20px; width: 400px; max-width: 90%; box-shadow: 0 8px 25px rgba(0,0,0,0.3); position: relative; }
 .popup-close { position: absolute; top: 10px; right: 10px; border: none; background: none; font-size: 18px; cursor: pointer; font-weight: bold; color: #555; }
 
-/* 반응형 */
-@media (max-width: 768px) {
-    .list-container { grid-template-columns: 1fr; }
-    #matrix-scatter { height: 450px !important; }
-}
-
-/* ================================ */
 /* 연관어 선택 SelectBox 디자인 개선 */
-/* ================================ */
 .keyword-selector {
     display: flex;
     gap: 20px;
@@ -167,9 +295,7 @@ li .keyword-link:hover {
     box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
 }
 
-/* ================================ */
 /* 연관어 TOP10 카드형 그리드 */
-/* ================================ */
 .relation-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -222,16 +348,14 @@ li .keyword-link:hover {
     color: #007aff;
 }
 
-/* ================================ */
-/* 🔥 호버 라인차트 (플로팅 팝업 버전!) */
-/* ================================ */
+/* 호버 라인차트 (플로팅 팝업 버전!) */
 .relation-analysis {
     margin-top: 30px;
     padding: 25px;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-    position: relative; /* 팝업 위치 기준 */
+    position: relative;
 }
 
 .relation-analysis h3 {
@@ -344,7 +468,6 @@ li .keyword-link:hover {
     z-index: 10;
 }
 
-/* 키워드 열 너비 */
 .heatmap-table th.kw-col,
 .heatmap-table td.kw-name {
     width: 200px;
@@ -352,12 +475,10 @@ li .keyword-link:hover {
     padding-left: 15px;
 }
 
-/* 연도 열 너비 */
 .heatmap-table th:not(.kw-col):not(.type-col) {
     width: 90px;
 }
 
-/* 유형 열 너비 */
 .heatmap-table th.type-col {
     width: 120px;
 }
@@ -399,7 +520,7 @@ li .keyword-link:hover {
 .type.emerging { background: #e8f5e9; color: #2e7d32; }
 .type.fading { background: #f5f5f5; color: #757575; }
 
-/* 🔥 플로팅 팝업 차트 */
+/* 플로팅 팝업 차트 */
 .hover-linechart-popup {
     position: absolute;
     top: 50%;
@@ -418,7 +539,6 @@ li .keyword-link:hover {
     box-shadow: 0 10px 40px rgba(0, 122, 255, 0.2);
 }
 
-/* 호버 시 팝업 활성화 */
 .hover-linechart-popup.active {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1);
@@ -443,7 +563,6 @@ li .keyword-link:hover {
     height: 300px;
 }
 
-/* 행 호버 시 효과 */
 .kw-row { 
     cursor: pointer; 
     transition: all 0.2s;
@@ -459,7 +578,6 @@ li .keyword-link:hover {
     font-weight: 600;
 }
 
-/* 키워드명 */
 .kw-name {
     font-weight: 500;
     white-space: nowrap;
@@ -468,104 +586,10 @@ li .keyword-link:hover {
     transition: all 0.2s;
 }
 
-/* 반응형 - 호버 차트 */
-@media (max-width: 1200px) {
-    .hover-linechart-popup {
-        width: 80%;
-    }
-}
-
-@media (max-width: 768px) {
-    .keyword-selector {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .select-group {
-        min-width: 100%;
-    }
-    
-    .relation-grid {
-        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    }
-    
-    .legend-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .legend-item {
-        flex-wrap: wrap;
-    }
-    
-    .heatmap-table th,
-    .heatmap-table td {
-        padding: 8px 4px;
-        font-size: 12px;
-    }
-    
-    .heatmap-table th.kw-col,
-    .heatmap-table td.kw-name {
-        width: 150px;
-        padding-left: 10px;
-    }
-    
-    .heatmap-table th:not(.kw-col):not(.type-col) {
-        width: 70px;
-    }
-    
-    .hover-linechart-popup {
-        width: 90%;
-        padding: 20px;
-    }
-    
-    #hover-chart-content {
-        height: 250px;
-    }
-}
-
-@media (max-width: 480px) {
-    .relation-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .legend-desc {
-        font-size: 11px;
-    }
-    
-    .heatmap-table th,
-    .heatmap-table td {
-        padding: 6px 2px;
-        font-size: 11px;
-    }
-    
-    .heatmap-table th.kw-col,
-    .heatmap-table td.kw-name {
-        width: 120px;
-    }
-    
-    .heatmap-table th:not(.kw-col):not(.type-col) {
-        width: 60px;
-    }
-    
-    .hover-linechart-popup {
-        width: 95%;
-        padding: 15px;
-    }
-    
-    .hover-linechart-popup h4 {
-        font-size: 13px;
-    }
-    
-    #hover-chart-content {
-        height: 220px;
-    }
-}
-
 /* ================================ */
 /* 클러스터 맵 스타일 */
 /* ================================ */
 
-/* 카테고리 필터 칩 */
 .cluster-filters {
     display: flex;
     gap: 10px;
@@ -583,6 +607,7 @@ li .keyword-link:hover {
     font-weight: 600;
     transition: all 0.3s;
     outline: none;
+    font-family: inherit;
 }
 
 .filter-chip:hover {
@@ -596,24 +621,12 @@ li .keyword-link:hover {
     border-color: var(--primary);
 }
 
-/* 버블 차트 컨테이너 */
-#cluster-bubble-chart {
-    width: 100%;
-    margin: 20px 0;
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-}
-
-/* 클러스터 네트워크 섹션 */
 .cluster-network-section {
     margin-top: 40px;
     padding: 30px;
     background: #f8f9fa;
 }
 
-/* 연결된 클러스터 그리드 */
 .linked-clusters-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
@@ -621,7 +634,6 @@ li .keyword-link:hover {
     margin: 30px 0;
 }
 
-/* 클러스터 카드 */
 .cluster-card {
     background: white;
     border-radius: 12px;
@@ -716,56 +728,6 @@ li .keyword-link:hover {
     white-space: nowrap;
 }
 
-/* 클러스터 추이 차트 */
-#cluster-trend-chart {
-    margin-top: 30px;
-    background: white;
-    border-radius: 12px;
-    padding: 20px;
-}
-
-/* 반응형 */
-@media (max-width: 768px) {
-    .cluster-filters {
-        gap: 8px;
-    }
-    
-    .filter-chip {
-        font-size: 12px;
-        padding: 6px 12px;
-    }
-    
-    .linked-clusters-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* ================================ */
-/* 분야 확산 탭 스타일 */
-/* ================================ */
-
-/* 분야 확산 차트 컨테이너 */
-#diffusion-sankey {
-    background: #fafafa;
-    border-radius: 12px;
-    padding: 10px;
-    min-height: 600px;
-}
-
-#field-distribution-chart {
-    background: #fafafa;
-    border-radius: 12px;
-    padding: 10px;
-    min-height: 400px;
-}
-
-#diversity-chart {
-    background: #fafafa;
-    border-radius: 12px;
-    padding: 10px;
-    min-height: 300px;
-}
-
 /* 분야 확산 가이드 텍스트 */
 .guide-text {
     font-size: 13px;
@@ -778,24 +740,76 @@ li .keyword-link:hover {
     font-weight: 600;
 }
 
-/* 분야 확산 카드 제목 */
-.card h4 {
-    font-size: 16px;
-    margin-bottom: 15px;
-    color: #333;
-    font-weight: 600;
-    border-bottom: 2px solid #f0f0f0;
-    padding-bottom: 10px;
+/* 반응형 */
+@media (max-width: 1200px) {
+    .hover-linechart-popup {
+        width: 80%;
+    }
 }
 
-/* 분야 확산 탭 전용 select */
-#diffusion-cluster-select {
-    width: 100%;
-    max-width: 400px;
-}
-
-/* 분야 확산 반응형 */
 @media (max-width: 768px) {
+    .list-container { grid-template-columns: 1fr; }
+    #matrix-scatter { height: 450px !important; }
+    
+    .keyword-selector {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .select-group {
+        min-width: 100%;
+    }
+    
+    .relation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
+    .legend-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .legend-item {
+        flex-wrap: wrap;
+    }
+    
+    .heatmap-table th,
+    .heatmap-table td {
+        padding: 8px 4px;
+        font-size: 12px;
+    }
+    
+    .heatmap-table th.kw-col,
+    .heatmap-table td.kw-name {
+        width: 150px;
+        padding-left: 10px;
+    }
+    
+    .heatmap-table th:not(.kw-col):not(.type-col) {
+        width: 70px;
+    }
+    
+    .hover-linechart-popup {
+        width: 90%;
+        padding: 20px;
+    }
+    
+    #hover-chart-content {
+        height: 250px;
+    }
+    
+    .cluster-filters {
+        gap: 8px;
+    }
+    
+    .filter-chip {
+        font-size: 12px;
+        padding: 6px 12px;
+    }
+    
+    .linked-clusters-grid {
+        grid-template-columns: 1fr;
+    }
+    
     #diffusion-sankey,
     #field-distribution-chart {
         height: 400px !important;
@@ -806,9 +820,50 @@ li .keyword-link:hover {
         height: 250px !important;
         min-height: 250px;
     }
+    
+    .ticker-item {
+        font-size: 12px;
+        padding: 6px 15px;
+    }
 }
 
 @media (max-width: 480px) {
+    .relation-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .legend-desc {
+        font-size: 11px;
+    }
+    
+    .heatmap-table th,
+    .heatmap-table td {
+        padding: 6px 2px;
+        font-size: 11px;
+    }
+    
+    .heatmap-table th.kw-col,
+    .heatmap-table td.kw-name {
+        width: 120px;
+    }
+    
+    .heatmap-table th:not(.kw-col):not(.type-col) {
+        width: 60px;
+    }
+    
+    .hover-linechart-popup {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .hover-linechart-popup h4 {
+        font-size: 13px;
+    }
+    
+    #hover-chart-content {
+        height: 220px;
+    }
+    
     #diffusion-sankey {
         height: 350px !important;
         min-height: 350px;

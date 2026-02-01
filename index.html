@@ -2,14 +2,28 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>IT-da 2026: 미래 연구를 잇는 내비게이터</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pretendard:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
 <div class="dashboard">
-    <header><h1>연구의 과거와 현재, 그리고 미래를 잇다</h1></header>
+    <!-- 헤더 + 전광판 -->
+    <header>
+        <h1>🔬 연구의 과거와 현재, 그리고 미래를 잇다</h1>
+        
+        <!-- 🎬 전광판 (HOT & NEW 키워드) -->
+        <div class="keyword-ticker">
+            <div class="ticker-wrapper">
+                <!-- JS로 동적 생성 -->
+            </div>
+        </div>
+    </header>
 
     <!-- 탭 메뉴 -->
     <nav class="tab-menu">
@@ -23,7 +37,7 @@
     <!-- 매트릭스 탭 -->
     <div id="matrix-tab" class="tab-item active">
         <div class="card">
-            <h3>2026 키워드 포지셔닝</h3>
+            <h3>📊 2026 키워드 포지셔닝</h3>
 
             <!-- 키워드 필터 토글 -->
             <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
@@ -39,8 +53,8 @@
                 </div>
             </div>
 
-            <!-- Plotly 산점도로 변경 -->
-            <div id="matrix-scatter" style="width: 100%; height: 600px; border: 2px solid #333; border-radius: 12px; background: white;"></div>
+            <!-- Plotly 산점도 -->
+            <div id="matrix-scatter"></div>
         </div>
     </div>
 
@@ -80,20 +94,21 @@
 
         </div>
     </div>
+    
     <!-- 연관어 TOP10 탭 -->
     <div id="relation-tab" class="tab-item">
         <div class="card">
-            <h3>🗂️ 연관어 TOP10</h3>
+            <h3>🗂️ 맥락 잇다: 연관어 분석</h3>
 
             <!-- 키워드 + 연도 선택 -->
             <div class="keyword-selector">
                 <div class="select-group">
-                    <label for="key-select">키워드 선택</label>
+                    <label for="key-select">🎯 키워드 선택</label>
                     <select id="key-select"></select>
                 </div>
 
                 <div class="select-group">
-                    <label for="relation-year-select">연도 선택</label>
+                    <label for="relation-year-select">📅 연도 선택</label>
                     <select id="relation-year-select">
                         <option value="2021">2021</option>
                         <option value="2022">2022</option>
@@ -182,7 +197,7 @@
     <!-- 클러스터 맵 탭 -->
     <div id="cluster-tab" class="tab-item">
         <div class="card">
-            <h3>🧩 연구 클러스터 맵</h3>
+            <h3>🧩 무리지어 잇다: 연구 클러스터 맵</h3>
             <p class="guide-text" style="font-size: 14px; color: #555; margin-bottom: 15px;">
                 <strong>💡 버블 차트 읽는 법:</strong><br>
                 • <strong style="color: #007aff;">버블 크기</strong> = 2025년 연구 빈도 (클수록 더 많이 연구됨)<br>
@@ -208,8 +223,8 @@
             <div class="card cluster-network-section">
                 <h3>🔗 메인 키워드 × 클러스터 연결도</h3>
                 
-                <div class="select-group">
-                    <label for="main-keyword-select">메인 키워드 선택</label>
+                <div class="select-group" style="max-width: 400px;">
+                    <label for="main-keyword-select">🎯 메인 키워드 선택</label>
                     <select id="main-keyword-select">
                         <option value="artificial intelligence">artificial intelligence</option>
                         <option value="covid-19">covid-19</option>
@@ -225,6 +240,12 @@
                         <option value="labor">labor</option>
                         <option value="management">management</option>
                         <option value="trust">trust</option>
+                        <option value="tax">tax</option>
+                        <option value="public">public</option>
+                        <option value="legal">legal</option>
+                        <option value="job satisfaction">job satisfaction</option>
+                        <option value="regulation">regulation</option>
+                        <option value="contract">contract</option>
                     </select>
                 </div>
                 
@@ -242,7 +263,7 @@
     <!-- 분야 확산 탭 -->
     <div id="diffusion-tab" class="tab-item">
         <div class="card">
-            <h3>🌊 분야 확산 패턴 (2021-2025)</h3>
+            <h3>🌊 세상을 잇다: 분야 확산 패턴 (2021-2025)</h3>
             <p class="guide-text" style="font-size: 14px; color: #555; margin-bottom: 20px;">
                 <strong>💡 Sankey Diagram 읽는 법:</strong><br>
                 • 왼쪽부터 오른쪽으로 <strong>2021년 → 2025년</strong>까지 연구 분야의 이동 흐름을 보여줍니다<br>
@@ -263,20 +284,20 @@
             <!-- Sankey Diagram -->
             <div class="card" style="margin-top: 20px; padding: 30px;">
                 <h4>📊 분야 간 이동 흐름 (2021→2022→2023→2024→2025)</h4>
-                <div id="diffusion-sankey" style="width: 100%; height: 600px;"></div>
+                <div id="diffusion-sankey"></div>
             </div>
             
             <!-- 분야 분포 변화 -->
             <div class="card" style="margin-top: 20px; padding: 30px;">
                 <h4>📈 연도별 분야 분포 변화</h4>
-                <div id="field-distribution-chart" style="width: 100%; height: 400px;"></div>
+                <div id="field-distribution-chart"></div>
             </div>
             
             <!-- 다양성 지수 -->
             <div class="card" style="margin-top: 20px; padding: 30px;">
                 <h4>📊 분야 다양성 추이</h4>
                 <p class="guide-text">분야 다양성 지수(Entropy)가 높을수록 여러 분야에 골고루 확산되었음을 의미합니다.</p>
-                <div id="diversity-chart" style="width: 100%; height: 300px;"></div>
+                <div id="diversity-chart"></div>
             </div>
         </div>
     </div>
@@ -290,6 +311,7 @@
         <p id="popup-details"></p>
     </div>
 </div>
+
 <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
 <script src="script.js"></script>
 
