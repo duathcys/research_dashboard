@@ -2,22 +2,22 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>IT-da 2026: 미래 연구를 잇는 내비게이터</title>
+    <title>2026 연구 전략 내비게이터</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
 </head>
 <body>
 
 <div class="dashboard">
-    <header><h1>연구의 과거와 현재, 그리고 미래를 잇다</h1></header>
+    <header><h1>🚀 Research Intelligence 2026</h1></header>
 
     <!-- 탭 메뉴 -->
     <nav class="tab-menu">
-        <button class="tab-btn active" data-tab="matrix-tab">📊 위치 잇다</button>
-        <button class="tab-btn" data-tab="list-tab">📈 흐름 잇다</button>
-        <button class="tab-btn" data-tab="relation-tab">🗂️ 맥락 잇다</button>
-        <button class="tab-btn" data-tab="cluster-tab">🧩 무리지어 잇다</button>
-        <button class="tab-btn" data-tab="diffusion-tab">🌊 세상을 잇다</button>
+        <button class="tab-btn active" data-tab="matrix-tab">📊 전략 매트릭스</button>
+        <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
+        <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP10</button>
+        <button class="tab-btn" data-tab="cluster-tab">🧩 클러스터 맵</button>
+        <button class="tab-btn" data-tab="diffusion-tab">🌊 분야 확산</button>
     </nav>
 
     <!-- 매트릭스 탭 -->
@@ -26,20 +26,21 @@
             <h3>2026 키워드 포지셔닝</h3>
 
             <!-- 키워드 필터 토글 -->
-            <button id="keyword-filter-btn" class="filter-toggle">✅ 키워드 필터 ON</button>
-
-            <div class="matrix-wrapper">
-                <div class="axis-label y-label">↑ 성장률 (Growth Rate)</div>
-                <div class="axis-label x-label">예측 빈도 (Frequency) →</div>
-
-                <div class="matrix-grid">
-                    <div class="quad q2">신규 유망 (Low Freq / High Growth)</div>
-                    <div class="quad q1">핵심 전략 (High Freq / High Growth)</div>
-                    <div class="quad q4">특화/정체 (Low Freq / Low Growth)</div>
-                    <div class="quad q3">성숙/유지 (High Freq / Low Growth)</div>
+            <div style="display: flex; gap: 15px; align-items: center; margin-bottom: 15px; flex-wrap: wrap;">
+                <button id="keyword-filter-btn" class="filter-toggle">✅ 키워드 필터 ON</button>
+                
+                <!-- 키워드 개수 슬라이더 (필터 OFF 시만 표시) -->
+                <div id="keyword-limit-control" style="display: none; flex: 1; min-width: 300px;">
+                    <label for="keyword-limit-slider" style="font-size: 13px; color: #666; margin-right: 10px;">
+                        표시 개수: <strong id="keyword-limit-value">50</strong>개
+                    </label>
+                    <input type="range" id="keyword-limit-slider" min="20" max="200" value="50" step="10" 
+                           style="width: 200px; vertical-align: middle;">
                 </div>
-                <div id="matrix-points"></div>
             </div>
+
+            <!-- Plotly 산점도로 변경 -->
+            <div id="matrix-scatter" style="width: 100%; height: 600px; border: 2px solid #333; border-radius: 12px; background: white;"></div>
         </div>
     </div>
 

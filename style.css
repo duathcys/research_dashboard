@@ -26,23 +26,62 @@ body {
 /* 카드 */
 .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
-/* 매트릭스 */
-.matrix-wrapper { position: relative; width: 100%; height: 500px; margin-top: 30px; border: 2px solid #333; border-radius: 12px; overflow: hidden; }
-.matrix-grid { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr; width: 100%; height: 100%; position: absolute; }
-.quad { display: flex; align-items: flex-start; justify-content: center; padding: 10px; font-weight: bold; font-size: 14px; color: #666; opacity: 0.6; }
-.q2 { background: var(--q2-bg); border-right: 1px dashed #ccc; border-bottom: 1px dashed #ccc; }
-.q1 { background: var(--q1-bg); border-bottom: 1px dashed #ccc; color: #d63031; }
-.q4 { background: var(--q4-bg); border-right: 1px dashed #ccc; }
-.q3 { background: var(--q3-bg); }
+/* Plotly 산점도 */
+#matrix-scatter {
+    background: white;
+    border-radius: 12px;
+}
 
-/* 포인트 */
-.point { position: absolute; background: var(--primary); color: white; padding: 5px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; transform: translate(-50%, 50%); box-shadow: 0 2px 8px rgba(0,122,255,0.4); z-index: 10; white-space: nowrap; transition: 0.3s; cursor: pointer; }
-.point.filtered { background: var(--point-filtered); box-shadow: 0 2px 10px rgba(255,140,0,0.5); }
+/* 키워드 개수 슬라이더 */
+#keyword-limit-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    border-radius: 3px;
+    background: #e0e0e0;
+    outline: none;
+    transition: all 0.3s;
+}
 
-/* 축 */
-.axis-label { position: absolute; font-weight: bold; font-size: 13px; color: #333; }
-.y-label { top: -25px; left: -10px; }
-.x-label { bottom: -30px; right: 0; }
+#keyword-limit-slider:hover {
+    background: #d0d0d0;
+}
+
+#keyword-limit-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#keyword-limit-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
+}
+
+#keyword-limit-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--primary);
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+}
+
+#keyword-limit-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+    box-shadow: 0 2px 8px rgba(0, 122, 255, 0.4);
+}
+
+#keyword-limit-value {
+    color: var(--primary);
+    font-size: 14px;
+}
 
 /* 리스트 */
 .list-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
@@ -68,8 +107,7 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 /* 반응형 */
 @media (max-width: 768px) {
     .list-container { grid-template-columns: 1fr; }
-    .matrix-wrapper { height: 400px; }
-    .point { font-size: 11px; padding: 4px 10px; }
+    #matrix-scatter { height: 450px !important; }
 }
 
 /* ================================ */

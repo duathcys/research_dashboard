@@ -40,16 +40,18 @@ Papa.parse("all_keywords_co_keywords_by_year_long_top10.csv", {
 
 // ================================
 // 2️⃣ 메인 키워드 CSV 로드 (매트릭스 & 리스트)
-Papa.parse("2026년_키워드_성장률(임계값0).csv", {
+Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
     download: true,
     header: true,
     dynamicTyping: true,
     complete: function(results) {
         const data = results.data;
-        const matrix = document.getElementById('matrix-points');
         const gList = document.getElementById('growth-list');
         const dList = document.getElementById('decline-list');
         const filterBtn = document.getElementById('keyword-filter-btn');
+        const limitSlider = document.getElementById('keyword-limit-slider');
+        const limitValue = document.getElementById('keyword-limit-value');
+        const limitControl = document.getElementById('keyword-limit-control');
 
         const allowedKeywords = [
             "rights","covid-19","artificial intelligence","korea","protection",
@@ -60,53 +62,191 @@ Papa.parse("2026년_키워드_성장률(임계값0).csv", {
 
         const fullData = data.filter(item => item.KYWD && item.Growth_rate !== 0);
         let filterOn = true;
+        let keywordLimit = 50;
 
         // ================================
-        // 화면 렌더링 함수
-        function render(dataToRender){
-            matrix.innerHTML = '';
+        // Plotly 산점도 렌더링 함수
+        function renderScatterPlot(dataToRender){
+            // 데이터 분류
+            const filteredData = filterOn 
+                ? dataToRender.filter(item => allowedKeywords.includes(item.KYWD))
+                : dataToRender.slice(0, keywordLimit);
+            
+            const highlightData = filteredData.filter(item => allowedKeywords.includes(item.KYWD));
+            const normalData = filteredData.filter(item => !allowedKeywords.includes(item.KYWD));
+            
+            const traces = [];
+            
+            // 일반 키워드 (회색)
+            if (normalData.length > 0) {
+                traces.push({
+                    x: normalData.map(item => item.pred_freq_2026),
+                    y: normalData.map(item => item.Growth_rate),
+                    text: normalData.map(item => item.KYWD),
+                    mode: 'markers+text',
+                    type: 'scatter',
+                    name: '일반 키워드',
+                    marker: {
+                        size: 10,
+                        color: '#999',
+                        opacity: 0.6,
+                        line: { width: 1, color: 'white' }
+                    },
+                    textposition: 'top center',
+                    textfont: { size: 9, color: '#666' },
+                    hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>'
+                });
+            }
+            
+            // 강조 키워드 (주황색)
+            if (highlightData.length > 0) {
+                traces.push({
+                    x: highlightData.map(item => item.pred_freq_2026),
+                    y: highlightData.map(item => item.Growth_rate),
+                    text: highlightData.map(item => item.KYWD),
+                    mode: 'markers+text',
+                    type: 'scatter',
+                    name: '주요 키워드',
+                    marker: {
+                        size: 12,
+                        color: '#ff8c00',
+                        opacity: 0.8,
+                        line: { width: 2, color: 'white' }
+                    },
+                    textposition: 'top center',
+                    textfont: { size: 10, color: '#ff8c00', family: 'Pretendard' },
+                    hovertemplate: '<b>%{text}</b><br>빈도: %{x}<br>성장률: %{y}%<extra></extra>',
+                    customdata: highlightData.map(item => item.KYWD)
+                });
+            }
+            
+            const layout = {
+                title: {
+                    text: '2026 키워드 포지셔닝 맵',
+                    font: { size: 18, family: 'Pretendard' }
+                },
+                xaxis: {
+                    title: '예측 빈도 (Frequency) →',
+                    gridcolor: '#e0e0e0',
+                    zeroline: true
+                },
+                yaxis: {
+                    title: '↑ 성장률 (Growth Rate %)',
+                    gridcolor: '#e0e0e0',
+                    zeroline: true,
+                    zerolinecolor: '#999',
+                    zerolinewidth: 2
+                },
+                hovermode: 'closest',
+                showlegend: true,
+                legend: {
+                    x: 1,
+                    y: 1,
+                    xanchor: 'right',
+                    yanchor: 'top'
+                },
+                margin: { t: 60, l: 60, r: 100, b: 60 },
+                height: 600,
+                plot_bgcolor: '#fafafa',
+                shapes: [
+                    // 4분면 배경 (반투명)
+                    {
+                        type: 'rect',
+                        xref: 'paper', yref: 'y',
+                        x0: 0, y0: 0, x1: 0.5, y1: 100,
+                        fillcolor: '#f0f7ff',
+                        opacity: 0.3,
+                        layer: 'below',
+                        line: { width: 0 }
+                    },
+                    {
+                        type: 'rect',
+                        xref: 'paper', yref: 'y',
+                        x0: 0.5, y0: 0, x1: 1, y1: 100,
+                        fillcolor: '#fff5f5',
+                        opacity: 0.3,
+                        layer: 'below',
+                        line: { width: 0 }
+                    }
+                ],
+                annotations: [
+                    {
+                        text: '신규 유망<br>(Low Freq / High Growth)',
+                        xref: 'paper', yref: 'paper',
+                        x: 0.25, y: 0.95,
+                        xanchor: 'center',
+                        showarrow: false,
+                        font: { size: 11, color: '#666' },
+                        opacity: 0.6
+                    },
+                    {
+                        text: '핵심 전략<br>(High Freq / High Growth)',
+                        xref: 'paper', yref: 'paper',
+                        x: 0.75, y: 0.95,
+                        xanchor: 'center',
+                        showarrow: false,
+                        font: { size: 11, color: '#d63031' },
+                        opacity: 0.6
+                    },
+                    {
+                        text: '특화/정체<br>(Low Freq / Low Growth)',
+                        xref: 'paper', yref: 'paper',
+                        x: 0.25, y: 0.05,
+                        xanchor: 'center',
+                        showarrow: false,
+                        font: { size: 11, color: '#666' },
+                        opacity: 0.6
+                    },
+                    {
+                        text: '성숙/유지<br>(High Freq / Low Growth)',
+                        xref: 'paper', yref: 'paper',
+                        x: 0.75, y: 0.05,
+                        xanchor: 'center',
+                        showarrow: false,
+                        font: { size: 11, color: '#666' },
+                        opacity: 0.6
+                    }
+                ]
+            };
+            
+            const config = {
+                responsive: true,
+                displayModeBar: true,
+                modeBarButtonsToRemove: ['lasso2d', 'select2d'],
+                displaylogo: false
+            };
+            
+            Plotly.newPlot('matrix-scatter', traces, layout, config);
+            
+            // 클릭 이벤트
+            document.getElementById('matrix-scatter').on('plotly_click', function(data) {
+                const keyword = data.points[0].text;
+                console.log("클릭한 키워드:", keyword);
+                
+                // 연관어 탭으로 이동
+                document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.getElementById('relation-tab').classList.add('active');
+                document.querySelector('button[data-tab="relation-tab"]').classList.add('active');
+
+                // SelectBox 선택
+                const keySelect = document.getElementById('key-select');
+                keySelect.value = keyword;
+                const yearSelect = document.getElementById('relation-year-select');
+                const selectedYear = yearSelect.value;
+                renderRelationCards(keyword, selectedYear);
+                renderCoKeywordHeatmap(keyword);
+            });
+            
+            renderLists(filteredData);
+        }
+
+        // ================================
+        // 리스트 렌더링 함수
+        function renderLists(dataToRender){
             gList.innerHTML = '';
             dList.innerHTML = '';
 
-            dataToRender.forEach(item => {
-                const dot = document.createElement('div');
-                dot.className = 'point';
-                dot.innerText = item.KYWD;
-
-                // 클릭 이벤트
-                dot.addEventListener('click', () => {
-                    console.log("클릭한 키워드:", item.KYWD);
-                    // 연관어 탭으로 이동
-                    document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
-                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                    document.getElementById('relation-tab').classList.add('active');
-                    document.querySelector('button[data-tab="relation-tab"]').classList.add('active');
-
-                    // SelectBox 선택
-                    const keySelect = document.getElementById('key-select');
-                    keySelect.value = item.KYWD;
-                    const yearSelect = document.getElementById('relation-year-select');
-                    const selectedYear = yearSelect.value;
-                    renderRelationCards(item.KYWD, selectedYear);
-                    
-                    // 🔥 히트맵도 업데이트
-                    renderCoKeywordHeatmap(item.KYWD);
-                });
-
-                // 필터 ON 시 색상
-                if(filterOn && allowedKeywords.includes(item.KYWD)){
-                    dot.classList.add('filtered');
-                }
-
-                // 위치 계산
-                let xPos = Math.min((item.pred_freq_2026 / 200) * 100, 95);
-                let yPos = 50 + item.Growth_rate;
-                dot.style.left = xPos + "%";
-                dot.style.bottom = Math.max(Math.min(yPos, 95), 5) + "%";
-                matrix.appendChild(dot);
-            });
-
-            // 리스트 렌더링
             const growthData = dataToRender.filter(item => item.Growth_rate > 0)
                 .sort((a,b) => b.Growth_rate - a.Growth_rate);
             const declineData = dataToRender.filter(item => item.Growth_rate < 0)
@@ -126,7 +266,7 @@ Papa.parse("2026년_키워드_성장률(임계값0).csv", {
 
         // ================================
         // 초기 렌더링
-        render(fullData.filter(item => allowedKeywords.includes(item.KYWD)));
+        renderScatterPlot(fullData);
 
         // 필터 토글
         filterBtn.addEventListener('click', () => {
@@ -134,32 +274,66 @@ Papa.parse("2026년_키워드_성장률(임계값0).csv", {
             if(filterOn){
                 filterBtn.classList.add('active');
                 filterBtn.innerText = '✅ 키워드 필터 ON';
-                render(fullData.filter(item => allowedKeywords.includes(item.KYWD)));
+                limitControl.style.display = 'none';
             } else {
                 filterBtn.classList.remove('active');
                 filterBtn.innerText = '⚪ 키워드 필터 OFF';
-                render(fullData);
+                limitControl.style.display = 'flex';
+            }
+            renderScatterPlot(fullData);
+        });
+
+        // 슬라이더 이벤트
+        limitSlider.addEventListener('input', (e) => {
+            keywordLimit = parseInt(e.target.value);
+            limitValue.textContent = keywordLimit;
+            if (!filterOn) {
+                renderScatterPlot(fullData);
             }
         });
 
-        // 리스트 정렬
+        // 리스트 정렬 (토글 기능 추가)
+        const sortStates = {
+            'growth-value': 'desc',
+            'growth-name': 'asc',
+            'decline-abs': 'desc',
+            'decline-name': 'asc'
+        };
+
         document.querySelectorAll('.sort-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 const listId = btn.dataset.list;
                 const type = btn.dataset.type;
+                const stateKey = `${listId}-${type}`;
                 const ul = document.getElementById(listId + '-list');
                 const items = Array.from(ul.children);
+
+                // 토글
+                sortStates[stateKey] = sortStates[stateKey] === 'desc' ? 'asc' : 'desc';
+                const isDesc = sortStates[stateKey] === 'desc';
 
                 items.sort((a,b) => {
                     const aVal = parseFloat(a.querySelector('b').innerText);
                     const bVal = parseFloat(b.querySelector('b').innerText);
-                    if(type === 'value') return bVal - aVal;
-                    if(type === 'abs') return Math.abs(bVal) - Math.abs(aVal);
-                    if(type === 'name') return a.querySelector('span').innerText.localeCompare(b.querySelector('span').innerText);
+                    
+                    if(type === 'value' || type === 'abs') {
+                        const compareVal = type === 'abs' ? Math.abs(bVal) - Math.abs(aVal) : bVal - aVal;
+                        return isDesc ? compareVal : -compareVal;
+                    }
+                    if(type === 'name') {
+                        const compareVal = a.querySelector('span').innerText.localeCompare(b.querySelector('span').innerText);
+                        return isDesc ? -compareVal : compareVal;
+                    }
                 });
 
                 ul.innerHTML = '';
                 items.forEach(li => ul.appendChild(li));
+
+                // 버튼 텍스트 업데이트
+                const arrow = isDesc ? '↓' : '↑';
+                if (type === 'value') btn.textContent = `성장률 ${arrow}`;
+                else if (type === 'abs') btn.textContent = `쇠퇴율 ${arrow}`;
+                else if (type === 'name') btn.textContent = `이름 ${arrow}`;
             });
         });
 
