@@ -446,120 +446,100 @@ Papa.parse("2026년_키워드_성장률2(임계값0).csv", {
     }
 });
 
-// ================================
-// 🎬 전광판 초기화 (HOT & NEW 키워드)
-// ================================
+// 🎬 전광판 초기화 (안내 문구 추가 버전)
 function initKeywordTicker() {
-    // 성장률 > 0인 주요 키워드 필터링
-    const growingKeywords = mainKeywordsData.filter(k => k.Growth_rate > 0);
-    
-    console.log('📊 성장하는 주요 키워드:', growingKeywords.length, '개');
-    
-    if (growingKeywords.length === 0) {
-        console.log('⚠️ 성장하는 키워드가 없습니다.');
-        return;
-    }
-
-    // 각 키워드의 연관어 데이터 분석
-    const tickerData = growingKeywords.map(keyword => {
-        const keywordCoData = coKeywordData.filter(d => 
-            d.Target_Keyword === keyword.KYWD
-        );
-        
-        // 연도별 빈도 계산
-        const yearlyFreq = {};
-        keywordCoData.forEach(d => {
-            if (!yearlyFreq[d.YEAR]) yearlyFreq[d.YEAR] = 0;
-            yearlyFreq[d.YEAR] += d.Count;
-        });
-        
-        const freq2021 = yearlyFreq[2021] || 0;
-        const freq2022 = yearlyFreq[2022] || 0;
-        const freq2023 = yearlyFreq[2023] || 0;
-        const freq2024 = yearlyFreq[2024] || 0;
-        const freq2025 = yearlyFreq[2025] || 0;
-        
-        const has2025 = freq2025 > 0;
-        const has2024 = freq2024 > 0;
-        const has2023 = freq2023 > 0;
-        const hasPast = freq2021 + freq2022 + freq2023 > 0;
-        
-        let badge = '';
-        let badgeReason = '';
-        
-        // NEW: 2025년에만 등장 (과거 없음)
-        if (has2025 && !hasPast && !has2024) {
-            badge = 'new';
-            badgeReason = '2025년 신규 등장';
-        } 
-        // HOT: 최근 2년 연속 (2024+2025)
-        else if (has2025 && has2024) {
-            badge = 'hot';
-            badgeReason = '2024-2025 연속 등장';
-        }
-        // RISING: 고성장 (50% 이상)
-        else if (keyword.Growth_rate > 50) {
-            badge = 'rising';
-            badgeReason = `성장률 ${keyword.Growth_rate.toFixed(1)}%`;
-        }
-        // 그 외 조건: 2025년에 등장하거나 성장률이 높으면 rising
-        else if (has2025 || keyword.Growth_rate > 30) {
-            badge = 'rising';
-            badgeReason = `성장률 ${keyword.Growth_rate.toFixed(1)}%`;
-        }
-        
-        console.log(`🔍 ${keyword.KYWD}: ${badge || '배지 없음'} (${badgeReason})`);
-        console.log(`   📅 연도별: 2021=${freq2021}, 2022=${freq2022}, 2023=${freq2023}, 2024=${freq2024}, 2025=${freq2025}`);
-        
-        return {
-            keyword: keyword.KYWD,
-            growthRate: keyword.Growth_rate,
-            badge: badge,
-            freq2025: freq2025,
-            yearlyFreq: yearlyFreq
-        };
-    }).filter(k => k.badge); // 배지가 있는 것만
-
-    console.log('🎬 전광판에 표시될 키워드:', tickerData.length, '개');
-    tickerData.forEach((item, idx) => {
-        console.log(`${idx + 1}. [${item.badge.toUpperCase()}] ${item.keyword} (+${item.growthRate.toFixed(1)}%)`);
-    });
-
-    // 배지 우선순위 정렬 (new > hot > rising)
-    const badgePriority = { 'new': 1, 'hot': 2, 'rising': 3 };
-    tickerData.sort((a, b) => {
-        const priorityDiff = badgePriority[a.badge] - badgePriority[b.badge];
-        if (priorityDiff !== 0) return priorityDiff;
-        return b.growthRate - a.growthRate;
-    });
-
-    // 전광판 HTML 생성
     const tickerWrapper = document.querySelector('.ticker-wrapper');
-    if (!tickerWrapper) {
-        console.log('⚠️ 전광판 요소를 찾을 수 없습니다.');
-        return;
+    if (!tickerWrapper) return;
+
+    // 전광판 위에 안내 문구 삽입 (처음 한 번만)
+    if (!document.querySelector('.ticker-guide')) {
+        const guide = document.createElement('div');
+        guide.className = 'ticker-guide';
+        guide.innerHTML = '<span>💡 키워드를 클릭하면 <b>[맥락 잇다]</b> 탭의 상세 분석으로 이동합니다</span>';
+        tickerWrapper.parentNode.insertBefore(guide, tickerWrapper);
     }
 
-    const tickerHTML = tickerData.map(item => {
-        const badgeText = {
-            'hot': '🔥 HOT',
-            'new': '✨ NEW',
-            'rising': '📈 RISING'
-        }[item.badge];
-        
-        return `
-            <div class="ticker-item">
-                <span class="ticker-badge ${item.badge}">${badgeText}</span>
-                <strong>${item.keyword}</strong>
-                <span style="opacity: 0.8;">+${item.growthRate.toFixed(1)}%</span>
-            </div>
-        `;
-    }).join('');
+    let tickerItems = [];
+    const allTargetKeywords = [...new Set(coKeywordData.map(d => d.Target_Keyword))];
 
-    // 2번 반복하여 무한 스크롤 효과
+    allTargetKeywords.forEach(target => {
+        const filtered = coKeywordData.filter(d => d.Target_Keyword === target);
+        const yearMap = {};
+        filtered.forEach(row => {
+            if (!yearMap[row.CoKeyword]) yearMap[row.CoKeyword] = {};
+            yearMap[row.CoKeyword][row.YEAR] = row.Count;
+        });
+
+        Object.keys(yearMap).forEach(cok => {
+            const counts = yearMap[cok];
+            const d21=counts[2021]||0, d22=counts[2022]||0, d23=counts[2023]||0, d24=counts[2024]||0, d25=counts[2025]||0;
+            
+            const isNew = d25 > 0 && !d24 && !d23 && !(d21 || d22);
+            const isHot = (d23 > 0 && d24 > 0 && d25 > 0) || ((d21 || d22) && !d23 && d25 > 0);
+
+            if (isNew || isHot) {
+                const growthInfo = mainKeywordsData.find(m => m.KYWD === cok);
+                const growthRate = growthInfo ? growthInfo.Growth_rate : 0;
+
+                if (growthRate > 0) {
+                    tickerItems.push({
+                        target: target, word: cok, type: isNew ? 'NEW' : 'HOT',
+                        badge: isNew ? 'new' : 'hot', growth: growthRate
+                    });
+                }
+            }
+        });
+    });
+
+    const tickerHTML = tickerItems.map(item => `
+        <div class="ticker-item" onclick="navigateToHeatmap('${item.target}', '${item.word}')">
+            <span class="bridge-target">${item.target.toUpperCase()}</span>
+            <span class="bridge-arrow">➔</span>
+            <span class="ticker-badge ${item.badge}">${item.type}</span>
+            <strong class="bridge-word">${item.word}</strong>
+            <span class="bridge-growth">+${item.growth.toFixed(1)}%</span>
+        </div>
+    `).join('');
+
     tickerWrapper.innerHTML = tickerHTML + tickerHTML;
-    
-    console.log('✅ 전광판 초기화 완료!');
+}
+
+// 🚀 다른 탭에서도 작동하는 탭 이동 및 강조 함수
+function navigateToHeatmap(targetKw, coKw) {
+    // 1. "맥락 잇다" 탭 버튼 클릭 (HTML data-tab="relation-tab" 기준)
+    const relationTabBtn = document.querySelector('.tab-btn[data-tab="relation-tab"]');
+    if (relationTabBtn) {
+        relationTabBtn.click(); // 기존 탭 전환 이벤트 리스너 실행됨
+    }
+
+    // 2. 탭 전환 후 요소들을 찾기 위한 지연 시간
+    setTimeout(() => {
+        // 그래프 리사이즈 강제 실행
+        window.dispatchEvent(new Event('resize'));
+
+        // 3. 셀렉트 박스 변경 (ID: key-select)
+        const select = document.getElementById('key-select');
+        if (select) {
+            select.value = targetKw;
+            select.dispatchEvent(new Event('change'));
+        }
+
+        // 4. 데이터 렌더링 후 행 강조
+        setTimeout(() => {
+            const rows = document.querySelectorAll('.heatmap-table tbody tr');
+            rows.forEach(row => {
+                if (row.cells[0] && row.cells[0].innerText.trim() === coKw) {
+                    row.style.backgroundColor = '#fff3cd'; 
+                    row.style.outline = '2px solid #ffeb3b';
+                    row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    setTimeout(() => {
+                        row.style.backgroundColor = '';
+                        row.style.outline = 'none';
+                    }, 3000);
+                }
+            });
+        }, 400); 
+    }, 200);
 }
 
 // ================================

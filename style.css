@@ -62,19 +62,39 @@ header h1 {
     100% { transform: translateX(-50%); }
 }
 
+/* 전광판 브릿지 디자인 */
 .ticker-item {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 20px;
-    margin: 0 15px;
-    background: rgba(255,255,255,0.25);
-    border-radius: 20px;
-    color: white;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+    border-radius: 8px;
+    padding: 5px 15px !important;
+}
+
+.ticker-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: scale(1.02);
+}
+
+.bridge-target {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
     font-weight: 600;
-    font-size: 14px;
-    border: 2px solid rgba(255,255,255,0.3);
-    flex-shrink: 0;
+}
+
+.bridge-arrow {
+    color: #ffeb3b;
+    margin: 0 5px;
+}
+
+.bridge-word {
+    font-weight: 700;
+    color: #fff;
+}
+
+.bridge-growth {
+    font-size: 0.8rem;
+    color: #00ff88;
+    margin-left: 4px;
 }
 
 .ticker-badge {
@@ -97,6 +117,30 @@ header h1 {
 .ticker-badge.rising {
     background: #ffa502;
     color: white;
+}
+
+/* 전광판 안내 문구 */
+.ticker-guide {
+    text-align: center;
+    margin-bottom: 8px;
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.ticker-guide b {
+    color: #ffeb3b;
+    font-weight: 600;
+}
+
+/* 마우스 올렸을 때 클릭 가능함을 시각화 */
+.ticker-item {
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.ticker-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
 }
 
 /* 탭 메뉴 */
