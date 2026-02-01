@@ -904,7 +904,7 @@ function renderClusterBubbleChart(filterCategory = 'all') {
         paper_bgcolor: 'white',
         annotations: [
             {
-                text: '💡 버블이 클수록 2025년 연구 빈도가 높습니다',
+                text: '',
                 xref: 'paper',
                 yref: 'paper',
                 x: 0.5,
