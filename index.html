@@ -71,21 +71,25 @@
     <!-- 연관어 TOP10 탭 -->
     <div id="relation-tab" class="tab-item">
         <div class="card">
-            <h3>연관어 TOP10 (연도별)</h3>
+            <h3>🗂️ 연관어 TOP10</h3>
 
             <!-- 키워드 + 연도 선택 -->
             <div class="keyword-selector">
-                <label for="key-select">키워드 선택: </label>
-                <select id="key-select"></select>
+                <div class="select-group">
+                    <label for="key-select">키워드 선택</label>
+                    <select id="key-select"></select>
+                </div>
 
-                <label for="relation-year-select">연도 선택: </label>
-                <select id="relation-year-select">
-                    <option value="2021">2021</option>
-                    <option value="2022">2022</option>
-                    <option value="2023">2023</option>
-                    <option value="2024">2024</option>
-                    <option value="2025">2025</option>
-                </select>
+                <div class="select-group">
+                    <label for="relation-year-select">연도 선택</label>
+                    <select id="relation-year-select">
+                        <option value="2021">2021</option>
+                        <option value="2022">2022</option>
+                        <option value="2023">2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                    </select>
+                </div>
             </div>
 
             <!-- 카드형 그리드 -->
@@ -95,7 +99,7 @@
 
             <!-- 히트맵 + 라인차트 -->
             <section class="card relation-analysis">
-                <h3>🔍 주요 키워드별 연관어 변화 추이 (2022-2026)</h3>
+                <h3>🔍 주요 키워드별 연관어 변화 추이 (2021-2025)</h3>
                 <p class="guide-text">
                     ※ 칸이 비어있는 연도는 해당 키워드가 연관 TOP 10에 포함되지 않은 시기입니다.
                 </p>
@@ -104,13 +108,13 @@
                     <table class="heatmap-table">
                         <thead>
                             <tr>
-                                <th>연관 키워드</th>
+                                <th class="kw-col">연관 키워드</th>
+                                <th>2021</th>
                                 <th>2022</th>
                                 <th>2023</th>
                                 <th>2024</th>
                                 <th>2025</th>
-                                <th class="current-year">2026 (예측)</th>
-                                <th>유형</th>
+                                <th class="type-col">유형</th>
                             </tr>
                         </thead>
                         <tbody id="heatmap-body">
@@ -119,9 +123,9 @@
                     </table>
                 </div>
 
-                <div id="linechart-container" style="margin-top:20px;">
-                    <h4>선택 키워드 연도별 변화</h4>
-                    <div id="linechart" style="height: 350px;"></div>
+                <div id="linechart-container">
+                    <h3>📈 선택 키워드 연도별 변화</h3>
+                    <div id="linechart"></div>
                 </div>
             </section>
 
@@ -139,7 +143,6 @@
 </div>
 <script src="https://cdn.plot.ly/plotly-2.29.1.min.js"></script>
 <script src="script.js"></script>
-<script src="heatmap.js"></script>
 
 </body>
 </html>

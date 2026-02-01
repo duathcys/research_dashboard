@@ -73,28 +73,74 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 }
 
 /* ================================ */
-/* 연관어 TOP5 카드형 그리드 */
+/* 연관어 선택 SelectBox 디자인 개선 */
+/* ================================ */
+.keyword-selector {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 12px;
+    flex-wrap: wrap;
+}
+
+.select-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    min-width: 200px;
+}
+
+.select-group label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+.select-group select {
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'Pretendard', sans-serif;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s;
+    outline: none;
+}
+
+.select-group select:hover {
+    border-color: var(--primary);
+}
+
+.select-group select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+/* ================================ */
+/* 연관어 TOP10 카드형 그리드 */
 /* ================================ */
 .relation-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 15px;
     margin-top: 20px;
 }
 
 .rel-card {
     background: white;
-    border-radius: 16px;
+    border-radius: 15px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
+    padding: 15px;
     transition: 0.3s;
     cursor: pointer;
 }
 
 .rel-card:hover {
-    transform: translateY(-5px);
+    transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.15);
 }
 
@@ -117,17 +163,6 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     color: #333;
 }
 
-.rel-card .badge {
-    font-size: 11px;
-    font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 8px;
-    text-transform: uppercase;
-}
-
-.rel-card .badge.hot { background: #ff6b6b; color: white; }
-.rel-card .badge.new { background: #1dd1a1; color: white; }
-
 .rel-card .card-body {
     display: flex;
     flex-direction: column;
@@ -137,54 +172,15 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 .rel-card .count-val {
     font-weight: bold;
     font-size: 18px;
-    margin-bottom: 4px;
+    color: #007aff;
 }
-
-.rel-card .growth-label {
-    font-size: 12px;
-    color: #666;
-}
-
-/* 반응형 카드 */
-@media (max-width: 600px) {
-    .relation-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-/* 연관어 카드 그리드 */
-.relation-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-    gap: 15px;
-    margin-top: 20px;
-}
-
-/* 개별 카드 */
-.rel-card {
-    background: white;
-    border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    padding: 15px;
-    transition: 0.3s;
-    cursor: pointer;
-}
-.rel-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-.card-header { display: flex; align-items: center; gap: 5px; margin-bottom: 8px; font-weight: bold; }
-.rank { color: var(--primary); font-size: 14px; }
-.word { font-size: 13px; color: #333; }
-.card-body { font-size: 12px; color: #555; }
-.count-val { font-weight: bold; font-size: 14px; color: #007aff; }
 
 /* ================================ */
 /* 연관어 TOP10 히트맵 + 라인차트 */
 /* ================================ */
 .relation-analysis {
     margin-top: 30px;
-    padding: 20px;
+    padding: 25px;
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -197,15 +193,16 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 }
 
 .relation-analysis .guide-text {
-    font-size: 12px;
+    font-size: 13px;
     color: #666;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 /* 히트맵 테이블 */
 .heatmap-wrapper {
     width: 100%;
     overflow-x: auto;
+    margin-bottom: 30px;
 }
 
 .heatmap-table {
@@ -214,14 +211,12 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     border-spacing: 0;
     font-size: 13px;
     text-align: center;
-    table-layout: fixed;
 }
 
 .heatmap-table th,
 .heatmap-table td {
-    padding: 10px 6px;
-    border: 1px solid #eee;
-    min-width: 60px;
+    padding: 12px 8px;
+    border: 1px solid #e8e8e8;
     vertical-align: middle;
     transition: all 0.2s;
 }
@@ -230,19 +225,40 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     background: #f5f6fa;
     font-weight: 600;
     color: #333;
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-/* 값 수준별 색상 (그라데이션 느낌) */
+/* 키워드 열 너비 */
+.heatmap-table th.kw-col,
+.heatmap-table td.kw-name {
+    width: 200px;
+    text-align: left;
+    padding-left: 15px;
+}
+
+/* 연도 열 너비 */
+.heatmap-table th:not(.kw-col):not(.type-col) {
+    width: 90px;
+}
+
+/* 유형 열 너비 */
+.heatmap-table th.type-col {
+    width: 120px;
+}
+
+/* 값 수준별 색상 */
 .level-0 { background: #f9f9f9; color: #ccc; }
-.level-1 { background: #dbefff; color: #333; }
-.level-2 { background: #a6d4ff; color: #333; }
-.level-3 { background: #4da6ff; color: white; }
-.level-4 { background: #007aff; color: white; }
-.level-5 { background: #0056b3; color: white; }
+.level-1 { background: #e3f2fd; color: #1976d2; }
+.level-2 { background: #bbdefb; color: #1565c0; }
+.level-3 { background: #64b5f6; color: white; }
+.level-4 { background: #2196f3; color: white; }
+.level-5 { background: #1976d2; color: white; font-weight: 600; }
 
 /* 배지 */
 .badge {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: bold;
     padding: 2px 6px;
     border-radius: 8px;
@@ -255,73 +271,114 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 
 /* 키워드 유형 */
 .type {
-    font-size: 12px;
+    font-size: 11px;
     font-weight: bold;
-    padding: 2px 6px;
-    border-radius: 6px;
-    text-transform: capitalize;
+    padding: 4px 10px;
+    border-radius: 999px;
+    text-transform: uppercase;
 }
 
-.type.comeback { background: #ffe066; color: #333; }
-.type.emerging { background: #70e000; color: white; }
-.type.core { background: #007aff; color: white; }
+.type.comeback { background: #fff3e0; color: #f57c00; }
+.type.emerging { background: #e8f5e9; color: #2e7d32; }
+.type.core { background: #e3f2fd; color: #1976d2; }
 
-/* 라인차트 */
+/* 라인차트 컨테이너 */
 #linechart-container {
-    margin-top: 20px;
+    margin-top: 30px;
+    padding: 25px;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+}
+
+#linechart-container h3 {
+    font-size: 16px;
+    margin-bottom: 20px;
+    color: #333;
+    font-weight: 600;
 }
 
 #linechart {
     width: 100%;
-    height: 350px;
+    height: 400px;
+    background: white;
+    border-radius: 8px;
 }
 
-/* 행 클릭 시 포인터 효과 */
-.kw-row { cursor: pointer; transition: background 0.2s; }
-.kw-row:hover { background: rgba(0, 122, 255, 0.05); }
+/* 행 클릭 시 효과 */
+.kw-row { 
+    cursor: pointer; 
+    transition: all 0.2s;
+}
+
+.kw-row:hover { 
+    background: rgba(0, 122, 255, 0.05);
+    transform: translateY(-1px);
+}
+
+.kw-row:hover .kw-name {
+    color: var(--primary);
+    font-weight: 600;
+}
+
+/* 키워드명 */
+.kw-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: all 0.2s;
+}
 
 /* 반응형 */
 @media (max-width: 768px) {
+    .keyword-selector {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .select-group {
+        min-width: 100%;
+    }
+    
+    .relation-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+    
     .heatmap-table th,
     .heatmap-table td {
-        padding: 6px 4px;
+        padding: 8px 4px;
         font-size: 12px;
-        min-width: 50px;
+    }
+    
+    .heatmap-table th.kw-col,
+    .heatmap-table td.kw-name {
+        width: 150px;
+        padding-left: 10px;
+    }
+    
+    .heatmap-table th:not(.kw-col):not(.type-col) {
+        width: 70px;
     }
 }
 
 @media (max-width: 480px) {
+    .relation-grid {
+        grid-template-columns: 1fr;
+    }
+    
     .heatmap-table th,
     .heatmap-table td {
-        padding: 4px 2px;
+        padding: 6px 2px;
         font-size: 11px;
-        min-width: 40px;
     }
-}
-
-
-/* 카드형 키워드 hover 라인차트 */
-.rel-card {
-    position: relative; /* 툴팁 위치 기준 */
-}
-
-/* 미니 라인차트 숨김 */
-.linechart-tooltip {
-    position: absolute;
-    top: -180px; /* 카드 위쪽 */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 250px;
-    height: 150px;
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-    padding: 10px;
-    z-index: 99;
-    display: none;
-}
-
-/* 카드 hover 시 표시 */
-.rel-card:hover .linechart-tooltip {
-    display: block;
+    
+    .heatmap-table th.kw-col,
+    .heatmap-table td.kw-name {
+        width: 120px;
+    }
+    
+    .heatmap-table th:not(.kw-col):not(.type-col) {
+        width: 60px;
+    }
 }
