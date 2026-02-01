@@ -504,37 +504,31 @@ function initKeywordTicker() {
     tickerWrapper.innerHTML = tickerHTML + tickerHTML;
 }
 
-// 🚀 다른 탭에서도 작동하는 탭 이동 및 강조 함수
+// 🚀 전광판 클릭 시 [탭 이동 + 데이터 변경 + 강조] 통합 함수
 function navigateToHeatmap(targetKw, coKw) {
-    // 1. "맥락 잇다" 탭 버튼 클릭 (HTML data-tab="relation-tab" 기준)
     const relationTabBtn = document.querySelector('.tab-btn[data-tab="relation-tab"]');
-    if (relationTabBtn) {
-        relationTabBtn.click(); // 기존 탭 전환 이벤트 리스너 실행됨
-    }
+    if (relationTabBtn) relationTabBtn.click();
 
-    // 2. 탭 전환 후 요소들을 찾기 위한 지연 시간
     setTimeout(() => {
-        // 그래프 리사이즈 강제 실행
         window.dispatchEvent(new Event('resize'));
 
-        // 3. 셀렉트 박스 변경 (ID: key-select)
         const select = document.getElementById('key-select');
         if (select) {
             select.value = targetKw;
             select.dispatchEvent(new Event('change'));
         }
 
-        // 4. 데이터 렌더링 후 행 강조
         setTimeout(() => {
             const rows = document.querySelectorAll('.heatmap-table tbody tr');
             rows.forEach(row => {
                 if (row.cells[0] && row.cells[0].innerText.trim() === coKw) {
-                    row.style.backgroundColor = '#fff3cd'; 
-                    row.style.outline = '2px solid #ffeb3b';
+                    // [수정] 빨간색 테두리와 애니메이션 클래스 추가
+                    row.classList.add('highlight-red-active');
                     row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    
+                    // 3초 후 강조 효과 제거
                     setTimeout(() => {
-                        row.style.backgroundColor = '';
-                        row.style.outline = 'none';
+                        row.classList.remove('highlight-red-active');
                     }, 3000);
                 }
             });

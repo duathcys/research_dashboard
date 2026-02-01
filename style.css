@@ -127,11 +127,6 @@ header h1 {
     color: rgba(255, 255, 255, 0.8);
 }
 
-.ticker-guide b {
-    color: #ffeb3b;
-    font-weight: 600;
-}
-
 /* 마우스 올렸을 때 클릭 가능함을 시각화 */
 .ticker-item {
     cursor: pointer;
@@ -141,6 +136,34 @@ header h1 {
 .ticker-item:hover {
     background: rgba(255, 255, 255, 0.15);
     transform: translateY(-2px);
+}
+
+/* 하이라이트 행 강조 스타일 */
+.highlight-red-active {
+    background-color: #fff1f1 !important; /* 아주 연한 빨강 배경 */
+    outline: 3px solid #ff0000 !important; /* 선명한 빨간색 테두리 */
+    outline-offset: -3px;
+    position: relative;
+    z-index: 10;
+    animation: blink-red 0.8s infinite alternate; /* 깜빡임 효과 */
+}
+
+/* 빨간색 테두리 깜빡임 애니메이션 */
+@keyframes blink-red {
+    from {
+        outline-color: #ff0000;
+        box-shadow: 0 0 5px rgba(255, 0, 0, 0.2);
+    }
+    to {
+        outline-color: #ff8888;
+        box-shadow: 0 0 15px rgba(255, 0, 0, 0.6);
+    }
+}
+
+/* 전광판 안내 문구 스타일도 빨간색 포인트 추가 */
+.ticker-guide b {
+    color: #ffeb3b;
+    font-weight: 600;
 }
 
 /* 탭 메뉴 */
