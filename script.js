@@ -849,7 +849,7 @@ const trendColors = [
     '#ec4899', '#14b8a6', '#f97316', '#6366f1', '#84cc16'
 ];
 
-fetch('cluster_trends.json')
+fetch('data/cluster_trends.json')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
@@ -1147,7 +1147,7 @@ document.getElementById('main-keyword-select')?.addEventListener('change', (e) =
 // ================================
 // 8️⃣ 분야 확산 기능
 // ================================
-fetch('field_diffusion.json')
+fetch('data/field_diffusion.json')
     .then(response => {
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
