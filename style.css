@@ -879,3 +879,43 @@ li .keyword-link:hover {
         min-height: 200px;
     }
 }
+
+/* style.css에 추가 */
+#cluster-bubble-chart,
+#diffusion-sankey,
+#field-distribution-chart,
+#diversity-chart,
+#cluster-trend-chart {
+    background: var(--chart-bg);
+    border-radius: 12px;
+    padding: 10px;
+    width: 100% !important;
+    font-family: 'Pretendard', sans-serif !important;
+    min-height: 400px; /* 🔧 최소 높이 추가 */
+}
+
+/* 각 차트별 구체적 높이 유지 */
+#cluster-bubble-chart {
+    min-height: 700px !important;
+    height: 700px !important;
+}
+
+#diffusion-sankey {
+    min-height: 650px !important;
+    height: 650px !important;
+}
+
+#field-distribution-chart {
+    min-height: 450px !important;
+    height: 450px !important;
+}
+
+#diversity-chart {
+    min-height: 350px !important;
+    height: 350px !important;
+}
+
+#cluster-trend-chart {
+    min-height: 500px !important;
+    height: 500px !important;
+}

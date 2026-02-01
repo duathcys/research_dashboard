@@ -17,14 +17,32 @@ const MAIN_KEYWORDS = [
     "management", "contract", "digital"
 ];
 
-// 탭 전환
+// 탭 전환 로직 - 가장 확실한 해결 방법
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const tabName = btn.dataset.tab;
+        
+        // 모든 탭 및 버튼 비활성화
         document.querySelectorAll('.tab-item').forEach(item => item.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(tabName).classList.add('active');
+        
+        // 선택한 탭 활성화
+        const targetTab = document.getElementById(tabName);
+        targetTab.classList.add('active');
         btn.classList.add('active');
+
+        // [중요] 탭이 활성화되어 display: block이 된 후 크기를 재계산해야 함
+        // 0.1초 정도의 아주 짧은 지연을 주어 렌더링이 완료된 후 실행
+        setTimeout(() => {
+            // 방법 A: 모든 Plotly 차트 강제 리사이즈
+            const plotlyCharts = document.querySelectorAll('.js-plotly-plot');
+            plotlyCharts.forEach(chart => {
+                Plotly.Plots.resize(chart);
+            });
+            
+            // 방법 B: 브라우저 전체에 리사이즈 이벤트 전달 (레이아웃 재정렬 트리거)
+            window.dispatchEvent(new Event('resize'));
+        }, 100); 
     });
 });
 
