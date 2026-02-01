@@ -5,6 +5,7 @@
 // 전역 변수
 let coKeywordData = []; // 연관어 데이터
 let clusterData = []; // 클러스터 트렌드 데이터
+let fieldDiffusionData = []; // 분야 확산 데이터
 
 // 탭 전환
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -442,10 +443,15 @@ function bindHeatmapClickEvents(keywordData) {
 
 // 클러스터 데이터 로드
 fetch('cluster_trends.json')
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
     .then(data => {
         clusterData = data.clusters;
-        console.log('✅ 클러스터 데이터 로드:', clusterData.length);
+        console.log('✅ 클러스터 데이터 로드:', clusterData.length, '개');
         
         // 초기 버블 차트 렌더링
         renderClusterBubbleChart();
@@ -455,6 +461,17 @@ fetch('cluster_trends.json')
     })
     .catch(error => {
         console.error('❌ cluster_trends.json 로드 실패:', error);
+        // 에러 메시지를 화면에 표시
+        const chartDiv = document.getElementById('cluster-bubble-chart');
+        if (chartDiv) {
+            chartDiv.innerHTML = `
+                <div style="padding: 40px; text-align: center; color: #999;">
+                    <h3>⚠️ 클러스터 데이터 로드 실패</h3>
+                    <p>cluster_trends.json 파일을 확인해주세요.</p>
+                    <p style="font-size: 12px; color: #ccc;">Error: ${error.message}</p>
+                </div>
+            `;
+        }
     });
 
 // 카테고리별 색상 매핑
@@ -466,53 +483,79 @@ const categoryColors = {
     'economy': '#FBC02D'     // 노란색
 };
 
-// 버블 차트 렌더링
+// 버블 차트 렌더링 (수정 버전)
 function renderClusterBubbleChart(filterCategory = 'all') {
+    if (!clusterData || clusterData.length === 0) {
+        console.error('❌ 클러스터 데이터가 없습니다');
+        return;
+    }
+    
     const filteredData = filterCategory === 'all' 
         ? clusterData 
         : clusterData.filter(c => c.category === filterCategory);
     
+    console.log('📊 필터링된 데이터 개수:', filteredData.length);
+    
     const traces = Object.keys(categoryColors).map(cat => {
         const catData = filteredData.filter(c => c.category === cat);
         
+        if (catData.length === 0) return null;
+        
         return {
-            x: catData.map(c => c.avgFreq),
-            y: catData.map(c => c.growthRate),
+            x: catData.map(c => c.avgFreq || 0),
+            y: catData.map(c => c.growthRate || 0),
             mode: 'markers',
             name: cat.charAt(0).toUpperCase() + cat.slice(1),
             marker: {
-                size: catData.map(c => Math.sqrt(c.total2025) * 3),
+                size: catData.map(c => {
+                    // 버블 크기 계산: 2025년 빈도에 비례, 최소 10 ~ 최대 80
+                    const baseSize = Math.sqrt(c.total2025 || 1);
+                    return Math.min(Math.max(baseSize * 2, 10), 80);
+                }),
                 color: categoryColors[cat],
-                opacity: 0.7,
+                opacity: 0.6,
                 line: {
-                    color: 'white',
-                    width: 2
-                }
+                    color: categoryColors[cat],
+                    width: 3
+                },
+                sizemode: 'diameter' // 지름 기준으로 크기 설정
             },
             text: catData.map(c => 
                 `<b>${c.label}</b><br>` +
-                `2025 빈도: ${c.total2025}<br>` +
-                `성장률: ${c.growthRate}%<br>` +
-                `평균: ${c.avgFreq}<br>` +
-                `연결: ${c.linkedMainKeywords.join(', ')}`
+                `📊 2025 빈도: ${c.total2025 || 0}건<br>` +
+                `📈 성장률: ${(c.growthRate || 0).toFixed(2)}%<br>` +
+                `📉 평균 빈도: ${(c.avgFreq || 0).toFixed(1)}건<br>` +
+                `🔗 연결 키워드: ${c.linkedMainKeywords ? c.linkedMainKeywords.join(', ') : '없음'}`
             ),
             hoverinfo: 'text',
             customdata: catData.map(c => c.clusterId)
         };
-    });
+    }).filter(trace => trace !== null);
+    
+    if (traces.length === 0) {
+        console.error('❌ 렌더링할 데이터가 없습니다');
+        return;
+    }
     
     const layout = {
         title: {
-            text: '클러스터 포지셔닝 맵 (2023-2025)',
-            font: { size: 18, family: 'Pretendard' }
+            text: '🧩 클러스터 포지셔닝 맵 (버블 크기 = 2025년 연구 빈도)',
+            font: { size: 18, family: 'Pretendard', color: '#333' }
         },
         xaxis: {
-            title: '평균 연구 빈도 (2023-2025)',
+            title: {
+                text: '평균 연구 빈도 (2023-2025) →',
+                font: { size: 14 }
+            },
             gridcolor: '#e0e0e0',
-            zeroline: true
+            zeroline: true,
+            zerolinecolor: '#ccc'
         },
         yaxis: {
-            title: '성장률 (%)',
+            title: {
+                text: '↑ 성장률 (%)',
+                font: { size: 14 }
+            },
             gridcolor: '#e0e0e0',
             zeroline: true,
             zerolinecolor: '#999',
@@ -522,22 +565,49 @@ function renderClusterBubbleChart(filterCategory = 'all') {
         showlegend: true,
         legend: {
             orientation: 'h',
-            y: -0.2
+            y: -0.15,
+            x: 0.5,
+            xanchor: 'center',
+            font: { size: 13 }
         },
-        margin: { t: 80, l: 80, r: 50, b: 100 },
-        height: 600,
+        margin: { t: 100, l: 80, r: 50, b: 100 },
+        height: 650,
         plot_bgcolor: '#fafafa',
-        paper_bgcolor: 'white'
+        paper_bgcolor: 'white',
+        annotations: [
+            {
+                text: '💡 버블이 클수록 2025년 연구 빈도가 높습니다',
+                xref: 'paper',
+                yref: 'paper',
+                x: 0.5,
+                y: 1.08,
+                xanchor: 'center',
+                yanchor: 'bottom',
+                showarrow: false,
+                font: { size: 12, color: '#666' }
+            }
+        ]
     };
     
-    Plotly.newPlot('cluster-bubble-chart', traces, layout, { responsive: true });
+    Plotly.newPlot('cluster-bubble-chart', traces, layout, { responsive: true })
+        .then(() => {
+            console.log('✅ 클러스터 버블 차트 렌더링 완료');
+        })
+        .catch(err => {
+            console.error('❌ Plotly 렌더링 에러:', err);
+        });
     
     // 클릭 이벤트
-    document.getElementById('cluster-bubble-chart').on('plotly_click', function(data) {
-        const clusterId = data.points[0].customdata;
-        const cluster = clusterData.find(c => c.clusterId === clusterId);
-        showClusterPopup(cluster);
-    });
+    const chartDiv = document.getElementById('cluster-bubble-chart');
+    if (chartDiv) {
+        chartDiv.on('plotly_click', function(data) {
+            const clusterId = data.points[0].customdata;
+            const cluster = clusterData.find(c => c.clusterId === clusterId);
+            if (cluster) {
+                showClusterPopup(cluster);
+            }
+        });
+    }
 }
 
 // 클러스터 팝업 표시
@@ -549,18 +619,18 @@ function showClusterPopup(cluster) {
     title.innerHTML = `🧩 ${cluster.label}`;
     details.innerHTML = `
         <p><strong>카테고리:</strong> ${cluster.category}</p>
-        <p><strong>성장률:</strong> ${cluster.growthRate}%</p>
-        <p><strong>2025년 빈도:</strong> ${cluster.total2025}</p>
-        <p><strong>키워드:</strong> ${cluster.keywords.slice(0, 5).join(', ')}</p>
-        <p><strong>연결된 메인 키워드:</strong> ${cluster.linkedMainKeywords.join(', ')}</p>
+        <p><strong>성장률:</strong> ${cluster.growthRate ? cluster.growthRate.toFixed(2) : 0}%</p>
+        <p><strong>2025년 빈도:</strong> ${cluster.total2025 || 0}</p>
+        <p><strong>키워드:</strong> ${cluster.keywords ? cluster.keywords.slice(0, 5).join(', ') : '없음'}</p>
+        <p><strong>연결된 메인 키워드:</strong> ${cluster.linkedMainKeywords ? cluster.linkedMainKeywords.join(', ') : '없음'}</p>
         <hr>
         <p><strong>연도별 추이:</strong></p>
         <ul style="list-style: none; padding: 0;">
-            <li>2021: ${cluster.yearlyFreq['2021']}</li>
-            <li>2022: ${cluster.yearlyFreq['2022']}</li>
-            <li>2023: ${cluster.yearlyFreq['2023']}</li>
-            <li>2024: ${cluster.yearlyFreq['2024']}</li>
-            <li>2025: ${cluster.yearlyFreq['2025']}</li>
+            <li>2021: ${cluster.yearlyFreq ? cluster.yearlyFreq['2021'] || 0 : 0}</li>
+            <li>2022: ${cluster.yearlyFreq ? cluster.yearlyFreq['2022'] || 0 : 0}</li>
+            <li>2023: ${cluster.yearlyFreq ? cluster.yearlyFreq['2023'] || 0 : 0}</li>
+            <li>2024: ${cluster.yearlyFreq ? cluster.yearlyFreq['2024'] || 0 : 0}</li>
+            <li>2025: ${cluster.yearlyFreq ? cluster.yearlyFreq['2025'] || 0 : 0}</li>
         </ul>
     `;
     
@@ -590,7 +660,7 @@ document.querySelectorAll('.filter-chip').forEach(btn => {
 // 메인 키워드별 연결된 클러스터 렌더링
 function renderLinkedClusters(mainKeyword) {
     const linkedClusters = clusterData.filter(c => 
-        c.linkedMainKeywords.includes(mainKeyword)
+        c.linkedMainKeywords && c.linkedMainKeywords.includes(mainKeyword)
     );
     
     const grid = document.getElementById('linked-clusters-grid');
@@ -604,10 +674,10 @@ function renderLinkedClusters(mainKeyword) {
     linkedClusters.forEach(cluster => {
         const card = document.createElement('div');
         card.className = 'cluster-card';
-        card.style.borderLeft = `4px solid ${categoryColors[cluster.category]}`;
+        card.style.borderLeft = `4px solid ${categoryColors[cluster.category] || '#999'}`;
         
-        const growthIcon = cluster.growthRate > 0 ? '📈' : '📉';
-        const growthClass = cluster.growthRate > 0 ? 'growth-up' : 'growth-down';
+        const growthIcon = (cluster.growthRate || 0) > 0 ? '📈' : '📉';
+        const growthClass = (cluster.growthRate || 0) > 0 ? 'growth-up' : 'growth-down';
         
         card.innerHTML = `
             <div class="cluster-card-header">
@@ -618,15 +688,15 @@ function renderLinkedClusters(mainKeyword) {
             <div class="cluster-stats">
                 <div class="stat-item">
                     <span class="stat-label">2025 빈도</span>
-                    <span class="stat-value">${cluster.total2025}</span>
+                    <span class="stat-value">${cluster.total2025 || 0}</span>
                 </div>
                 <div class="stat-item">
                     <span class="stat-label">성장률</span>
-                    <span class="stat-value ${growthClass}">${growthIcon} ${cluster.growthRate}%</span>
+                    <span class="stat-value ${growthClass}">${growthIcon} ${cluster.growthRate ? cluster.growthRate.toFixed(2) : 0}%</span>
                 </div>
             </div>
             <div class="cluster-keywords">
-                ${cluster.keywords.slice(0, 3).map(k => `<span class="kw-tag">${k}</span>`).join('')}
+                ${cluster.keywords ? cluster.keywords.slice(0, 3).map(k => `<span class="kw-tag">${k}</span>`).join('') : ''}
             </div>
         `;
         
@@ -647,12 +717,12 @@ function renderClusterTrendChart(clusters) {
     
     const traces = clusters.map(cluster => ({
         x: years,
-        y: years.map(y => cluster.yearlyFreq[y]),
+        y: years.map(y => cluster.yearlyFreq ? (cluster.yearlyFreq[y] || 0) : 0),
         name: cluster.label,
         mode: 'lines+markers',
         line: {
             width: 3,
-            color: categoryColors[cluster.category]
+            color: categoryColors[cluster.category] || '#999'
         },
         marker: { size: 8 }
     }));
@@ -688,3 +758,300 @@ function renderClusterTrendChart(clusters) {
 document.getElementById('main-keyword-select')?.addEventListener('change', (e) => {
     renderLinkedClusters(e.target.value);
 });
+
+// ================================
+// 8️⃣ 분야 확산 기능
+// ================================
+
+// 분야 확산 데이터 로드
+fetch('field_diffusion.json')
+    .then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    })
+    .then(data => {
+        fieldDiffusionData = data.clusters;
+        console.log('✅ 분야 확산 데이터 로드:', fieldDiffusionData.length, '개 클러스터');
+        
+        // 클러스터 선택 드롭다운 초기화
+        populateDiffusionClusterSelect();
+        
+        // 초기 렌더링
+        if (fieldDiffusionData.length > 0) {
+            const firstClusterId = fieldDiffusionData[0].clusterId;
+            renderDiffusionVisualizations(firstClusterId);
+        }
+    })
+    .catch(error => {
+        console.error('❌ field_diffusion.json 로드 실패:', error);
+        const sankeyDiv = document.getElementById('diffusion-sankey');
+        if (sankeyDiv) {
+            sankeyDiv.innerHTML = `
+                <div style="padding: 40px; text-align: center; color: #999;">
+                    <h3>⚠️ 분야 확산 데이터 로드 실패</h3>
+                    <p>field_diffusion.json 파일을 확인해주세요.</p>
+                </div>
+            `;
+        }
+    });
+
+// 클러스터 선택 드롭다운 채우기
+function populateDiffusionClusterSelect() {
+    const select = document.getElementById('diffusion-cluster-select');
+    if (!select) return;
+    
+    select.innerHTML = '';
+    
+    // cluster_trends.json과 매칭해서 라벨 표시
+    fieldDiffusionData.forEach(cluster => {
+        const clusterInfo = clusterData.find(c => c.clusterId === cluster.clusterId);
+        const label = clusterInfo ? clusterInfo.label : `Cluster ${cluster.clusterId}`;
+        
+        const option = document.createElement('option');
+        option.value = cluster.clusterId;
+        option.textContent = `${label} (ID: ${cluster.clusterId})`;
+        select.appendChild(option);
+    });
+    
+    // 선택 이벤트
+    select.addEventListener('change', (e) => {
+        renderDiffusionVisualizations(parseInt(e.target.value));
+    });
+}
+
+// 분야 확산 시각화 렌더링
+function renderDiffusionVisualizations(clusterId) {
+    const cluster = fieldDiffusionData.find(c => c.clusterId === clusterId);
+    if (!cluster) {
+        console.error('클러스터를 찾을 수 없습니다:', clusterId);
+        return;
+    }
+    
+    console.log('📊 분야 확산 렌더링:', clusterId, cluster);
+    
+    // 1. Sankey Diagram 렌더링
+    renderFieldSankeyDiagram(cluster);
+    
+    // 2. 분야 분포 차트 렌더링
+    renderFieldDistributionChart(cluster);
+    
+    // 3. 다양성 지수 차트 렌더링
+    renderDiversityChart(cluster);
+}
+
+// Sankey Diagram 렌더링 (연도별 분야 이동)
+function renderFieldSankeyDiagram(cluster) {
+    const years = ['2021', '2022', '2023', '2024', '2025'];
+    
+    // 노드 생성 (연도별 분야)
+    const nodes = [];
+    const nodeMap = new Map(); // "연도-분야" → 노드 인덱스
+    
+    years.forEach(year => {
+        const yearData = cluster.years[year];
+        if (!yearData) return;
+        
+        Object.keys(yearData.fields).forEach(field => {
+            const key = `${year}-${field}`;
+            if (!nodeMap.has(key)) {
+                const index = nodes.length;
+                nodeMap.set(key, index);
+                nodes.push({
+                    label: `${field}\n(${year})`,
+                    color: getFieldColor(field)
+                });
+            }
+        });
+    });
+    
+    // 링크 생성 (연도 간 분야 이동)
+    const links = [];
+    
+    for (let i = 0; i < years.length - 1; i++) {
+        const currentYear = years[i];
+        const nextYear = years[i + 1];
+        
+        const currentData = cluster.years[currentYear];
+        const nextData = cluster.years[nextYear];
+        
+        if (!currentData || !nextData) continue;
+        
+        // transitions 데이터 사용
+        currentData.transitions.forEach(trans => {
+            const sourceKey = `${currentYear}-${trans.from}`;
+            const targetKey = `${nextYear}-${trans.to}`;
+            
+            if (nodeMap.has(sourceKey) && nodeMap.has(targetKey)) {
+                links.push({
+                    source: nodeMap.get(sourceKey),
+                    target: nodeMap.get(targetKey),
+                    value: trans.count,
+                    color: 'rgba(0, 122, 255, 0.3)'
+                });
+            }
+        });
+    }
+    
+    // Plotly Sankey
+    const data = [{
+        type: 'sankey',
+        orientation: 'h',
+        node: {
+            pad: 15,
+            thickness: 20,
+            line: {
+                color: 'white',
+                width: 2
+            },
+            label: nodes.map(n => n.label),
+            color: nodes.map(n => n.color)
+        },
+        link: {
+            source: links.map(l => l.source),
+            target: links.map(l => l.target),
+            value: links.map(l => l.value),
+            color: links.map(l => l.color)
+        }
+    }];
+    
+    const layout = {
+        title: {
+            text: `분야 확산 흐름 (2021→2025)`,
+            font: { size: 16, family: 'Pretendard' }
+        },
+        font: {
+            family: 'Pretendard',
+            size: 12
+        },
+        margin: { t: 60, l: 20, r: 20, b: 20 },
+        height: 600
+    };
+    
+    Plotly.newPlot('diffusion-sankey', data, layout, { responsive: true });
+}
+
+// 분야 분포 차트 (연도별 stacked bar)
+function renderFieldDistributionChart(cluster) {
+    const years = ['2021', '2022', '2023', '2024', '2025'];
+    
+    // 모든 분야 수집
+    const allFields = new Set();
+    years.forEach(year => {
+        const yearData = cluster.years[year];
+        if (yearData) {
+            Object.keys(yearData.fields).forEach(field => allFields.add(field));
+        }
+    });
+    
+    // 트레이스 생성 (각 분야별)
+    const traces = Array.from(allFields).map(field => {
+        return {
+            x: years,
+            y: years.map(year => {
+                const yearData = cluster.years[year];
+                return yearData ? (yearData.fields[field] || 0) : 0;
+            }),
+            name: field,
+            type: 'bar',
+            marker: {
+                color: getFieldColor(field)
+            }
+        };
+    });
+    
+    const layout = {
+        barmode: 'stack',
+        title: {
+            text: '연도별 분야 분포',
+            font: { size: 16, family: 'Pretendard' }
+        },
+        xaxis: {
+            title: '연도',
+            gridcolor: '#e0e0e0'
+        },
+        yaxis: {
+            title: '연구 빈도',
+            gridcolor: '#e0e0e0'
+        },
+        font: { family: 'Pretendard' },
+        margin: { t: 60, l: 60, r: 30, b: 60 },
+        height: 400,
+        showlegend: true,
+        legend: {
+            orientation: 'h',
+            y: -0.2
+        }
+    };
+    
+    Plotly.newPlot('field-distribution-chart', traces, layout, { responsive: true });
+}
+
+// 다양성 지수 차트
+function renderDiversityChart(cluster) {
+    const years = ['2021', '2022', '2023', '2024', '2025'];
+    
+    const diversityData = years.map(year => {
+        const yearData = cluster.years[year];
+        return yearData ? yearData.diversity : 0;
+    });
+    
+    const trace = {
+        x: years,
+        y: diversityData,
+        mode: 'lines+markers',
+        line: {
+            color: '#007aff',
+            width: 3
+        },
+        marker: {
+            size: 10,
+            color: '#007aff'
+        },
+        fill: 'tozeroy',
+        fillcolor: 'rgba(0, 122, 255, 0.1)'
+    };
+    
+    const layout = {
+        title: {
+            text: '분야 다양성 지수 (Entropy)',
+            font: { size: 16, family: 'Pretendard' }
+        },
+        xaxis: {
+            title: '연도',
+            gridcolor: '#e0e0e0'
+        },
+        yaxis: {
+            title: 'Diversity (Entropy)',
+            gridcolor: '#e0e0e0'
+        },
+        font: { family: 'Pretendard' },
+        margin: { t: 60, l: 60, r: 30, b: 60 },
+        height: 300
+    };
+    
+    Plotly.newPlot('diversity-chart', [trace], layout, { responsive: true });
+}
+
+// 분야별 색상 매핑
+function getFieldColor(field) {
+    const colors = {
+        '교육학': '#4285F4',
+        '사회학': '#34A853',
+        '경영학': '#FBBC04',
+        '행정학': '#EA4335',
+        '법학': '#9C27B0',
+        '경제학': '#FF9800',
+        '정치외교학': '#00BCD4',
+        '신문방송학': '#E91E63',
+        '심리학': '#3F51B5',
+        '관광학': '#009688',
+        '문헌정보학': '#795548',
+        '군사학': '#607D8B',
+        '지역개발': '#CDDC39',
+        '복지학': '#FFC107'
+    };
+    
+    return colors[field] || '#999999';
+}

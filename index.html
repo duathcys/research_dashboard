@@ -17,7 +17,7 @@
         <button class="tab-btn" data-tab="list-tab">📈 성장/쇠퇴 리스트</button>
         <button class="tab-btn" data-tab="relation-tab">🗂️ 연관어 TOP10</button>
         <button class="tab-btn" data-tab="cluster-tab">🧩 클러스터 맵</button>
-        <button class="tab-btn" data-tab="sankey-tab">🌊 TOP5 키워드 흐름</button>
+        <button class="tab-btn" data-tab="diffusion-tab">🌊 분야 확산</button>
     </nav>
 
     <!-- 매트릭스 탭 -->
@@ -137,8 +137,12 @@
     <div id="cluster-tab" class="tab-item">
         <div class="card">
             <h3>🧩 연구 클러스터 맵</h3>
-            <p class="guide-text">
-                버블 크기 = 2025년 연구 빈도 | 색상 = 분야 | 위치 = 성장률 vs 평균 빈도
+            <p class="guide-text" style="font-size: 14px; color: #555; margin-bottom: 15px;">
+                <strong>💡 버블 차트 읽는 법:</strong><br>
+                • <strong style="color: #007aff;">버블 크기</strong> = 2025년 연구 빈도 (클수록 더 많이 연구됨)<br>
+                • <strong style="color: #2e7d32;">색상</strong> = 연구 분야 카테고리<br>
+                • <strong style="color: #d32f2f;">위치</strong> = 가로축(평균 빈도) × 세로축(성장률)<br>
+                • 클릭하면 상세 정보를 볼 수 있습니다
             </p>
             
             <!-- 카테고리 필터 -->
@@ -185,6 +189,48 @@
                 
                 <!-- 클러스터별 성장 추이 차트 -->
                 <div id="cluster-trend-chart"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 분야 확산 탭 -->
+    <div id="diffusion-tab" class="tab-item">
+        <div class="card">
+            <h3>🌊 분야 확산 패턴 (2021-2025)</h3>
+            <p class="guide-text" style="font-size: 14px; color: #555; margin-bottom: 20px;">
+                <strong>💡 Sankey Diagram 읽는 법:</strong><br>
+                • 왼쪽부터 오른쪽으로 <strong>2021년 → 2025년</strong>까지 연구 분야의 이동 흐름을 보여줍니다<br>
+                • <strong>선의 두께</strong> = 분야 간 이동한 연구의 빈도<br>
+                • 예: "교육학(2021) → 사회학(2022)" 선이 두꺼우면 교육학에서 사회학으로 많이 확산됨
+            </p>
+            
+            <!-- 클러스터 선택 -->
+            <div class="keyword-selector">
+                <div class="select-group" style="max-width: 400px;">
+                    <label for="diffusion-cluster-select">📌 클러스터 선택</label>
+                    <select id="diffusion-cluster-select">
+                        <!-- JS로 동적 생성 -->
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Sankey Diagram -->
+            <div class="card" style="margin-top: 20px; padding: 30px;">
+                <h4>📊 분야 간 이동 흐름 (2021→2022→2023→2024→2025)</h4>
+                <div id="diffusion-sankey" style="width: 100%; height: 600px;"></div>
+            </div>
+            
+            <!-- 분야 분포 변화 -->
+            <div class="card" style="margin-top: 20px; padding: 30px;">
+                <h4>📈 연도별 분야 분포 변화</h4>
+                <div id="field-distribution-chart" style="width: 100%; height: 400px;"></div>
+            </div>
+            
+            <!-- 다양성 지수 -->
+            <div class="card" style="margin-top: 20px; padding: 30px;">
+                <h4>📊 분야 다양성 추이</h4>
+                <p class="guide-text">분야 다양성 지수(Entropy)가 높을수록 여러 분야에 골고루 확산되었음을 의미합니다.</p>
+                <div id="diversity-chart" style="width: 100%; height: 300px;"></div>
             </div>
         </div>
     </div>
