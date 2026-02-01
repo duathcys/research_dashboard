@@ -82,7 +82,6 @@
 ---
 
 ## 프로젝트 구조
-
 ├── index.html
 ├── script.js
 ├── heatmap.js
@@ -94,6 +93,7 @@
     ├── cluster_trends.json
     ├── field_diffusion.json
     └── network.json
+
   
 ---
 
