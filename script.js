@@ -1,11 +1,12 @@
 // ================================
-// 2026 연구 전략 내비게이터 JS
+// 2026 연구 전략 내비게이터 JS (개선 버전)
 // ================================
 
 // 전역 변수
 let coKeywordData = []; // 연관어 데이터
 let clusterData = []; // 클러스터 트렌드 데이터
 let fieldDiffusionData = []; // 분야 확산 데이터
+let currentKeywordData = {}; // 현재 선택된 키워드의 데이터 (히트맵용)
 
 // 탭 전환
 document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -413,7 +414,7 @@ function populateKeywordSelect() {
 }
 
 // ================================
-// 5️⃣ 히트맵 관련 함수들
+// 5️⃣ 히트맵 관련 함수들 (🔥 호버 라인차트 추가!)
 // ================================
 
 // 연관어 히트맵 렌더링 함수
@@ -467,6 +468,9 @@ function renderCoKeywordHeatmap(targetKeyword) {
             "2025": yearData[2025]?.[cok] || 0
         };
     });
+    
+    // 전역 변수에 저장 (호버 차트용)
+    currentKeywordData = keywordDataForHeatmap;
     
     // 키워드 유형 판별
     const keywordTypeMap = {};
@@ -551,8 +555,8 @@ function renderHeatmapTable(keywordData, keywordType, keywordBadge) {
         tbody.appendChild(tr);
     });
     
-    // 클릭 이벤트 바인딩
-    bindHeatmapClickEvents(keywordData);
+    // 🔥 호버 이벤트 바인딩 (라인차트)
+    bindHeatmapHoverEvents();
 }
 
 // 색상 레벨 계산
@@ -565,50 +569,80 @@ function getLevel(value) {
     return "level-5";
 }
 
-// 히트맵 클릭 이벤트 (라인차트)
-function bindHeatmapClickEvents(keywordData) {
+// 🔥 히트맵 호버 이벤트 (플로팅 팝업 라인차트)
+function bindHeatmapHoverEvents() {
+    const hoverChart = document.getElementById('hover-linechart');
+    const chartTitle = document.getElementById('hover-chart-title');
+    const chartContent = document.getElementById('hover-chart-content');
+    
     document.querySelectorAll(".kw-row").forEach(row => {
-        row.addEventListener("click", () => {
+        row.addEventListener("mouseenter", () => {
             const key = row.dataset.keyword;
             const years = ["2021","2022","2023","2024","2025"];
             const values = years.map(y => {
-                const v = keywordData[key][y];
+                const v = currentKeywordData[key][y];
                 return v > 0 ? v : 0;
             });
 
             const hoverText = years.map(y => {
-                const v = keywordData[key][y];
+                const v = currentKeywordData[key][y];
                 return v > 0 ? `${y}: ${v}건` : `${y}: TOP10 없음`;
             });
 
-            Plotly.newPlot("linechart", [{
+            // 차트 제목 업데이트
+            chartTitle.textContent = `"${key}" 연도별 변화`;
+            
+            // 차트 렌더링
+            Plotly.newPlot(chartContent, [{
                 x: years,
                 y: values,
                 text: hoverText,
                 hoverinfo: 'text',
                 mode: "lines+markers",
                 line: {shape: "linear", color:"#007aff", width: 3},
-                marker: {size: 10, color:"#007aff"}
+                marker: {size: 10, color:"#007aff"},
+                fill: 'tozeroy',
+                fillcolor: 'rgba(0, 122, 255, 0.1)'
             }], {
-                title: {
-                    text: `"${key}" 연관어 연도별 빈도 변화`,
-                    font: { family: 'Pretendard, sans-serif', size: 16, color: '#333' }
-                },
                 yaxis: {
-                    title: { text: "빈도수 (건)", font: { size: 14 } },
+                    title: { text: "빈도 (건)", font: { size: 12 } },
                     gridcolor: '#e0e0e0'
                 },
                 xaxis: {
-                    title: { text: "연도", font: { size: 14 } },
+                    title: { text: "연도", font: { size: 12 } },
                     gridcolor: '#e0e0e0'
                 },
-                margin: { t:80, l:60, r:30, b:60 },
-                font: {family: 'Pretendard, sans-serif'},
+                margin: { t:20, l:50, r:20, b:40 },
+                font: {family: 'Pretendard, sans-serif', size: 11},
                 plot_bgcolor: '#fafafa',
-                paper_bgcolor: 'white'
-            }, {responsive: true});
+                paper_bgcolor: 'white',
+                showlegend: false
+            }, {
+                responsive: true, 
+                displayModeBar: false
+            });
+            
+            // 차트 표시
+            hoverChart.classList.add('active');
+        });
+        
+        // 마우스가 벗어나면 차트 숨김
+        row.addEventListener("mouseleave", () => {
+            hoverChart.classList.remove('active');
         });
     });
+    
+    // 차트 자체에서 마우스 떼면 숨김
+    if (hoverChart) {
+        hoverChart.addEventListener("mouseleave", () => {
+            hoverChart.classList.remove('active');
+        });
+        
+        // 차트 위에서는 계속 표시
+        hoverChart.addEventListener("mouseenter", () => {
+            hoverChart.classList.add('active');
+        });
+    }
 }
 
 // ================================

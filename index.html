@@ -99,11 +99,12 @@
                 <!-- JS로 TOP10 카드 자동 생성 -->
             </div>
 
-            <!-- 히트맵 + 라인차트 -->
+            <!-- 히트맵 + 호버 라인차트 -->
             <section class="card relation-analysis">
                 <h3>🔍 주요 키워드별 연관어 변화 추이 (2021-2025)</h3>
                 <p class="guide-text">
-                    ※ 칸이 비어있는 연도는 해당 키워드가 연관 TOP 10에 포함되지 않은 시기입니다.
+                    ※ 칸이 비어있는 연도는 해당 키워드가 연관 TOP 10에 포함되지 않은 시기입니다.<br>
+                    💡 <strong>키워드 행에 마우스를 올리면</strong> 연도별 변화 추이 그래프를 볼 수 있습니다.
                 </p>
                 
                 <div class="heatmap-wrapper">
@@ -125,9 +126,12 @@
                     </table>
                 </div>
 
-                <div id="linechart-container">
-                    <h3>📈 선택 키워드 연도별 변화</h3>
-                    <div id="linechart"></div>
+                <!-- 호버 시 표시되는 플로팅 라인차트 -->
+                <div id="hover-linechart" class="hover-linechart-popup">
+                    <div class="chart-header">
+                        <h4 id="hover-chart-title">키워드 연도별 변화</h4>
+                    </div>
+                    <div id="hover-chart-content"></div>
                 </div>
             </section>
 

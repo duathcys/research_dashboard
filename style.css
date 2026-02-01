@@ -214,7 +214,7 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 }
 
 /* ================================ */
-/* 연관어 TOP10 히트맵 + 라인차트 */
+/* 🔥 호버 라인차트 (플로팅 팝업 버전!) */
 /* ================================ */
 .relation-analysis {
     margin-top: 30px;
@@ -222,6 +222,7 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     background: #fff;
     border-radius: 16px;
     box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    position: relative; /* 팝업 위치 기준 */
 }
 
 .relation-analysis h3 {
@@ -234,13 +235,14 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     font-size: 13px;
     color: #666;
     margin-bottom: 20px;
+    line-height: 1.6;
 }
 
-/* 히트맵 테이블 */
+/* 히트맵 테이블 (전체 너비) */
 .heatmap-wrapper {
     width: 100%;
     overflow-x: auto;
-    margin-bottom: 30px;
+    margin-bottom: 20px;
 }
 
 .heatmap-table {
@@ -320,38 +322,59 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
 .type.emerging { background: #e8f5e9; color: #2e7d32; }
 .type.core { background: #e3f2fd; color: #1976d2; }
 
-/* 라인차트 컨테이너 */
-#linechart-container {
-    margin-top: 30px;
+/* 🔥 플로팅 팝업 차트 */
+.hover-linechart-popup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0.9);
+    width: 500px;
+    max-width: 90%;
+    background: white;
+    border-radius: 16px;
+    border: 3px solid #007aff;
     padding: 25px;
-    background: #fafafa;
-    border-radius: 12px;
-    border: 1px solid #e0e0e0;
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1000;
+    box-shadow: 0 10px 40px rgba(0, 122, 255, 0.2);
 }
 
-#linechart-container h3 {
-    font-size: 16px;
-    margin-bottom: 20px;
-    color: #333;
+/* 호버 시 팝업 활성화 */
+.hover-linechart-popup.active {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: auto;
+}
+
+.hover-linechart-popup .chart-header {
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.hover-linechart-popup h4 {
+    font-size: 15px;
+    color: #007aff;
+    margin: 0;
     font-weight: 600;
 }
 
-#linechart {
+#hover-chart-content {
     width: 100%;
-    height: 400px;
-    background: white;
-    border-radius: 8px;
+    height: 300px;
 }
 
-/* 행 클릭 시 효과 */
+/* 행 호버 시 효과 */
 .kw-row { 
     cursor: pointer; 
     transition: all 0.2s;
 }
 
 .kw-row:hover { 
-    background: rgba(0, 122, 255, 0.05);
-    transform: translateY(-1px);
+    background: rgba(0, 122, 255, 0.08);
+    transform: scale(1.01);
 }
 
 .kw-row:hover .kw-name {
@@ -368,7 +391,13 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     transition: all 0.2s;
 }
 
-/* 반응형 */
+/* 반응형 - 호버 차트 */
+@media (max-width: 1200px) {
+    .hover-linechart-popup {
+        width: 80%;
+    }
+}
+
 @media (max-width: 768px) {
     .keyword-selector {
         flex-direction: column;
@@ -398,6 +427,15 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     .heatmap-table th:not(.kw-col):not(.type-col) {
         width: 70px;
     }
+    
+    .hover-linechart-popup {
+        width: 90%;
+        padding: 20px;
+    }
+    
+    #hover-chart-content {
+        height: 250px;
+    }
 }
 
 @media (max-width: 480px) {
@@ -418,6 +456,19 @@ li { padding: 8px 0; border-bottom: 1px solid #eee; display: flex; justify-conte
     
     .heatmap-table th:not(.kw-col):not(.type-col) {
         width: 60px;
+    }
+    
+    .hover-linechart-popup {
+        width: 95%;
+        padding: 15px;
+    }
+    
+    .hover-linechart-popup h4 {
+        font-size: 13px;
+    }
+    
+    #hover-chart-content {
+        height: 220px;
     }
 }
 
