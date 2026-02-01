@@ -82,17 +82,18 @@
 ---
 
 ## 프로젝트 구조
+
 ├── index.html
 ├── script.js
 ├── heatmap.js
 ├── style.css
 ├── .gitignore
 └── data/
-  ├── 2026년_키워드_성장률2(임계값0).csv
-  ├── all_keywords_co_keywords_by_year_long_top10.csv
-  ├── cluster_trends.json
-  ├── field_diffusion.json
-  └── network.json
+    ├── 2026년_키워드_성장률2(임계값0).csv
+    ├── all_keywords_co_keywords_by_year_long_top10.csv
+    ├── cluster_trends.json
+    ├── field_diffusion.json
+    └── network.json
   
 ---
 
